@@ -2,6 +2,10 @@
 
 A modern, interactive gradient generator built with React and TypeScript. Create beautiful CSS gradients with an intuitive interface.
 
+## 🚀 Live Demo
+
+**[Try it now: https://demonishan.github.io/gradientor](https://demonishan.github.io/gradientor)**
+
 ## Features
 
 - **Interactive Gradient Editor**: Click and drag to create and modify gradient stops
