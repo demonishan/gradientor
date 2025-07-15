@@ -1,0 +1,211 @@
+.color-stops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  max-height: 243px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.25rem;
+}
+.color-stop-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #374151;
+  border: 2px solid #4a5568;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 60px;
+}
+.color-stop-item:hover {
+  background: #4a5568;
+  border-color: #6b7280;
+}
+.color-stop-item.selected {
+  background: #2d3748;
+  border-color: #667eea;
+  box-shadow: 0 0 0 1px #667eea;
+}
+.stop-number {
+  width: 24px;
+  height: 24px;
+  background: #6b7280;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.color-stop-item.selected .stop-number {
+  background: #667eea;
+}
+.stop-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  overflow: hidden;
+}
+.stop-color-display {
+  display: flex;
+  flex-direction: column;
+}
+.stop-color-text {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+.stop-position-input {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+.position-input {
+  width: 60px;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-align: center;
+  background: #2d3748;
+  color: #e2e8f0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.position-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+.position-unit {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+.delete-stop-btn {
+  border: none;
+  background: none;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+.color-stops-list::-webkit-scrollbar {
+  width: 6px;
+}
+.color-stops-list::-webkit-scrollbar-track {
+  background: #2d3748;
+  border-radius: 3px;
+}
+.color-stops-list::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 3px;
+}
+.color-stops-list::-webkit-scrollbar-thumb:hover {
+  background: #667eea;
+}
+.color-stops-list {
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 #2d3748;
+}
+.color-stop-item-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.color-stop-item-inline:hover {
+  border-color: #6b7280;
+}
+.color-stop-item-inline.selected {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+}
+.stop-color-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #4a5568;
+  flex-shrink: 0;
+}
+.stop-hex-input {
+  flex: 1;
+}
+.hex-input-inline {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  background: #374151;
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  font-family: monospace;
+}
+.hex-input-inline:focus {
+  outline: none;
+  border-color: #667eea;
+}
+.stop-position-input {
+  width: 60px;
+}
+.position-input-inline {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  background: #374151;
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.position-input-inline:focus {
+  outline: none;
+  border-color: #667eea;
+}
+.delete-stop-btn-inline {
+  width: 20px;
+  height: 20px;
+  background: #dc2626;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.delete-stop-btn-inline:hover {
+  background: #b91c1c;
+}

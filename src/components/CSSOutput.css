@@ -1,0 +1,67 @@
+.css-output {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #4a5568;
+}
+.output-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+.copy-button {
+  padding: 0.5rem 0.75rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  font-size: 0.875rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+.copy-button:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+.copy-button.copied {
+  background: #10b981;
+}
+.copy-button:active {
+  transform: translateY(0);
+}
+.css-code {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  border: 1px solid #374151;
+}
+.css-code pre {
+  margin: 0;
+  font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.css-code code {
+  color: #a7f3d0;
+}
+@media (max-width: 768px) {
+  .output-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
