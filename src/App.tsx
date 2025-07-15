@@ -14,9 +14,10 @@ export interface ColorStop {
   opacity: number
 }
 export interface GradientConfig {
-  type: 'linear' | 'radial'
-  angle: number
-  colorStops: ColorStop[]
+  type: 'linear' | 'radial' | 'conic';
+  angle: number;
+  colorStops: ColorStop[];
+  conicPosition?: { x: number; y: number };
 }
 const App = () => {
   const [gradient, setGradient] = useState<GradientConfig>({
@@ -25,7 +26,8 @@ const App = () => {
     colorStops: [
       { id: '1', color: '#ff0000', position: 0, opacity: 1 },
       { id: '2', color: '#0000ff', position: 100, opacity: 1 }
-    ]
+    ],
+    conicPosition: { x: 50, y: 50 }
   })
   const [selectedStopId, setSelectedStopId] = useState<string>('1')
   const addColorStop = (position: number) => {
@@ -58,8 +60,9 @@ const App = () => {
     if (selectedStopId === id) 
       setSelectedStopId(gradient.colorStops[0].id)
   }
-  const updateGradientType = (type: 'linear' | 'radial') =>     setGradient(prev => ({ ...prev, type }));
-  const updateGradientAngle = (angle: number) =>     setGradient(prev => ({ ...prev, angle }));
+  const updateGradientType = (type: 'linear' | 'radial' | 'conic') => setGradient(prev => ({ ...prev, type }));
+  const updateGradientAngle = (angle: number) => setGradient(prev => ({ ...prev, angle }));
+  const updateConicPosition = (pos: { x: number; y: number }) => setGradient(prev => ({ ...prev, conicPosition: pos }));
   return (
     <div className="app">
       <header className="app-header">
@@ -74,7 +77,14 @@ const App = () => {
             <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
           </div>
           <div className="gradient-controls-panel">
-            <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} />
+            <GradientControls
+              type={gradient.type}
+              angle={gradient.angle}
+              onTypeChange={updateGradientType}
+              onAngleChange={updateGradientAngle}
+              conicPosition={gradient.conicPosition}
+              onConicPositionChange={updateConicPosition}
+            />
           </div>
         </div>
         <div className="editor-section">

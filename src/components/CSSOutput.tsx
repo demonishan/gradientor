@@ -20,8 +20,15 @@ const CSSOutput: React.FC<CSSOutputProps> = ({ gradient }) => {
         return `${colorValue} ${stop.position.toFixed(1)}%`;
       })
       .join(', ');
-    if (gradient.type === 'linear') return `linear-gradient(${gradient.angle}deg, ${stops})`;
-    else return `radial-gradient(circle, ${stops})`;
+    if (gradient.type === 'linear') {
+      return `linear-gradient(${gradient.angle}deg, ${stops})`;
+    } else if (gradient.type === 'radial') {
+      return `radial-gradient(circle, ${stops})`;
+    } else if (gradient.type === 'conic') {
+      const pos = gradient.conicPosition || { x: 50, y: 50 };
+      return `conic-gradient(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${stops})`;
+    }
+    return '';
   }, [gradient]);
   const generateFullCSS = useCallback(() => {
     const gradientCSS = generateGradientCSS();

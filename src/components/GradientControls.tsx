@@ -1,11 +1,14 @@
 import React from 'react';
 interface GradientControlsProps {
-  type: 'linear' | 'radial';
+  type: 'linear' | 'radial' | 'conic';
   angle: number;
-  onTypeChange: (type: 'linear' | 'radial') => void;
+  onTypeChange: (type: 'linear' | 'radial' | 'conic') => void;
   onAngleChange: (angle: number) => void;
 }
-const GradientControls: React.FC<GradientControlsProps> = ({ type, angle, onTypeChange, onAngleChange }) => {
+const GradientControls: React.FC<GradientControlsProps & {
+  conicPosition?: { x: number; y: number };
+  onConicPositionChange?: (pos: { x: number; y: number }) => void;
+}> = ({ type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange }) => {
   const handleAngleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAngle = parseInt(e.target.value);
     if (!isNaN(newAngle)) onAngleChange(newAngle);
@@ -33,24 +36,61 @@ const GradientControls: React.FC<GradientControlsProps> = ({ type, angle, onType
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
+  const handleConicPositionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!onConicPositionChange) return;
+    const { name, value } = e.target;
+    const num = parseInt(value);
+    if (!isNaN(num)) {
+      onConicPositionChange({ ...conicPosition, [name]: num });
+    }
+  };
   return (
     <div className="gradient-controls-panel-content">
-      <div className="angle-display">
-        <div className={`angle-circle ${type === 'radial' ? 'disabled' : ''}`} onMouseDown={type === 'linear' ? handleAngleMouseDown : undefined}>
-          <div className="angle-indicator" style={{ transform: `rotate(${angle}deg)` }}></div>
+      {(type === 'linear' || type === 'conic') && (
+        <div className="angle-display">
+      <div className="angle-circle" onMouseDown={(type === 'linear' || type === 'conic') ? handleAngleMouseDown : undefined}>
+            <div className="angle-indicator" style={{ transform: `rotate(${angle}deg)` }}></div>
+          </div>
+          <input type="number" value={angle} onChange={handleAngleChange} min="0" max="360" className="angle-input-inline" />
+          {type === 'conic' && (
+            <>
+              <label style={{ marginLeft: '1em', marginRight: '0.5em' }}>
+                X (%)
+                <input type="number" name="x" value={conicPosition.x} min="0" max="100" onChange={handleConicPositionChange} className="angle-input-inline" style={{ marginLeft: 4, width: 60 }} />
+              </label>
+              <label>
+                Y (%)
+                <input type="number" name="y" value={conicPosition.y} min="0" max="100" onChange={handleConicPositionChange} className="angle-input-inline" style={{ marginLeft: 4, width: 60 }} />
+              </label>
+            </>
+          )}
         </div>
-        <input type="number" value={angle} onChange={handleAngleChange} min="0" max="360" className="angle-input-inline" disabled={type === 'radial'} />
-      </div>
-      <div className="gradient-type-switch">
-        <div className="switch-container">
-          <div className={`switch-slider ${type === 'linear' ? 'active' : ''}`} onClick={() => onTypeChange(type === 'linear' ? 'radial' : 'linear')} />
-          <span className={`switch-label left ${type === 'radial' ? 'active' : ''}`} onClick={() => onTypeChange('radial')}>
-            Radial
-          </span>
-          <span className={`switch-label right ${type === 'linear' ? 'active' : ''}`} onClick={() => onTypeChange('linear')}>
-            Linear
-          </span>
-        </div>
+      )}
+      <div className="gradient-type-btn-group">
+        <button
+          type="button"
+          className={`type-btn${type === 'linear' ? ' active' : ''}`}
+          aria-pressed={type === 'linear'}
+          onClick={() => onTypeChange('linear')}
+        >
+          Linear
+        </button>
+        <button
+          type="button"
+          className={`type-btn${type === 'radial' ? ' active' : ''}`}
+          aria-pressed={type === 'radial'}
+          onClick={() => onTypeChange('radial')}
+        >
+          Radial
+        </button>
+        <button
+          type="button"
+          className={`type-btn${type === 'conic' ? ' active' : ''}`}
+          aria-pressed={type === 'conic'}
+          onClick={() => onTypeChange('conic')}
+        >
+          Conic
+        </button>
       </div>
     </div>
   );
