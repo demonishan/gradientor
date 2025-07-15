@@ -4,11 +4,25 @@ interface GradientControlsProps {
   angle: number;
   onTypeChange: (type: 'linear' | 'radial' | 'conic') => void;
   onAngleChange: (angle: number) => void;
+  radialDirection?: string;
+  onRadialDirectionChange?: (dir: string) => void;
 }
-const GradientControls: React.FC<GradientControlsProps & {
-  conicPosition?: { x: number; y: number };
-  onConicPositionChange?: (pos: { x: number; y: number }) => void;
-}> = ({ type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange }) => {
+const GradientControls: React.FC<
+  GradientControlsProps & {
+    conicPosition?: { x: number; y: number };
+    onConicPositionChange?: (pos: { x: number; y: number }) => void;
+  }
+> = ({ type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange }) => {
+  const radialDirections = [
+    ['at left top', 'at top', 'at right top'],
+    ['at left', 'center', 'at right'],
+    ['at left bottom', 'at bottom', 'at right bottom'],
+  ];
+  const directionLabels = [
+    ['↖', '↑', '↗'],
+    ['←', '•', '→'],
+    ['↙', '↓', '↘'],
+  ];
   const handleAngleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAngle = parseInt(e.target.value);
     if (!isNaN(newAngle)) onAngleChange(newAngle);
@@ -48,7 +62,7 @@ const GradientControls: React.FC<GradientControlsProps & {
     <div className="gradient-controls-panel-content">
       {(type === 'linear' || type === 'conic') && (
         <div className="angle-display">
-      <div className="angle-circle" onMouseDown={(type === 'linear' || type === 'conic') ? handleAngleMouseDown : undefined}>
+          <div className="angle-circle" onMouseDown={type === 'linear' || type === 'conic' ? handleAngleMouseDown : undefined}>
             <div className="angle-indicator" style={{ transform: `rotate(${angle}deg)` }}></div>
           </div>
           <input type="number" value={angle} onChange={handleAngleChange} min="0" max="360" className="angle-input-inline" />
@@ -66,29 +80,27 @@ const GradientControls: React.FC<GradientControlsProps & {
           )}
         </div>
       )}
+      {type === 'radial' && onRadialDirectionChange && (
+        <div className="radial-direction-grid">
+          {radialDirections.map((row, i) => (
+            <div className="radial-direction-row" key={i}>
+              {row.map((dir, j) => (
+                <button key={dir} type="button" className={`radial-direction-btn${radialDirection === dir ? ' active' : ''}`} onClick={() => onRadialDirectionChange(dir)} aria-pressed={radialDirection === dir}>
+                  {directionLabels[i][j]}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
       <div className="gradient-type-btn-group">
-        <button
-          type="button"
-          className={`type-btn${type === 'linear' ? ' active' : ''}`}
-          aria-pressed={type === 'linear'}
-          onClick={() => onTypeChange('linear')}
-        >
+        <button type="button" className={`type-btn${type === 'linear' ? ' active' : ''}`} aria-pressed={type === 'linear'} onClick={() => onTypeChange('linear')}>
           Linear
         </button>
-        <button
-          type="button"
-          className={`type-btn${type === 'radial' ? ' active' : ''}`}
-          aria-pressed={type === 'radial'}
-          onClick={() => onTypeChange('radial')}
-        >
+        <button type="button" className={`type-btn${type === 'radial' ? ' active' : ''}`} aria-pressed={type === 'radial'} onClick={() => onTypeChange('radial')}>
           Radial
         </button>
-        <button
-          type="button"
-          className={`type-btn${type === 'conic' ? ' active' : ''}`}
-          aria-pressed={type === 'conic'}
-          onClick={() => onTypeChange('conic')}
-        >
+        <button type="button" className={`type-btn${type === 'conic' ? ' active' : ''}`} aria-pressed={type === 'conic'} onClick={() => onTypeChange('conic')}>
           Conic
         </button>
       </div>

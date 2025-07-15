@@ -23,7 +23,9 @@ const CSSOutput: React.FC<CSSOutputProps> = ({ gradient }) => {
     if (gradient.type === 'linear') {
       return `linear-gradient(${gradient.angle}deg, ${stops})`;
     } else if (gradient.type === 'radial') {
-      return `radial-gradient(circle, ${stops})`;
+      let dir = gradient.radialDirection || 'center';
+      if (dir === 'center') dir = 'at center';
+      return `radial-gradient(circle ${dir}, ${stops})`;
     } else if (gradient.type === 'conic') {
       const pos = gradient.conicPosition || { x: 50, y: 50 };
       return `conic-gradient(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${stops})`;

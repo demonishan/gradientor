@@ -9,7 +9,9 @@ const generateGradientCSS = (gradient: GradientConfig): string => {
     .join(', ');
 
   if (gradient.type === 'radial') {
-    return `radial-gradient(circle, ${colorStops})`;
+    let dir = gradient.radialDirection || 'center';
+    if (dir === 'center') dir = 'at center';
+    return `radial-gradient(circle ${dir}, ${colorStops})`;
   }
   if (gradient.type === 'conic') {
     const pos = gradient.conicPosition || { x: 50, y: 50 };
