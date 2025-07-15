@@ -2,7 +2,7 @@
 
 A modern, interactive gradient generator built with React and TypeScript.
 
-## Live Demo
+## Demo
 
 **[https://demonishan.github.io/gradientor](https://demonishan.github.io/gradientor)**
 
@@ -22,8 +22,6 @@ A modern, interactive gradient generator built with React and TypeScript.
 - **TypeScript**: Type-safe development
 - **Vite**: Fast development build tool
 - **CSS Modules**: Scoped styling
-  },
-])
 
 ## Inspiration
 
