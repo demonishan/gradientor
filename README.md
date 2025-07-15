@@ -1,32 +1,23 @@
-# React + TypeScript + Vite
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-Currently, two official plugins are available:
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-## Expanding the ESLint configuration
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+# Gradientor
+
+A modern, interactive gradient generator built with React and TypeScript. Create beautiful CSS gradients with an intuitive interface.
+
+## Features
+
+- **Interactive Gradient Editor**: Click and drag to create and modify gradient stops
+- **Real-time Preview**: See your gradient changes instantly
+- **Multiple Gradient Types**: Support for linear and radial gradients
+- **Angle Control**: Precise angle adjustment with draggable circle and numeric input
+- **Color Picker**: Full RGB color selection with alpha channel support
+- **CSS Output**: Copy-ready CSS code for your gradients
+- **Modern UI**: Clean, responsive interface with dark theme
+
+## Technology Stack
+
+- **React 19.1.0**: Modern React with functional components and hooks
+- **TypeScript**: Type-safe development
+- **Vite**: Fast development build tool
+- **CSS Modules**: Scoped styling
   },
 ])
 ```
@@ -36,23 +27,35 @@ You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-re
 import reactX from 'eslint-plugin-react-x'
 import reactDom from 'eslint-plugin-react-dom'
 export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Getting Started
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/demonishan/gradientor.git
+   cd gradientor
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser** and navigate to `http://localhost:5173`
+
+## Usage
+
+1. **Create Gradient Stops**: Click on the gradient bar to add new color stops
+2. **Edit Colors**: Select a color stop and use the color picker to change its color
+3. **Adjust Positions**: Drag color stops along the gradient bar to change their positions
+4. **Switch Gradient Types**: Use the toggle switch to switch between linear and radial gradients
+5. **Control Angle**: For linear gradients, drag the angle circle or use the numeric input
+6. **Copy CSS**: Use the generated CSS code in your projects
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
