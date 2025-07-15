@@ -5,6 +5,7 @@ import ColorPicker from './components/ColorPicker'
 import ColorStopsList from './components/ColorStopsList'
 import GradientControls from './components/GradientControls'
 import CSSOutput from './components/CSSOutput'
+import GradientPreview from './components/GradientPreview'
 import logo from './assets/logo.webp'
 export interface ColorStop {
   id: string
@@ -70,6 +71,7 @@ const App = () => {
           <img src={logo} alt="Gradientor Logo" className="app-logo" />
         </div>
       </header>
+      <GradientPreview gradient={gradient} />
       <main className="app-main">
         <div className="gradient-panels">
           <div className="gradient-display-panel">
