@@ -10,69 +10,44 @@ interface ColorPickerProps {
   onColorChange: (color: string) => void;
   onOpacityChange: (opacity: number) => void;
 }
-
 const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, onOpacityChange }) => {
   const [color, setColor] = useColor('#ffffff');
-
   const hexToColor = (hex: string, alpha: number = 1): IColor => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-
-    // Convert RGB to HSV
-    const rNorm = r / 255;
-    const gNorm = g / 255;
-    const bNorm = b / 255;
-
-    const max = Math.max(rNorm, gNorm, bNorm);
-    const min = Math.min(rNorm, gNorm, bNorm);
-    const diff = max - min;
-
-    let h = 0;
-    let s = 0;
-    const v = max;
-
+    const r = parseInt(hex.slice(1, 3), 16),
+      g = parseInt(hex.slice(3, 5), 16),
+      b = parseInt(hex.slice(5, 7), 16);
+    const rNorm = r / 255,
+      gNorm = g / 255,
+      bNorm = b / 255;
+    const max = Math.max(rNorm, gNorm, bNorm),
+      min = Math.min(rNorm, gNorm, bNorm),
+      diff = max - min;
+        let h = 0,
+            s = 0; const v = max;
     if (diff !== 0) {
       s = diff / max;
-      if (max === rNorm) {
-        h = ((gNorm - bNorm) / diff) % 6;
-      } else if (max === gNorm) {
-        h = (bNorm - rNorm) / diff + 2;
-      } else {
-        h = (rNorm - gNorm) / diff + 4;
-      }
+      if (max === rNorm) h = ((gNorm - bNorm) / diff) % 6;
+      else if (max === gNorm) h = (bNorm - rNorm) / diff + 2;
+      else h = (rNorm - gNorm) / diff + 4;
       h *= 60;
       if (h < 0) h += 360;
     }
-
-    return {
-      hex,
-      rgb: { r, g, b, a: alpha },
-      hsv: { h, s: s * 100, v: v * 100, a: alpha },
-    };
+    return { hex, rgb: { r, g, b, a: alpha }, hsv: { h, s: s * 100, v: v * 100, a: alpha } };
   };
-
   useEffect(() => {
-    if (selectedStop) {
-      const newColor = hexToColor(selectedStop.color, selectedStop.opacity);
-      setColor(newColor);
-    }
+    if (selectedStop) setColor(hexToColor(selectedStop.color, selectedStop.opacity));
   }, [selectedStop, setColor]);
-
   const handleColorChange = (newColor: IColor) => {
     setColor(newColor);
     onColorChange(newColor.hex);
     onOpacityChange(newColor.rgb.a);
   };
-
-  if (!selectedStop) {
+  if (!selectedStop)
     return (
       <div className="color-picker-container">
         <div className="no-selection">Select a color stop to edit its color</div>
       </div>
     );
-  }
-
   return (
     <div className="color-picker-container">
       <div className="color-picker-wrapper">

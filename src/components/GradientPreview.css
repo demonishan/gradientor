@@ -1,12 +1,11 @@
 .gradient-preview {
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 1rem 0;
   background: var(--panel-bg);
   border-radius: 8px;
   border: 1px solid var(--border-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .gradient-preview-display {
   width: 100%;
   height: 100px;
@@ -14,18 +13,15 @@
   border: 1px solid var(--border-color);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 @media (max-width: 768px) {
   .gradient-preview-display {
     height: 80px;
   }
 }
-
 @media (max-width: 480px) {
   .gradient-preview {
     padding: 0.75rem;
   }
-  
   .gradient-preview-display {
     height: 60px;
   }

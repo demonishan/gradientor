@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import './App.css'
-import GradientBar from './components/GradientBar'
 import ColorPicker from './components/ColorPicker'
 import ColorStopsList from './components/ColorStopsList'
-import GradientControls from './components/GradientControls'
 import CSSOutput from './components/CSSOutput'
+import GradientBar from './components/GradientBar'
+import GradientControls from './components/GradientControls'
 import GradientPreview from './components/GradientPreview'
 import logo from './assets/logo.webp'
 export interface ColorStop {
@@ -58,12 +58,8 @@ const App = () => {
     if (selectedStopId === id) 
       setSelectedStopId(gradient.colorStops[0].id)
   }
-  const updateGradientType = (type: 'linear' | 'radial') => {
-    setGradient(prev => ({ ...prev, type }))
-  }
-  const updateGradientAngle = (angle: number) => {
-    setGradient(prev => ({ ...prev, angle }))
-  }
+  const updateGradientType = (type: 'linear' | 'radial') =>     setGradient(prev => ({ ...prev, type }));
+  const updateGradientAngle = (angle: number) =>     setGradient(prev => ({ ...prev, angle }));
   return (
     <div className="app">
       <header className="app-header">

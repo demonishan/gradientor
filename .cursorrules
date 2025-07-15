@@ -11,6 +11,7 @@
 - Put all element attributes on one line instead of spreading across multiple lines
 - Keep element content inline when short - avoid multi-line formatting for simple content
 - No double new lines - use only single line breaks between code blocks
+- Always use semicolon
 
 ## File Organization
 - Keep components, services, and pages in their respective folders
