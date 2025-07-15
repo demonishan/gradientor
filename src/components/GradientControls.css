@@ -139,7 +139,7 @@
   transform: translateX(0);
 }
 .switch-slider.active {
-  transform: translateX(60px);
+  transform: translateX(58px);
 }
 .switch-label {
   position: absolute;
@@ -167,8 +167,8 @@
   gap: 0.5rem;
 }
 .angle-circle {
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 2px solid #4a5568;
   background: #374151;
@@ -183,13 +183,13 @@
   border-color: #667eea;
 }
 .angle-indicator {
-  width: 2px;
-  height: 8px;
+  width: 3px;
+  height: 12px;
   background: #667eea;
   position: absolute;
-  top: 2px;
-  border-radius: 1px;
-  transform-origin: center 10px;
+  top: 3px;
+  border-radius: 1.5px;
+  transform-origin: center 15px;
 }
 .angle-input-inline {
   width: 70px;
