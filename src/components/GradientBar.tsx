@@ -16,10 +16,20 @@ const GradientBar: React.FC<GradientBarProps> = ({
   onUpdateStop
 }) => {
   const barRef = useRef<HTMLDivElement>(null)
+  const hexToRgba = (hex: string, opacity: number) => {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    return `rgba(${r}, ${g}, ${b}, ${opacity.toFixed(1)})`
+  }
+
   const generateGradientCSS = useCallback(() => {
     const stops = gradient.colorStops
       .sort((a, b) => a.position - b.position)
-      .map(stop => `${stop.color} ${stop.position}%`)
+      .map(stop => {
+        const colorValue = stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color
+        return `${colorValue} ${stop.position}%`
+      })
       .join(', ')
     if (gradient.type === 'linear') 
       return `linear-gradient(${gradient.angle}deg, ${stops})`
@@ -61,7 +71,7 @@ const GradientBar: React.FC<GradientBarProps> = ({
     <div className="gradient-bar-container">
       <div ref={barRef} className="gradient-bar" style={{ background: generateGradientCSS() }} onClick={handleBarClick} role="slider" aria-label="Gradient bar - click to add color stops" tabIndex={0}>
         {gradient.colorStops.map(stop => (
-          <div key={stop.id} className={`color-stop ${selectedStopId === stop.id ? 'selected' : ''}`} style={{ left: `${stop.position}%`, backgroundColor: stop.color }} onClick={handleStopClick} onMouseDown={(e) => handleStopMouseDown(e, stop.id)} role="button" aria-label={`Color stop at ${stop.position}% with color ${stop.color}`} tabIndex={0} />
+          <div key={stop.id} className={`color-stop ${selectedStopId === stop.id ? 'selected' : ''}`} style={{ left: `${stop.position}%`, backgroundColor: stop.color }} onClick={handleStopClick} onMouseDown={e => handleStopMouseDown(e, stop.id)} role="button" aria-label={`Color stop at ${stop.position}% with color ${stop.color}`} tabIndex={0} />
         ))}
       </div>
     </div>

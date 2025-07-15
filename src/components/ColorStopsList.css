@@ -4,7 +4,7 @@
   gap: 0.5rem;
   width: 100%;
   max-width: 100%;
-  max-height: 243px;
+  max-height: 420px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.25rem;
@@ -194,10 +194,10 @@
 .delete-stop-btn-inline {
   width: 20px;
   height: 20px;
-  background: #dc2626;
+  background: none;
   border: none;
   border-radius: 50%;
-  color: white;
+  color: #dc2626;
   font-size: 0.75rem;
   cursor: pointer;
   display: flex;
@@ -207,5 +207,8 @@
   flex-shrink: 0;
 }
 .delete-stop-btn-inline:hover {
-  background: #b91c1c;
+  color: #b91c1c;
+}
+.delete-stop-btn-inline:focus {
+  outline: 0;
 }

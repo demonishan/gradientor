@@ -5,10 +5,12 @@ import ColorPicker from './components/ColorPicker'
 import ColorStopsList from './components/ColorStopsList'
 import GradientControls from './components/GradientControls'
 import CSSOutput from './components/CSSOutput'
+import logo from './assets/logo.webp'
 export interface ColorStop {
   id: string
   color: string
   position: number
+  opacity: number
 }
 export interface GradientConfig {
   type: 'linear' | 'radial'
@@ -20,8 +22,8 @@ const App = () => {
     type: 'linear',
     angle: 90,
     colorStops: [
-      { id: '1', color: '#ff0000', position: 0 },
-      { id: '2', color: '#0000ff', position: 100 }
+      { id: '1', color: '#ff0000', position: 0, opacity: 1 },
+      { id: '2', color: '#0000ff', position: 100, opacity: 1 }
     ]
   })
   const [selectedStopId, setSelectedStopId] = useState<string>('1')
@@ -29,7 +31,8 @@ const App = () => {
     const newStop: ColorStop = {
       id: Date.now().toString(),
       color: '#ffffff',
-      position
+      position,
+      opacity: 1
     }
     setGradient(prev => ({
       ...prev,
@@ -63,35 +66,36 @@ const App = () => {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>CSS Gradient Generator</h1>
+        <div className="header-content">
+          <img src={logo} alt="Gradientor Logo" className="app-logo" />
+        </div>
       </header>
       <main className="app-main">
-        <div className="gradient-section">
-          <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
-          <div className="gradient-controls-inline">
+        <div className="gradient-panels">
+          <div className="gradient-display-panel">
+            <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
+          </div>
+          <div className="gradient-controls-panel">
             <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} />
           </div>
         </div>
         <div className="editor-section">
           <div className="left-panel">
             <h3>Picker</h3>
-            <ColorPicker selectedStop={gradient.colorStops.find(stop => stop.id === selectedStopId)} onColorChange={(color: string) => updateColorStop(selectedStopId, { color })} />
-          </div>
-          <div className="middle-panel">
-            <h3>Hex</h3>
-            <div className="hex-input-section">
-              {gradient.colorStops.find(stop => stop.id === selectedStopId) && (
-                <input type="text" value={gradient.colorStops.find(stop => stop.id === selectedStopId)?.color || ''} onChange={(e) => updateColorStop(selectedStopId, { color: e.target.value })} className="hex-input-main" />
-              )}
-            </div>
+            <ColorPicker 
+              selectedStop={gradient.colorStops.find(stop => stop.id === selectedStopId)} 
+              onColorChange={color => updateColorStop(selectedStopId, { color })} 
+              onOpacityChange={opacity => updateColorStop(selectedStopId, { opacity })}
+            />
           </div>
           <div className="right-panel">
             <h3>Stops</h3>
             <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
           </div>
-        </div>
-        <div className="output-section">
-          <CSSOutput gradient={gradient} />
+          <div className="third-panel">
+            <h3>CSS</h3>
+            <CSSOutput gradient={gradient} />
+          </div>
         </div>
       </main>
     </div>

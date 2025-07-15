@@ -30,9 +30,7 @@ const GradientControls: React.FC<GradientControlsProps> = ({
       if (newAngle < 0) newAngle += 360
       onAngleChange(Math.round(newAngle))
     }
-    const handleMouseMove = (e: MouseEvent) => {
-      updateAngle(e.clientX, e.clientY)
-    }
+    const handleMouseMove = (e: MouseEvent) => updateAngle(e.clientX, e.clientY)
     const handleMouseUp = () => {
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
@@ -42,31 +40,20 @@ const GradientControls: React.FC<GradientControlsProps> = ({
     document.addEventListener('mouseup', handleMouseUp)
   }
   return (
-    <div className="gradient-controls-inline">
-      {type === 'linear' && (
-        <div className="angle-display">
-          <div className="angle-circle" onMouseDown={handleAngleMouseDown}>
-            <div className="angle-indicator" style={{ transform: `rotate(${angle}deg)` }}></div>
-          </div>
-          <input type="number" value={angle} onChange={handleAngleChange} min="0" max="360" className="angle-input-inline" />
+    <div className="gradient-controls-panel-content">
+      <div className="angle-display">
+        <div className={`angle-circle ${type === 'radial' ? 'disabled' : ''}`} onMouseDown={type === 'linear' ? handleAngleMouseDown : undefined}>
+          <div className="angle-indicator" style={{ transform: `rotate(${angle}deg)` }}></div>
         </div>
-      )}
+        <input type="number" value={angle} onChange={handleAngleChange} min="0" max="360" className="angle-input-inline" disabled={type === 'radial'} />
+      </div>
       <div className="gradient-type-switch">
         <div className="switch-container">
-          <div 
-            className={`switch-slider ${type === 'linear' ? 'active' : ''}`}
-            onClick={() => onTypeChange(type === 'linear' ? 'radial' : 'linear')}
-          />
-          <span 
-            className={`switch-label left ${type === 'radial' ? 'active' : ''}`}
-            onClick={() => onTypeChange('radial')}
-          >
+          <div className={`switch-slider ${type === 'linear' ? 'active' : ''}`} onClick={() => onTypeChange(type === 'linear' ? 'radial' : 'linear')} />
+          <span className={`switch-label left ${type === 'radial' ? 'active' : ''}`} onClick={() => onTypeChange('radial')}>
             Radial
           </span>
-          <span 
-            className={`switch-label right ${type === 'linear' ? 'active' : ''}`}
-            onClick={() => onTypeChange('linear')}
-          >
+          <span className={`switch-label right ${type === 'linear' ? 'active' : ''}`} onClick={() => onTypeChange('linear')}>
             Linear
           </span>
         </div>
