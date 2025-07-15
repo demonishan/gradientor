@@ -3,7 +3,6 @@ import { ColorPicker as ReactColorPicker, useColor } from 'react-color-palette';
 import type { IColor } from 'react-color-palette';
 import 'react-color-palette/dist/css/rcp.css';
 import type { ColorStop } from '../App';
-import './ColorPicker.css';
 
 interface ColorPickerProps {
   selectedStop: ColorStop | undefined;

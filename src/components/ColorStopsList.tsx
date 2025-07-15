@@ -1,6 +1,5 @@
 import React from 'react';
 import type { ColorStop } from '../App';
-import './ColorStopsList.css';
 interface ColorStopsListProps {
   colorStops: ColorStop[];
   selectedStopId: string;

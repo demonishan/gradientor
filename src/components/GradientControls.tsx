@@ -1,5 +1,4 @@
 import React from 'react';
-import './GradientControls.css';
 interface GradientControlsProps {
   type: 'linear' | 'radial';
   angle: number;

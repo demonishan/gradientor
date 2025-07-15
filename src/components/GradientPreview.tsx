@@ -1,5 +1,4 @@
 import type { GradientConfig } from '../App';
-import './GradientPreview.css';
 interface GradientPreviewProps {
   gradient: GradientConfig;
 }

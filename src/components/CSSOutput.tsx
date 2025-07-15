@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import type { GradientConfig } from '../App';
-import './CSSOutput.css';
 interface CSSOutputProps {
   gradient: GradientConfig;
 }

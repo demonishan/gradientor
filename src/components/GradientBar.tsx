@@ -1,6 +1,5 @@
 import React, { useRef, useCallback } from 'react';
 import type { GradientConfig, ColorStop } from '../App';
-import './GradientBar.css';
 interface GradientBarProps {
   gradient: GradientConfig;
   selectedStopId: string;
