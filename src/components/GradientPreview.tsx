@@ -11,7 +11,16 @@ const generateGradientCSS = (gradient: GradientConfig): string => {
   if (gradient.type === 'radial') {
     let dir = gradient.radialDirection || 'center';
     if (dir === 'center') dir = 'at center';
-    return `radial-gradient(circle ${dir}, ${colorStops})`;
+    const size = gradient.radialSize && gradient.radialSize !== 'None' ? gradient.radialSize : '';
+    if (size && dir.startsWith('at ')) {
+      return `radial-gradient(circle ${size} ${dir}, ${colorStops})`;
+    } else if (size) {
+      return `radial-gradient(circle ${size}, ${colorStops})`;
+    } else if (dir.startsWith('at ')) {
+      return `radial-gradient(circle ${dir}, ${colorStops})`;
+    } else {
+      return `radial-gradient(circle, ${colorStops})`;
+    }
   }
   if (gradient.type === 'conic') {
     const pos = gradient.conicPosition || { x: 50, y: 50 };

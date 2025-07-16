@@ -25,7 +25,17 @@ const CSSOutput: React.FC<CSSOutputProps> = ({ gradient }) => {
     } else if (gradient.type === 'radial') {
       let dir = gradient.radialDirection || 'center';
       if (dir === 'center') dir = 'at center';
-      return `radial-gradient(circle ${dir}, ${stops})`;
+      const size = gradient.radialSize && gradient.radialSize !== 'None' ? gradient.radialSize : '';
+      // If both size and direction are present, use: circle size at position
+      if (size && dir.startsWith('at ')) {
+        return `radial-gradient(circle ${size} ${dir}, ${stops})`;
+      } else if (size) {
+        return `radial-gradient(circle ${size}, ${stops})`;
+      } else if (dir.startsWith('at ')) {
+        return `radial-gradient(circle ${dir}, ${stops})`;
+      } else {
+        return `radial-gradient(circle, ${stops})`;
+      }
     } else if (gradient.type === 'conic') {
       const pos = gradient.conicPosition || { x: 50, y: 50 };
       return `conic-gradient(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${stops})`;

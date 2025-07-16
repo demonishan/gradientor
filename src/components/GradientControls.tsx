@@ -6,13 +6,15 @@ interface GradientControlsProps {
   onAngleChange: (angle: number) => void;
   radialDirection?: string;
   onRadialDirectionChange?: (dir: string) => void;
+  radialSize?: string;
+  onRadialSizeChange?: (size: string) => void;
 }
 const GradientControls: React.FC<
   GradientControlsProps & {
     conicPosition?: { x: number; y: number };
     onConicPositionChange?: (pos: { x: number; y: number }) => void;
   }
-> = ({ type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange }) => {
+> = ({ type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange, radialSize = 'farthest-side', onRadialSizeChange }) => {
   const radialDirections = [
     ['at left top', 'at top', 'at right top'],
     ['at left', 'center', 'at right'],
@@ -80,18 +82,34 @@ const GradientControls: React.FC<
           )}
         </div>
       )}
-      {type === 'radial' && onRadialDirectionChange && (
-        <div className="radial-direction-grid">
-          {radialDirections.map((row, i) => (
-            <div className="radial-direction-row" key={i}>
-              {row.map((dir, j) => (
-                <button key={dir} type="button" className={`radial-direction-btn${radialDirection === dir ? ' active' : ''}`} onClick={() => onRadialDirectionChange(dir)} aria-pressed={radialDirection === dir}>
-                  {directionLabels[i][j]}
-                </button>
+      {type === 'radial' && (
+        <>
+          {onRadialDirectionChange && (
+            <div className="radial-direction-grid">
+              {radialDirections.map((row, i) => (
+                <div className="radial-direction-row" key={i}>
+                  {row.map((dir, j) => (
+                    <button key={dir} type="button" className={`radial-direction-btn${radialDirection === dir ? ' active' : ''}`} onClick={() => onRadialDirectionChange(dir)} aria-pressed={radialDirection === dir}>
+                      {directionLabels[i][j]}
+                    </button>
+                  ))}
+                </div>
               ))}
             </div>
-          ))}
-        </div>
+          )}
+          {onRadialSizeChange && (
+            <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label htmlFor="radial-size-select" style={{ color: '#e2e8f0', fontWeight: 500, fontSize: '0.95rem' }}>
+                Size:
+              </label>
+              <select id="radial-size-select" value={radialSize} onChange={(e) => onRadialSizeChange(e.target.value)} style={{ padding: '0.3rem 0.7rem', borderRadius: 4, border: '1px solid #4a5568', background: '#2d3748', color: '#e2e8f0', fontSize: '0.95rem', fontWeight: 500 }}>
+                <option value="None">None</option>
+                <option value="farthest-side">farthest-side</option>
+                <option value="farthest-corner">farthest-corner</option>
+              </select>
+            </div>
+          )}
+        </>
       )}
       <div className="gradient-type-btn-group">
         <button type="button" className={`type-btn${type === 'linear' ? ' active' : ''}`} aria-pressed={type === 'linear'} onClick={() => onTypeChange('linear')}>

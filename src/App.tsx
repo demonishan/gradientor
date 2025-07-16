@@ -19,6 +19,7 @@ export interface GradientConfig {
   colorStops: ColorStop[];
   conicPosition?: { x: number; y: number };
   radialDirection?: string;
+  radialSize?: string;
 }
 const App = () => {
   const [gradient, setGradient] = useState<GradientConfig>({
@@ -30,7 +31,9 @@ const App = () => {
     ],
     conicPosition: { x: 50, y: 50 },
     radialDirection: 'center',
+    radialSize: 'None',
   });
+  const updateRadialSize = (size: string) => setGradient((prev) => ({ ...prev, radialSize: size }));
   const [selectedStopId, setSelectedStopId] = useState<string>('1');
   const addColorStop = (position: number) => {
     const newStop: ColorStop = {
@@ -90,7 +93,18 @@ const App = () => {
             <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
           </div>
           <div className="third-panel">
-            <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} />
+            <GradientControls
+              type={gradient.type}
+              angle={gradient.angle}
+              onTypeChange={updateGradientType}
+              onAngleChange={updateGradientAngle}
+              conicPosition={gradient.conicPosition}
+              onConicPositionChange={updateConicPosition}
+              radialDirection={gradient.radialDirection}
+              onRadialDirectionChange={updateRadialDirection}
+              radialSize={gradient.radialSize}
+              onRadialSizeChange={updateRadialSize}
+            />
           </div>
         </div>
       </main>
