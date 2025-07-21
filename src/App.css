@@ -859,7 +859,7 @@ body {
 }
 .gradient-controls-panel-content {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 1rem;
   align-items: center;
   justify-content: center;

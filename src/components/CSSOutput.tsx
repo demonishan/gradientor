@@ -21,24 +21,27 @@ const CSSOutput: React.FC<CSSOutputProps> = ({ gradient }) => {
       })
       .join(', ');
     if (gradient.type === 'linear') {
-      return `linear-gradient(${gradient.angle}deg, ${stops})`;
-    } else if (gradient.type === 'radial') {
+      const prefix = gradient.repeating ? 'repeating-linear-gradient' : 'linear-gradient';
+      return `${prefix}(${gradient.angle}deg, ${stops})`;
+    } else if (gradient.type === 'radial' || gradient.type === 'elliptical') {
       let dir = gradient.radialDirection || 'center';
       if (dir === 'center') dir = 'at center';
       const size = gradient.radialSize && gradient.radialSize !== 'None' ? gradient.radialSize : '';
-      // If both size and direction are present, use: circle size at position
+      const prefix = gradient.repeating ? 'repeating-radial-gradient' : 'radial-gradient';
+      const shape = gradient.type === 'elliptical' ? 'ellipse' : 'circle';
       if (size && dir.startsWith('at ')) {
-        return `radial-gradient(circle ${size} ${dir}, ${stops})`;
+        return `${prefix}(${shape} ${size} ${dir}, ${stops})`;
       } else if (size) {
-        return `radial-gradient(circle ${size}, ${stops})`;
+        return `${prefix}(${shape} ${size}, ${stops})`;
       } else if (dir.startsWith('at ')) {
-        return `radial-gradient(circle ${dir}, ${stops})`;
+        return `${prefix}(${shape} ${dir}, ${stops})`;
       } else {
-        return `radial-gradient(circle, ${stops})`;
+        return `${prefix}(${shape}, ${stops})`;
       }
     } else if (gradient.type === 'conic') {
       const pos = gradient.conicPosition || { x: 50, y: 50 };
-      return `conic-gradient(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${stops})`;
+      const prefix = gradient.repeating ? 'repeating-conic-gradient' : 'conic-gradient';
+      return `${prefix}(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${stops})`;
     }
     return '';
   }, [gradient]);

@@ -14,12 +14,13 @@ export interface ColorStop {
   opacity: number;
 }
 export interface GradientConfig {
-  type: 'linear' | 'radial' | 'conic';
+  type: 'linear' | 'radial' | 'conic' | 'elliptical';
   angle: number;
   colorStops: ColorStop[];
   conicPosition?: { x: number; y: number };
   radialDirection?: string;
   radialSize?: string;
+  repeating?: boolean;
 }
 const App = () => {
   const [gradient, setGradient] = useState<GradientConfig>({
@@ -32,7 +33,9 @@ const App = () => {
     conicPosition: { x: 50, y: 50 },
     radialDirection: 'center',
     radialSize: 'None',
+    repeating: false,
   });
+  const updateRepeating = (repeating: boolean) => setGradient((prev) => ({ ...prev, repeating }));
   const updateRadialSize = (size: string) => setGradient((prev) => ({ ...prev, radialSize: size }));
   const [selectedStopId, setSelectedStopId] = useState<string>('1');
   const addColorStop = (position: number) => {
@@ -62,7 +65,7 @@ const App = () => {
     }));
     if (selectedStopId === id) setSelectedStopId(gradient.colorStops[0].id);
   };
-  const updateGradientType = (type: 'linear' | 'radial' | 'conic') => setGradient((prev) => ({ ...prev, type }));
+  const updateGradientType = (type: 'linear' | 'radial' | 'conic' | 'elliptical') => setGradient((prev) => ({ ...prev, type }));
   const updateGradientAngle = (angle: number) => setGradient((prev) => ({ ...prev, angle }));
   const updateConicPosition = (pos: { x: number; y: number }) => setGradient((prev) => ({ ...prev, conicPosition: pos }));
   const updateRadialDirection = (dir: string) => setGradient((prev) => ({ ...prev, radialDirection: dir }));
@@ -104,6 +107,8 @@ const App = () => {
               onRadialDirectionChange={updateRadialDirection}
               radialSize={gradient.radialSize}
               onRadialSizeChange={updateRadialSize}
+              repeating={gradient.repeating}
+              onRepeatingChange={updateRepeating}
             />
           </div>
         </div>

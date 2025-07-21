@@ -8,25 +8,29 @@ const generateGradientCSS = (gradient: GradientConfig): string => {
     .map((stop) => `rgba(${parseInt(stop.color.slice(1, 3), 16)}, ${parseInt(stop.color.slice(3, 5), 16)}, ${parseInt(stop.color.slice(5, 7), 16)}, ${stop.opacity}) ${stop.position}%`)
     .join(', ');
 
-  if (gradient.type === 'radial') {
+  if (gradient.type === 'radial' || gradient.type === 'elliptical') {
     let dir = gradient.radialDirection || 'center';
     if (dir === 'center') dir = 'at center';
     const size = gradient.radialSize && gradient.radialSize !== 'None' ? gradient.radialSize : '';
+    const prefix = gradient.repeating ? 'repeating-radial-gradient' : 'radial-gradient';
+    const shape = gradient.type === 'elliptical' ? 'ellipse' : 'circle';
     if (size && dir.startsWith('at ')) {
-      return `radial-gradient(circle ${size} ${dir}, ${colorStops})`;
+      return `${prefix}(${shape} ${size} ${dir}, ${colorStops})`;
     } else if (size) {
-      return `radial-gradient(circle ${size}, ${colorStops})`;
+      return `${prefix}(${shape} ${size}, ${colorStops})`;
     } else if (dir.startsWith('at ')) {
-      return `radial-gradient(circle ${dir}, ${colorStops})`;
+      return `${prefix}(${shape} ${dir}, ${colorStops})`;
     } else {
-      return `radial-gradient(circle, ${colorStops})`;
+      return `${prefix}(${shape}, ${colorStops})`;
     }
   }
   if (gradient.type === 'conic') {
     const pos = gradient.conicPosition || { x: 50, y: 50 };
-    return `conic-gradient(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${colorStops})`;
+    const prefix = gradient.repeating ? 'repeating-conic-gradient' : 'conic-gradient';
+    return `${prefix}(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${colorStops})`;
   }
-  return `linear-gradient(${gradient.angle}deg, ${colorStops})`;
+  const prefix = gradient.repeating ? 'repeating-linear-gradient' : 'linear-gradient';
+  return `${prefix}(${gradient.angle}deg, ${colorStops})`;
 };
 const GradientPreview = ({ gradient }: GradientPreviewProps) => (
   <div className="gradient-preview">
