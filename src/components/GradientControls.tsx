@@ -1,4 +1,19 @@
 import React from 'react';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowUpwardLeftIcon from '@mui/icons-material/NorthWest';
+import ArrowUpwardRightIcon from '@mui/icons-material/NorthEast';
+import ArrowDownwardLeftIcon from '@mui/icons-material/SouthWest';
+import ArrowDownwardRightIcon from '@mui/icons-material/SouthEast';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Slider from '@mui/material/Slider';
+import { Divider, Box, Typography, TextField, MenuItem } from '@mui/material';
 interface GradientControlsProps {
   type: 'linear' | 'radial' | 'conic' | 'elliptical';
   angle: number;
@@ -23,37 +38,10 @@ const GradientControls: React.FC<
     ['at left bottom', 'at bottom', 'at right bottom'],
   ];
   const directionLabels = [
-    ['↖', '↑', '↗'],
-    ['←', '•', '→'],
-    ['↙', '↓', '↘'],
+    [<ArrowUpwardLeftIcon fontSize="small" />, <ArrowUpwardIcon fontSize="small" />, <ArrowUpwardRightIcon fontSize="small" />],
+    [<ArrowBackIcon fontSize="small" />, <RadioButtonCheckedIcon fontSize="small" />, <ArrowForwardIcon fontSize="small" />],
+    [<ArrowDownwardLeftIcon fontSize="small" />, <ArrowDownwardIcon fontSize="small" />, <ArrowDownwardRightIcon fontSize="small" />],
   ];
-  const handleAngleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newAngle = parseInt(e.target.value);
-    if (!isNaN(newAngle)) onAngleChange(newAngle);
-  };
-  const handleAngleMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const circle = e.currentTarget as HTMLElement;
-    const rect = circle.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const updateAngle = (clientX: number, clientY: number) => {
-      const deltaX = clientX - centerX;
-      const deltaY = clientY - centerY;
-      let newAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-      newAngle = (newAngle + 90) % 360;
-      if (newAngle < 0) newAngle += 360;
-      onAngleChange(Math.round(newAngle));
-    };
-    const handleMouseMove = (e: MouseEvent) => updateAngle(e.clientX, e.clientY);
-    const handleMouseUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-    updateAngle(e.clientX, e.clientY);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
   const handleConicPositionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!onConicPositionChange) return;
     const { name, value } = e.target;
@@ -62,69 +50,60 @@ const GradientControls: React.FC<
   };
   return (
     <div className="gradient-controls-panel-content">
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-        <label style={{ display: 'flex', alignItems: 'center', marginRight: 12 }}>
-          <input
-            type="checkbox"
-            checked={repeating}
-            onChange={e => onRepeatingChange && onRepeatingChange(e.target.checked)}
-            style={{ marginRight: 6 }}
-          />
-          Repeating
-        </label>
-        <div className="gradient-type-btn-group">
-          <button type="button" className={`type-btn${type === 'linear' ? ' active' : ''}`} aria-pressed={type === 'linear'} onClick={() => onTypeChange('linear')}>Linear</button>
-          <button type="button" className={`type-btn${type === 'radial' ? ' active' : ''}`} aria-pressed={type === 'radial'} onClick={() => onTypeChange('radial')}>Radial</button>
-          <button type="button" className={`type-btn${type === 'elliptical' ? ' active' : ''}`} aria-pressed={type === 'elliptical'} onClick={() => onTypeChange('elliptical')}>Elliptical</button>
-          <button type="button" className={`type-btn${type === 'conic' ? ' active' : ''}`} aria-pressed={type === 'conic'} onClick={() => onTypeChange('conic')}>Conic</button>
-        </div>
-      </div>
+      <ToggleButtonGroup value={type} exclusive onChange={(_, val) => val && onTypeChange(val)} color="primary" sx={{ mr: 2 }}>
+        <ToggleButton value="linear">Linear</ToggleButton>
+        <ToggleButton value="radial">Radial</ToggleButton>
+        <ToggleButton value="elliptical">Elliptical</ToggleButton>
+        <ToggleButton value="conic">Conic</ToggleButton>
+      </ToggleButtonGroup>
+      <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} color="primary" />} label="Repeating" sx={{ mr: 2 }} />
+      <Divider orientation="vertical" flexItem />
       {(type === 'linear' || type === 'conic') && (
-        <div className="angle-display">
-          <div className="angle-circle" onMouseDown={type === 'linear' || type === 'conic' ? handleAngleMouseDown : undefined}>
-            <div className="angle-indicator" style={{ transform: `rotate(${angle}deg)` }}></div>
-          </div>
-          <input type="number" value={angle} onChange={handleAngleChange} min="0" max="360" className="angle-input-inline" />
-        </div>
+        <Box display="flex" alignItems="center" gap={2} mt={1.5}>
+          <Typography>Angle</Typography>
+          <Slider value={angle} onChange={(_, val) => typeof val === 'number' && onAngleChange(val)} min={0} max={360} step={10} valueLabelDisplay="auto" sx={{ width: 180 }} />
+          <input
+            type="number"
+            min={0}
+            max={360}
+            value={angle}
+            onChange={(e) => {
+              const v = parseInt(e.target.value);
+              if (!isNaN(v)) onAngleChange(Math.max(0, Math.min(360, v)));
+            }}
+            style={{ width: 60, marginLeft: 8, padding: '4px 8px', borderRadius: 4, border: '1px solid #ccc', fontSize: 14 }}
+          />
+        </Box>
       )}
       {type === 'conic' && (
-        <>
-          <label style={{ marginLeft: '1em', marginRight: '0.5em' }}>
-            X (%)
-            <input type="number" name="x" value={conicPosition.x} min="0" max="100" onChange={handleConicPositionChange} className="angle-input-inline" style={{ marginLeft: 4, width: 60 }} />
-          </label>
-          <label>
-            Y (%)
-            <input type="number" name="y" value={conicPosition.y} min="0" max="100" onChange={handleConicPositionChange} className="angle-input-inline" style={{ marginLeft: 4, width: 60 }} />
-          </label>
-        </>
+        <Box display="flex" alignItems="center" gap={2} mt={3}>
+          <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: 100 }} />
+          <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: 100 }} />
+        </Box>
       )}
       {(type === 'radial' || type === 'elliptical') && (
         <>
           {onRadialDirectionChange && (
-            <div className="radial-direction-grid">
+            <Box display="flex" flexDirection="column" gap={0} mt={1.5}>
               {radialDirections.map((row, i) => (
-                <div className="radial-direction-row" key={i}>
+                <ToggleButtonGroup key={i} value={radialDirection} exclusive onChange={(_, val) => val && onRadialDirectionChange(val)} size="small" sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                   {row.map((dir, j) => (
-                    <button key={dir} type="button" className={`radial-direction-btn${radialDirection === dir ? ' active' : ''}`} onClick={() => onRadialDirectionChange(dir)} aria-pressed={radialDirection === dir}>
+                    <ToggleButton key={dir} value={dir} sx={{ minWidth: 36, px: 1 }}>
                       {directionLabels[i][j]}
-                    </button>
+                    </ToggleButton>
                   ))}
-                </div>
+                </ToggleButtonGroup>
               ))}
-            </div>
+            </Box>
           )}
           {onRadialSizeChange && (
-            <div>
-              <label htmlFor="radial-size-select" style={{ color: '#e2e8f0', fontWeight: 500, fontSize: '0.95rem' }}>
-                Size
-              </label>
-              <select id="radial-size-select" value={radialSize} onChange={e => onRadialSizeChange(e.target.value)} style={{ padding: '0.3rem 0.7rem', borderRadius: 4, border: '1px solid #4a5568', background: '#2d3748', color: '#e2e8f0', fontSize: '0.95rem', fontWeight: 500 }}>
-                <option value="None">None</option>
-                <option value="farthest-side">farthest-side</option>
-                <option value="farthest-corner">farthest-corner</option>
-              </select>
-            </div>
+            <Box mt={3}>
+              <TextField select label="Size" id="radial-size-select" value={radialSize} onChange={(e) => onRadialSizeChange(e.target.value)}>
+                <MenuItem value="None">None</MenuItem>
+                <MenuItem value="farthest-side">farthest-side</MenuItem>
+                <MenuItem value="farthest-corner">farthest-corner</MenuItem>
+              </TextField>
+            </Box>
           )}
         </>
       )}

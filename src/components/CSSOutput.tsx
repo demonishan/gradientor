@@ -1,4 +1,10 @@
+import FormControlLabel from '@mui/material/FormControlLabel';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
 import React, { useState, useCallback } from 'react';
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import type { GradientConfig } from '../App';
 interface CSSOutputProps {
   gradient: GradientConfig;
@@ -70,18 +76,19 @@ background: ${gradientCSS};`;
   return (
     <div className="css-output">
       <div className="css-code">
-        <pre>
-          <code>{generateFullCSS()}</code>
-        </pre>
+        <TextField
+          value={generateFullCSS()}
+          multiline
+          fullWidth
+          label="CSS Code"
+          inputProps={{ readOnly: true, style: { fontFamily: 'monospace' } }}
+        />
       </div>
       <div className="css-controls">
-        <label className="compatibility-checkbox">
-          <input type="checkbox" checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} />
-          <span>Max compatibility</span>
-        </label>
-        <button className={`copy-button ${copied ? 'copied' : ''}`} onClick={handleCopy}>
-          {copied ? '✓ Copied!' : '📋 Copy CSS'}
-        </button>
+        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
+        <Button variant="contained" color={copied ? 'success' : 'primary'} onClick={handleCopy} startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}>
+          {copied ? 'Copied!' : 'Copy CSS'}
+        </Button>
       </div>
     </div>
   );

@@ -18,12 +18,6 @@
 - Use barrel exports (index.ts) for cleaner imports
 - Follow the feature-based folder structure
 
-## CSS/SCSS Guidelines
-- Use CSS custom properties for theming
-- Support both light and dark modes
-- Keep component styles scoped and organized
-- Do not use color names, use hex values instead (e.g., use #fff instead of white)
-
 ## Comments & Documentation
 - Remove unnecessary comments
 - Use JSDoc for public APIs
@@ -35,14 +29,11 @@
 - Ensure responsive design works on mobile and desktop
 - Test dark mode functionality
 
-## Git & Deployment
-- Run linting before pushing
-- Build and test before deployment
-- Use meaningful commit messages
-- Deploy to GitHub Pages using npm run deploy
-
 ## Accessibility
 - Include proper ARIA labels
 - Ensure keyboard navigation works
 - Maintain good color contrast ratios
 - Test with screen readers when possible
+
+Rules for CSS/SCSS are here: RULEBOOK_CSS.md
+Rules for Git & Deployment are here: RULEBOOK_GITHUB.md

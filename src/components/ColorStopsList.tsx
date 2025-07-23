@@ -1,4 +1,8 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import type { ColorStop } from '../App';
 interface ColorStopsListProps {
   colorStops: ColorStop[];
@@ -17,31 +21,28 @@ const ColorStopsList: React.FC<ColorStopsListProps> = ({ colorStops, selectedSto
     }
   };
   return (
-    <div className="color-stops-list">
+    <Box display="flex" flexDirection="column" gap={1}>
       {sortedStops.map((stop) => (
-        <div key={stop.id} className={`color-stop-item-inline ${selectedStopId === stop.id ? 'selected' : ''}`} onClick={() => onStopSelect(stop.id)}>
-          <div className="stop-color-box" style={{ backgroundColor: stop.color }}></div>
-          <div className="stop-hex-input">
-            <input type="text" value={stop.color.toUpperCase()} onChange={(e) => onUpdateStop(stop.id, { color: e.target.value })} className="hex-input-inline" onClick={(e) => e.stopPropagation()} />
-          </div>
-          <div className="stop-position-input">
-            <input type="number" value={Math.round(stop.position)} onChange={(e) => handlePositionChange(stop.id, e.target.value)} min="0" max="100" className="position-input-inline" onClick={(e) => e.stopPropagation()} />
-          </div>
+        <Box key={stop.id} display="flex" alignItems="center" gap={1.5} p={1} bgcolor={selectedStopId === stop.id ? 'action.selected' : 'background.paper'} boxShadow={selectedStopId === stop.id ? 2 : 0} onClick={() => onStopSelect(stop.id)}>
+          <Box sx={{ width: 24, height: 24, borderRadius: '4px', bgcolor: stop.color, border: '1px solid #ccc' }} />
+          <TextField label="Hex" size="small" value={stop.color.toUpperCase()} onChange={(e) => onUpdateStop(stop.id, { color: e.target.value })} onClick={(e) => e.stopPropagation()} />
+          <TextField label="Pos" size="small" type="number" value={Math.round(stop.position)} onChange={(e) => handlePositionChange(stop.id, e.target.value)} onClick={(e) => e.stopPropagation()} />
           {colorStops.length > 2 && (
-            <button
-              className="delete-stop-btn-inline"
+            <IconButton
+              size="small"
+              color="error"
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteStop(stop.id);
               }}
               title="Delete color stop"
             >
-              ×
-            </button>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
           )}
-        </div>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 };
 export default ColorStopsList;

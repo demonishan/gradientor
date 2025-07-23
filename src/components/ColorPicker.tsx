@@ -3,6 +3,7 @@ import { ColorPicker as ReactColorPicker, useColor } from 'react-color-palette';
 import type { IColor } from 'react-color-palette';
 import 'react-color-palette/dist/css/rcp.css';
 import type { ColorStop } from '../App';
+import { TextField, Grid } from '@mui/material';
 
 interface ColorPickerProps {
   selectedStop: ColorStop | undefined;
@@ -21,8 +22,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
     const max = Math.max(rNorm, gNorm, bNorm),
       min = Math.min(rNorm, gNorm, bNorm),
       diff = max - min;
-        let h = 0,
-            s = 0; const v = max;
+    let h = 0,
+      s = 0;
+    const v = max;
     if (diff !== 0) {
       s = diff / max;
       if (max === rNorm) h = ((gNorm - bNorm) / diff) % 6;
@@ -51,110 +53,98 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
     <div className="color-picker-container">
       <div className="color-picker-wrapper">
         <ReactColorPicker color={color} onChange={handleColorChange} height={180} />
-        <div className="color-inputs">
-          <div className="color-input-group">
-            <div className="input-wrapper">
-              <span className="input-label">HEX</span>
-              <input
-                type="text"
-                value={color.hex}
-                onChange={(e) => {
-                  const hex = e.target.value;
-                  if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
-                    const newColor = hexToColor(hex, color.rgb.a);
-                    setColor(newColor);
-                    onColorChange(hex);
-                  }
-                }}
-                className="hex-input"
-              />
-            </div>
-          </div>
-          <div className="rgb-inputs">
-            <div className="rgb-input-group">
-              <div className="input-wrapper">
-                <span className="input-label">R</span>
-                <input
-                  type="number"
-                  value={Math.round(color.rgb.r)}
-                  onChange={(e) => {
-                    const r = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
-                    const hex = `#${r.toString(16).padStart(2, '0')}${Math.round(color.rgb.g).toString(16).padStart(2, '0')}${Math.round(color.rgb.b).toString(16).padStart(2, '0')}`;
-                    const newColor = hexToColor(hex, color.rgb.a);
-                    setColor(newColor);
-                    onColorChange(hex);
-                  }}
-                  min="0"
-                  max="255"
-                  step="1"
-                  className="rgb-input"
-                />
-              </div>
-            </div>
-            <div className="rgb-input-group">
-              <div className="input-wrapper">
-                <span className="input-label">G</span>
-                <input
-                  type="number"
-                  value={Math.round(color.rgb.g)}
-                  onChange={(e) => {
-                    const g = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
-                    const hex = `#${Math.round(color.rgb.r).toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${Math.round(color.rgb.b).toString(16).padStart(2, '0')}`;
-                    const newColor = hexToColor(hex, color.rgb.a);
-                    setColor(newColor);
-                    onColorChange(hex);
-                  }}
-                  min="0"
-                  max="255"
-                  step="1"
-                  className="rgb-input"
-                />
-              </div>
-            </div>
-            <div className="rgb-input-group">
-              <div className="input-wrapper">
-                <span className="input-label">B</span>
-                <input
-                  type="number"
-                  value={Math.round(color.rgb.b)}
-                  onChange={(e) => {
-                    const b = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
-                    const hex = `#${Math.round(color.rgb.r).toString(16).padStart(2, '0')}${Math.round(color.rgb.g).toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-                    const newColor = hexToColor(hex, color.rgb.a);
-                    setColor(newColor);
-                    onColorChange(hex);
-                  }}
-                  min="0"
-                  max="255"
-                  step="1"
-                  className="rgb-input"
-                />
-              </div>
-            </div>
-            <div className="rgb-input-group">
-              <div className="input-wrapper">
-                <span className="input-label">A</span>
-                <input
-                  type="number"
-                  value={Math.round(color.rgb.a * 100)}
-                  onChange={(e) => {
-                    const alpha = Math.max(0, Math.min(100, parseInt(e.target.value) || 100)) / 100;
-                    const newColor = { ...color, rgb: { ...color.rgb, a: alpha }, hsv: { ...color.hsv, a: alpha } };
-                    setColor(newColor);
-                    onOpacityChange(alpha);
-                  }}
-                  min="0"
-                  max="100"
-                  step="1"
-                  className="rgb-input"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <TextField
+          label="HEX"
+          variant="outlined"
+          size="small"
+          fullWidth
+          value={color.hex}
+          sx={{ mt: 1.5, mb: 1 }}
+          onChange={(e) => {
+            const hex = e.target.value;
+            if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+              const newColor = hexToColor(hex, color.rgb.a);
+              setColor(newColor);
+              onColorChange(hex);
+            }
+          }}
+        />
+        <Grid container spacing={2}>
+          {' '}
+          <Grid size={3}>
+            <TextField
+              label="R"
+              type="number"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={Math.round(color.rgb.r)}
+              onChange={(e) => {
+                const r = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
+                const hex = `#${r.toString(16).padStart(2, '0')}${Math.round(color.rgb.g).toString(16).padStart(2, '0')}${Math.round(color.rgb.b).toString(16).padStart(2, '0')}`;
+                const newColor = hexToColor(hex, color.rgb.a);
+                setColor(newColor);
+                onColorChange(hex);
+              }}
+              inputProps={{ min: 0, max: 255, step: 1 }}
+            />
+          </Grid>{' '}
+          <Grid size={3}>
+            <TextField
+              label="G"
+              type="number"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={Math.round(color.rgb.g)}
+              onChange={(e) => {
+                const g = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
+                const hex = `#${Math.round(color.rgb.r).toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${Math.round(color.rgb.b).toString(16).padStart(2, '0')}`;
+                const newColor = hexToColor(hex, color.rgb.a);
+                setColor(newColor);
+                onColorChange(hex);
+              }}
+              inputProps={{ min: 0, max: 255, step: 1 }}
+            />
+          </Grid>{' '}
+          <Grid size={3}>
+            <TextField
+              label="B"
+              type="number"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={Math.round(color.rgb.b)}
+              onChange={(e) => {
+                const b = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
+                const hex = `#${Math.round(color.rgb.r).toString(16).padStart(2, '0')}${Math.round(color.rgb.g).toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+                const newColor = hexToColor(hex, color.rgb.a);
+                setColor(newColor);
+                onColorChange(hex);
+              }}
+              inputProps={{ min: 0, max: 255, step: 1 }}
+            />
+          </Grid>{' '}
+          <Grid size={3}>
+            <TextField
+              label="A"
+              type="number"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={Math.round(color.rgb.a * 100)}
+              onChange={(e) => {
+                const alpha = Math.max(0, Math.min(100, parseInt(e.target.value) || 100)) / 100;
+                const newColor = { ...color, rgb: { ...color.rgb, a: alpha }, hsv: { ...color.hsv, a: alpha } };
+                setColor(newColor);
+                onOpacityChange(alpha);
+              }}
+              inputProps={{ min: 0, max: 100, step: 1 }}
+            />
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
 };
-
 export default ColorPicker;

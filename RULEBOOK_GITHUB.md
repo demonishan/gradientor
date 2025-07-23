@@ -16,7 +16,7 @@
 
 4. **Commit the Changes**
    - Command: `git commit -m "<your descriptive commit message>"`
-   - Use a clear, descriptive commit message that summarizes the changes.
+   - Use a clear, meaningful, and short commit message that summarizes the changes.
 
 5. **Push to Remote Repository**
    - Command: `git push`
