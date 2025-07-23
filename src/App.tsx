@@ -39,14 +39,18 @@ const App = () => {
     angle: 90,
     colorStops: [
       { id: `1`, color: `#ff0000`, position: 0, opacity: 1 },
-      { id: `2`, color: `#0000ff`, position: 100, opacity: 1 },
+      { id: `2`, color: `#d65b00`, position: 16.6, opacity: 1 },
+      { id: `3`, color: `#e9f500`, position: 33.2, opacity: 1 },
+      { id: `4`, color: `#17ff11`, position: 49.8, opacity: 1 },
+      { id: `5`, color: `#1dffff`, position: 66.4, opacity: 1 },
+      { id: `6`, color: `#0511ff`, position: 83, opacity: 1 },
+      { id: `7`, color: `#ca00fd`, position: 100, opacity: 1 },
     ],
     conicPosition: { x: 50, y: 50 },
     radialDirection: `center`,
     radialSize: `None`,
     repeating: false,
   });
-
   useEffect(() => {
     const shared = parseShareLink(window.location.href);
     if (shared && Array.isArray(shared.colorStops) && shared.colorStops.length > 0) {
@@ -131,9 +135,7 @@ const App = () => {
             <Grid size={4}>
               <Card className="left-panel" sx={{ height: `100%` }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: `text.primary`, fontSize: 14 }}>
-                    Picker
-                  </Typography>
+                  <Typography sx={{ fontSize: '0.85rem', mb: 1 }}>Picker</Typography>
                   <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => handleUpdateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => handleUpdateColorStop(selectedStopId, { opacity })} />
                 </CardContent>
               </Card>
@@ -141,9 +143,7 @@ const App = () => {
             <Grid size={4}>
               <Card className="right-panel" sx={{ height: `100%` }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: `text.primary`, fontSize: 14 }}>
-                    Stops
-                  </Typography>
+                  <Typography sx={{ fontSize: '0.85rem', mb: 1 }}>Stops</Typography>
                   <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={handleUpdateColorStop} onDeleteStop={handleDeleteColorStop} />
                 </CardContent>
               </Card>
@@ -151,9 +151,7 @@ const App = () => {
             <Grid size={4}>
               <Card className="third-panel" sx={{ height: `100%` }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: `text.primary`, fontSize: 14 }}>
-                    Controls
-                  </Typography>
+                  <Typography sx={{ fontSize: '0.85rem', mb: 1 }}>Controls</Typography>
                   <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={handleUpdateGradientType} onAngleChange={handleUpdateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={handleUpdateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={handleUpdateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={handleUpdateRadialSize} repeating={gradient.repeating} onRepeatingChange={handleUpdateRepeating} />
                 </CardContent>
               </Card>

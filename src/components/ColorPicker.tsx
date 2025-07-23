@@ -54,7 +54,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
       <div className="color-picker-wrapper">
         <ReactColorPicker color={color} onChange={handleColorChange} height={180} />
         <TextField
-          label="HEX"
+          label="Hex"
           variant="outlined"
           size="small"
           fullWidth
@@ -79,6 +79,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
               size="small"
               fullWidth
               value={Math.round(color.rgb.r)}
+              inputProps={{ min: 0, max: 255, step: 1 }}
               onChange={(e) => {
                 const r = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
                 const hex = `#${r.toString(16).padStart(2, '0')}${Math.round(color.rgb.g).toString(16).padStart(2, '0')}${Math.round(color.rgb.b).toString(16).padStart(2, '0')}`;
@@ -86,7 +87,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
                 setColor(newColor);
                 onColorChange(hex);
               }}
-              inputProps={{ min: 0, max: 255, step: 1 }}
             />
           </Grid>{' '}
           <Grid size={3}>
@@ -97,6 +97,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
               size="small"
               fullWidth
               value={Math.round(color.rgb.g)}
+              inputProps={{ min: 0, max: 255, step: 1 }}
               onChange={(e) => {
                 const g = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
                 const hex = `#${Math.round(color.rgb.r).toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${Math.round(color.rgb.b).toString(16).padStart(2, '0')}`;
@@ -104,7 +105,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
                 setColor(newColor);
                 onColorChange(hex);
               }}
-              inputProps={{ min: 0, max: 255, step: 1 }}
             />
           </Grid>{' '}
           <Grid size={3}>
@@ -115,6 +115,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
               size="small"
               fullWidth
               value={Math.round(color.rgb.b)}
+              inputProps={{ min: 0, max: 255, step: 1 }}
               onChange={(e) => {
                 const b = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
                 const hex = `#${Math.round(color.rgb.r).toString(16).padStart(2, '0')}${Math.round(color.rgb.g).toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
@@ -122,7 +123,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
                 setColor(newColor);
                 onColorChange(hex);
               }}
-              inputProps={{ min: 0, max: 255, step: 1 }}
             />
           </Grid>{' '}
           <Grid size={3}>
@@ -133,13 +133,13 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
               size="small"
               fullWidth
               value={Math.round(color.rgb.a * 100)}
+              inputProps={{ min: 0, max: 100, step: 1 }}
               onChange={(e) => {
                 const alpha = Math.max(0, Math.min(100, parseInt(e.target.value) || 100)) / 100;
                 const newColor = { ...color, rgb: { ...color.rgb, a: alpha }, hsv: { ...color.hsv, a: alpha } };
                 setColor(newColor);
                 onOpacityChange(alpha);
               }}
-              inputProps={{ min: 0, max: 100, step: 1 }}
             />
           </Grid>
         </Grid>

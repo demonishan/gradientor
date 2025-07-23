@@ -10,6 +10,7 @@ import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig } from '../modules/share';
+import { Box } from '@mui/material';
 interface CSSOutputProps {
   gradient: GradientConfig;
 }
@@ -27,19 +28,17 @@ const CSSOutput: React.FC<CSSOutputProps> = ({ gradient }) => {
   };
   return (
     <div className="css-output">
-      <div className="css-code">
-        <TextField value={generateFullCSS(gradient, maxCompatibility)} multiline fullWidth label="CSS Code" inputProps={{ readOnly: true, style: { fontFamily: `monospace` } }} />
-      </div>
-      <div className="css-controls">
-        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
-        <Button variant="text" color="primary" onClick={handleShare}>
+      <Snackbar open={snackbar.open} autoHideDuration={2000} onClose={closeSnackbar} message={snackbar.message} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} />
+      <TextField value={generateFullCSS(gradient, maxCompatibility)} multiline fullWidth label="CSS Code" inputProps={{ readOnly: true, style: { fontFamily: `monospace` } }} sx={{ mb: 2 }} />
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Compatibility" />
+        <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }}>
           Share
         </Button>
-        <Snackbar open={snackbar.open} autoHideDuration={2000} onClose={closeSnackbar} message={snackbar.message} anchorOrigin={{ vertical: `bottom`, horizontal: `center` }} />
         <Button variant="contained" color="primary" onClick={handleCopy} startIcon={<ContentCopyIcon />}>
           Copy CSS
         </Button>
-      </div>
+      </Box>
     </div>
   );
 };

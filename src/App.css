@@ -435,13 +435,6 @@ body {
 .delete-stop-btn-inline:focus {
   outline: 0;
 }
-.css-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0.75rem 0 0;
-}
 .compatibility-checkbox {
   display: flex;
   align-items: center;
