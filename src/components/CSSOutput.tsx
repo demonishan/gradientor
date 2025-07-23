@@ -5,7 +5,9 @@ import React, { useState, useCallback } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Snackbar from '@mui/material/Snackbar';
 import type { GradientConfig } from '../App';
+import { generateShareLink } from '../modules/share';
 interface CSSOutputProps {
   gradient: GradientConfig;
 }
@@ -73,19 +75,28 @@ background: ${gradientCSS};`;
       console.error('Failed to copy:', err);
     }
   };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const handleShare = async () => {
+    try {
+      const link = generateShareLink(gradient);
+      await navigator.clipboard.writeText(link);
+      setSnackbarOpen(true);
+    } catch (err) {
+      console.error('Failed to copy share link:', err);
+    }
+  };
+  const handleSnackbarClose = () => setSnackbarOpen(false);
   return (
     <div className="css-output">
       <div className="css-code">
-        <TextField
-          value={generateFullCSS()}
-          multiline
-          fullWidth
-          label="CSS Code"
-          inputProps={{ readOnly: true, style: { fontFamily: 'monospace' } }}
-        />
+        <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" inputProps={{ readOnly: true, style: { fontFamily: 'monospace' } }} />
       </div>
       <div className="css-controls">
         <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
+        <Button variant="text" color="primary" onClick={handleShare}>
+          Share
+        </Button>
+        <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleSnackbarClose} message="Shareable link copied to clipboard!" anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} />
         <Button variant="contained" color={copied ? 'success' : 'primary'} onClick={handleCopy} startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}>
           {copied ? 'Copied!' : 'Copy CSS'}
         </Button>
