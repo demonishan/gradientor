@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { parseShareLink } from './modules/share';
+import { parseShareLink, updateRepeating, updateRadialSize, addColorStop, updateColorStop, deleteColorStop, updateGradientType, updateGradientAngle, updateConicPosition, updateRadialDirection } from './modules/share';
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -25,7 +25,7 @@ export interface ColorStop {
   opacity: number;
 }
 export interface GradientConfig {
-  type: 'linear' | 'radial' | 'conic' | 'elliptical';
+  type: `linear` | `radial` | `conic` | `elliptical`;
   angle: number;
   colorStops: ColorStop[];
   conicPosition?: { x: number; y: number };
@@ -35,69 +35,54 @@ export interface GradientConfig {
 }
 const App = () => {
   const [gradient, setGradient] = useState<GradientConfig>({
-    type: 'linear',
+    type: `linear`,
     angle: 90,
     colorStops: [
-      { id: '1', color: '#ff0000', position: 0, opacity: 1 },
-      { id: '2', color: '#0000ff', position: 100, opacity: 1 },
+      { id: `1`, color: `#ff0000`, position: 0, opacity: 1 },
+      { id: `2`, color: `#0000ff`, position: 100, opacity: 1 },
     ],
     conicPosition: { x: 50, y: 50 },
-    radialDirection: 'center',
-    radialSize: 'None',
+    radialDirection: `center`,
+    radialSize: `None`,
     repeating: false,
   });
 
   useEffect(() => {
     const shared = parseShareLink(window.location.href);
     if (shared && Array.isArray(shared.colorStops) && shared.colorStops.length > 0) {
-      setGradient(prev => ({
+      setGradient((prev) => ({
         ...prev,
         ...shared,
-        colorStops: shared.colorStops
+        colorStops: shared.colorStops,
       }));
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
     }
   }, []);
-  const updateRepeating = (repeating: boolean) => setGradient((prev) => ({ ...prev, repeating }));
-  const updateRadialSize = (size: string) => setGradient((prev) => ({ ...prev, radialSize: size }));
-  const [selectedStopId, setSelectedStopId] = useState<string>('1');
-  const addColorStop = (position: number) => {
-    const newStop: ColorStop = {
-      id: Date.now().toString(),
-      color: '#ffffff',
-      position,
-      opacity: 1,
-    };
-    setGradient((prev) => ({
-      ...prev,
-      colorStops: [...prev.colorStops, newStop].sort((a, b) => a.position - b.position),
-    }));
-    setSelectedStopId(newStop.id);
+  const [selectedStopId, setSelectedStopId] = useState<string>(`1`);
+  const handleAddColorStop = (position: number) => {
+    const updated = addColorStop(gradient, position);
+    setGradient(updated);
+    setSelectedStopId(updated.colorStops[updated.colorStops.length - 1].id);
   };
-  const updateColorStop = (id: string, updates: Partial<ColorStop>) => {
-    setGradient((prev) => ({
-      ...prev,
-      colorStops: prev.colorStops.map((stop) => (stop.id === id ? { ...stop, ...updates } : stop)),
-    }));
+  const handleUpdateColorStop = (id: string, updates: Partial<ColorStop>) => setGradient(updateColorStop(gradient, id, updates));
+  const handleDeleteColorStop = (id: string) => {
+    const updated = deleteColorStop(gradient, id);
+    if (updated.colorStops.length < gradient.colorStops.length && selectedStopId === id) setSelectedStopId(updated.colorStops[0].id);
+    setGradient(updated);
   };
-  const deleteColorStop = (id: string) => {
-    if (gradient.colorStops.length <= 2) return;
-    setGradient((prev) => ({
-      ...prev,
-      colorStops: prev.colorStops.filter((stop) => stop.id !== id),
-    }));
-    if (selectedStopId === id) setSelectedStopId(gradient.colorStops[0].id);
-  };
-  const updateGradientType = (type: 'linear' | 'radial' | 'conic' | 'elliptical') => setGradient((prev) => ({ ...prev, type }));
-  const updateGradientAngle = (angle: number) => setGradient((prev) => ({ ...prev, angle }));
-  const updateConicPosition = (pos: { x: number; y: number }) => setGradient((prev) => ({ ...prev, conicPosition: pos }));
-  const updateRadialDirection = (dir: string) => setGradient((prev) => ({ ...prev, radialDirection: dir }));
+  const handleUpdateRepeating = (repeating: boolean) => setGradient(updateRepeating(gradient, repeating));
+  const handleUpdateRadialSize = (size: string) => setGradient(updateRadialSize(gradient, size));
+  const handleUpdateGradientType = (type: `linear` | `radial` | `conic` | `elliptical`) => setGradient(updateGradientType(gradient, type));
+  const handleUpdateGradientAngle = (angle: number) => setGradient(updateGradientAngle(gradient, angle));
+  const handleUpdateConicPosition = (pos: { x: number; y: number }) => setGradient(updateConicPosition(gradient, pos));
+  const handleUpdateRadialDirection = (dir: string) => setGradient(updateRadialDirection(gradient, dir));
   const [darkMode, setDarkMode] = useState(() => {
-    const stored = localStorage.getItem('darkMode');
-    return stored ? stored === 'true' : false;
+    const stored = localStorage.getItem(`darkMode`);
+    return stored ? stored === `true` : false;
   });
   const handleToggleDarkMode = () => {
     setDarkMode((prev) => {
-      localStorage.setItem('darkMode', String(!prev));
+      localStorage.setItem(`darkMode`, String(!prev));
       return !prev;
     });
   };
@@ -105,7 +90,7 @@ const App = () => {
     () =>
       createTheme({
         palette: {
-          mode: darkMode ? 'dark' : 'light',
+          mode: darkMode ? `dark` : `light`,
         },
       }),
     [darkMode],
@@ -115,9 +100,9 @@ const App = () => {
       <CssBaseline />
       <div className="app">
         <header className="app-header">
-          <div className="header-content" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div className="header-content" style={{ display: `flex`, alignItems: `center`, gap: 12 }}>
             <img src={logo} alt="Gradientor Logo" className="app-logo" />
-            <Tooltip title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
+            <Tooltip title={darkMode ? `Switch to light mode` : `Switch to dark mode`}>
               <IconButton onClick={handleToggleDarkMode} color="inherit" size="large" sx={{ ml: 1 }}>
                 {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
               </IconButton>
@@ -126,50 +111,50 @@ const App = () => {
         </header>
         <GradientPreview gradient={gradient} />
         <main className="app-main">
-          <Grid container spacing={2} className="gradient-panels" sx={{ alignItems: 'stretch' }}>
+          <Grid container spacing={2} className="gradient-panels" sx={{ alignItems: `stretch` }}>
             <Grid size={8}>
-              <Card className="gradient-display-panel" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+              <Card className="gradient-display-panel" sx={{ height: `100%`, display: `flex`, alignItems: `center` }}>
                 <CardContent sx={{ flex: 1 }}>
-                  <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
+                  <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={handleAddColorStop} onUpdateStop={handleUpdateColorStop} />
                 </CardContent>
               </Card>
             </Grid>
             <Grid size={4}>
-              <Card className="gradient-controls-panel" sx={{ height: '100%' }}>
+              <Card className="gradient-controls-panel" sx={{ height: `100%` }}>
                 <CardContent>
                   <CSSOutput gradient={gradient} />
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
-          <Grid container spacing={2} className="editor-section" sx={{ alignItems: 'stretch' }}>
+          <Grid container spacing={2} className="editor-section" sx={{ alignItems: `stretch` }}>
             <Grid size={4}>
-              <Card className="left-panel" sx={{ height: '100%' }}>
+              <Card className="left-panel" sx={{ height: `100%` }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: 'text.primary', fontSize: 14 }}>
+                  <Typography gutterBottom sx={{ color: `text.primary`, fontSize: 14 }}>
                     Picker
                   </Typography>
-                  <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
+                  <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => handleUpdateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => handleUpdateColorStop(selectedStopId, { opacity })} />
                 </CardContent>
               </Card>
             </Grid>
             <Grid size={4}>
-              <Card className="right-panel" sx={{ height: '100%' }}>
+              <Card className="right-panel" sx={{ height: `100%` }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: 'text.primary', fontSize: 14 }}>
+                  <Typography gutterBottom sx={{ color: `text.primary`, fontSize: 14 }}>
                     Stops
                   </Typography>
-                  <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
+                  <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={handleUpdateColorStop} onDeleteStop={handleDeleteColorStop} />
                 </CardContent>
               </Card>
             </Grid>
             <Grid size={4}>
-              <Card className="third-panel" sx={{ height: '100%' }}>
+              <Card className="third-panel" sx={{ height: `100%` }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: 'text.primary', fontSize: 14 }}>
+                  <Typography gutterBottom sx={{ color: `text.primary`, fontSize: 14 }}>
                     Controls
                   </Typography>
-                  <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} />
+                  <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={handleUpdateGradientType} onAngleChange={handleUpdateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={handleUpdateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={handleUpdateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={handleUpdateRadialSize} repeating={gradient.repeating} onRepeatingChange={handleUpdateRepeating} />
                 </CardContent>
               </Card>
             </Grid>
