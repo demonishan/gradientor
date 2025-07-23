@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect } from 'react';
 import { parseShareLink, updateRepeating, updateRadialSize, addColorStop, updateColorStop, deleteColorStop, updateGradientType, updateGradientAngle, updateConicPosition, updateRadialDirection } from './modules/share';
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorPicker from './components/ColorPicker';
@@ -16,8 +16,9 @@ import GradientPreview from './components/GradientPreview';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import logo from './assets/logo.webp';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Snackbar from '@mui/material/Snackbar';
+import { useSnackbar } from './helpers/snackbar';
 export interface ColorStop {
   id: string;
   color: string;
@@ -84,9 +85,11 @@ const App = () => {
     const stored = localStorage.getItem(`darkMode`);
     return stored ? stored === `true` : false;
   });
+  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const handleToggleDarkMode = () => {
     setDarkMode((prev) => {
       localStorage.setItem(`darkMode`, String(!prev));
+      showSnackbar(!prev ? 'Dark mode enabled' : 'Light mode enabled');
       return !prev;
     });
   };
@@ -106,11 +109,9 @@ const App = () => {
         <header className="app-header">
           <div className="header-content" style={{ display: `flex`, alignItems: `center`, gap: 12 }}>
             <img src={logo} alt="Gradientor Logo" className="app-logo" />
-            <Tooltip title={darkMode ? `Switch to light mode` : `Switch to dark mode`}>
-              <IconButton onClick={handleToggleDarkMode} color="inherit" size="large" sx={{ ml: 1 }}>
-                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleToggleDarkMode} color="inherit" size="large" sx={{ ml: 1 }}>
+              {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
           </div>
         </header>
         <GradientPreview gradient={gradient} />
@@ -158,6 +159,7 @@ const App = () => {
             </Grid>
           </Grid>
         </main>
+        <Snackbar open={snackbar.open} autoHideDuration={2000} onClose={closeSnackbar} message={snackbar.message} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} />
       </div>
     </ThemeProvider>
   );
