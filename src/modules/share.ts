@@ -1,4 +1,3 @@
-// Gradient state update helpers
 import type { GradientConfig, ColorStop } from '../App';
 export const updateRepeating = (gradient: GradientConfig, repeating: boolean): GradientConfig => ({ ...gradient, repeating });
 export const updateRadialSize = (gradient: GradientConfig, size: string): GradientConfig => ({ ...gradient, radialSize: size });
@@ -8,11 +7,11 @@ export const addColorStop = (gradient: GradientConfig, position: number): Gradie
 };
 export const updateColorStop = (gradient: GradientConfig, id: string, updates: Partial<ColorStop>): GradientConfig => ({
   ...gradient,
-  colorStops: gradient.colorStops.map(stop => stop.id === id ? { ...stop, ...updates } : stop),
+  colorStops: gradient.colorStops.map((stop) => (stop.id === id ? { ...stop, ...updates } : stop)),
 });
 export const deleteColorStop = (gradient: GradientConfig, id: string): GradientConfig => {
   if (gradient.colorStops.length <= 2) return gradient;
-  return { ...gradient, colorStops: gradient.colorStops.filter(stop => stop.id !== id) };
+  return { ...gradient, colorStops: gradient.colorStops.filter((stop) => stop.id !== id) };
 };
 export const updateGradientType = (gradient: GradientConfig, type: 'linear' | 'radial' | 'conic' | 'elliptical'): GradientConfig => ({ ...gradient, type });
 export const updateGradientAngle = (gradient: GradientConfig, angle: number): GradientConfig => ({ ...gradient, angle });

@@ -1,5 +1,6 @@
 import type { GradientConfig } from '../App';
-export const hexToRgba = (hex: string, opacity: number) => `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, ${opacity.toFixed(1)})`;
+import { hexToRgba } from '../helpers/color';
+import { clamp } from '../helpers/clamp';
 export const sortColorStops = <T extends { position: number }>(colorStops: T[]): T[] => [...colorStops].sort((a, b) => a.position - b.position);
 const generateGradientCSS = (gradient: GradientConfig): string => {
   const stops = sortColorStops(gradient.colorStops)
@@ -19,7 +20,7 @@ const generateGradientCSS = (gradient: GradientConfig): string => {
   }
   if (gradient.type === `conic`) {
     const pos = gradient.conicPosition || { x: 50, y: 50 };
-    return `${gradient.repeating ? `repeating-conic-gradient` : `conic-gradient`}(${pos.x}% ${pos.y}%, ${stops})`;
+    return `${gradient.repeating ? `repeating-conic-gradient` : `conic-gradient`}(${clamp(pos.x, 0, 100)}% ${clamp(pos.y, 0, 100)}%, ${stops})`;
   }
   return ``;
 };

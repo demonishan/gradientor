@@ -1,5 +1,8 @@
 import React, { useRef, useCallback } from 'react';
 import type { GradientConfig, ColorStop } from '../App';
+import { hexToRgba } from '../helpers/color';
+import { sortColorStops } from '../modules/generateGradientCSS';
+import { clamp } from '../helpers/clamp';
 interface GradientBarProps {
   gradient: GradientConfig;
   selectedStopId: string;
@@ -9,20 +12,9 @@ interface GradientBarProps {
 }
 const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onStopSelect, onAddStop, onUpdateStop }) => {
   const barRef = useRef<HTMLDivElement>(null);
-  const hexToRgba = (hex: string, opacity: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${opacity.toFixed(1)})`;
-  };
-
   const generateGradientCSS = useCallback(() => {
-    const stops = gradient.colorStops
-      .sort((a, b) => a.position - b.position)
-      .map((stop) => {
-        const colorValue = stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color;
-        return `${colorValue} ${stop.position}%`;
-      })
+    const stops = sortColorStops(gradient.colorStops)
+      .map((stop) => `${stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color} ${stop.position}%`)
       .join(', ');
     return `linear-gradient(90deg, ${stops})`;
   }, [gradient]);
@@ -31,8 +23,7 @@ const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onS
       if (!barRef.current) return;
       const rect = barRef.current.getBoundingClientRect();
       const position = ((e.clientX - rect.left) / rect.width) * 100;
-      const clampedPosition = Math.max(0, Math.min(100, position));
-      onAddStop(clampedPosition);
+      onAddStop(clamp(position, 0, 100));
     }
   };
   const handleStopClick = (e: React.MouseEvent) => {
@@ -47,8 +38,7 @@ const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onS
       if (!barRef.current) return;
       const rect = barRef.current.getBoundingClientRect();
       const position = ((e.clientX - rect.left) / rect.width) * 100;
-      const clampedPosition = Math.max(0, Math.min(100, position));
-      onUpdateStop(stopId, { position: clampedPosition });
+      onUpdateStop(stopId, { position: clamp(position, 0, 100) });
     };
     const handleMouseUp = () => {
       document.removeEventListener('mousemove', handleMouseMove);
