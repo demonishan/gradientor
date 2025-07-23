@@ -22,7 +22,11 @@
    - Command: `git push`
    - Push the committed changes to the main branch on GitHub.
 
-6. **Deploy to GitHub Pages**
+6. **Update Version in package.json**
+   - Before deploying, update the "version" field in package.json to reflect the new release.
+   - Use semantic versioning (e.g., 1.0.1 → 1.0.2).
+
+7. **Deploy to GitHub Pages**
    - Command: `npm run deploy` (or the appropriate command for your project)
    - Ensure the latest build is published to GitHub Pages.
 
