@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { parseShareLink } from './modules/share';
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -45,6 +46,17 @@ const App = () => {
     radialSize: 'None',
     repeating: false,
   });
+
+  useEffect(() => {
+    const shared = parseShareLink(window.location.href);
+    if (shared && Array.isArray(shared.colorStops) && shared.colorStops.length > 0) {
+      setGradient(prev => ({
+        ...prev,
+        ...shared,
+        colorStops: shared.colorStops
+      }));
+    }
+  }, []);
   const updateRepeating = (repeating: boolean) => setGradient((prev) => ({ ...prev, repeating }));
   const updateRadialSize = (size: string) => setGradient((prev) => ({ ...prev, radialSize: size }));
   const [selectedStopId, setSelectedStopId] = useState<string>('1');

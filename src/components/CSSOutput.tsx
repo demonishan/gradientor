@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import type { GradientConfig } from '../App';
 import { generateShareLink } from '../modules/share';
+import type { GradientShareConfig } from '../modules/share';
 interface CSSOutputProps {
   gradient: GradientConfig;
 }
@@ -78,7 +79,7 @@ background: ${gradientCSS};`;
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const handleShare = async () => {
     try {
-      const link = generateShareLink(gradient);
+      const link = generateShareLink(gradient as GradientShareConfig);
       await navigator.clipboard.writeText(link);
       setSnackbarOpen(true);
     } catch (err) {
