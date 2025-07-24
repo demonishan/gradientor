@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.3",
   "type": "module",
-  "homepage": "https://demonishan.github.io/gradientor",
+  "homepage": "https://www.666de666.com/utility/gradientor/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
