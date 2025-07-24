@@ -11,8 +11,8 @@ import useDebounce from '../helpers/useDebounce';
 import useClipboard from '../helpers/useClipboard';
 import { Box, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { addFavorite } from './FavoriteSidebar';
-import type { GradientFavorite } from './FavoriteSidebar';
+import { addFavorite } from './Favorite';
+import type { GradientFavorite } from './Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { exportCSS, exportPNG, exportSVG } from '../modules/export';
 interface CSSOutputProps {

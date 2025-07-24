@@ -1,7 +1,10 @@
 import React from 'react';
+// Removed local useSnackbar, will use showSnackbar from props
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 // Utility types for favorites
 export type ColorStop = {
   color: string;
@@ -26,7 +29,13 @@ export function addFavorite(gradient: GradientFavorite) {
   window.dispatchEvent(new Event('favorites-updated'));
 }
 import { Drawer } from '@mui/material';
-const FavoriteSidebar: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+interface FavoriteProps {
+  open: boolean;
+  onClose: () => void;
+  showSnackbar: (msg: string) => void;
+}
+
+const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar }) => {
   const [gradients, setGradients] = React.useState<GradientFavorite[]>([]);
   React.useEffect(() => {
     const fetchGradients = () => {
@@ -50,17 +59,18 @@ const FavoriteSidebar: React.FC<{ open: boolean; onClose: () => void }> = ({ ope
     favs.splice(idx, 1);
     window.localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
     window.dispatchEvent(new Event('favorites-updated'));
+    showSnackbar('Gradient removed from favorites');
   };
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
-      <Box sx={{ width: 320, p: 2, position: 'relative', height: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: 320, position: 'relative', height: '100%' }}>
         <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }} aria-label="close">
           <CloseIcon />
         </IconButton>
-        <Typography variant="h6" sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ m: 2, mb: 1 }}>
           Favorites
         </Typography>
-        <Box>
+        <Box sx={{ overflowY: 'auto', flexGrow: 1, p: 2, pt: 0 }}>
           {gradients.map((g, idx) => (
             <Card key={idx} sx={{ mb: 2, position: 'relative' }}>
               <CardMedia style={{ position: 'relative', height: '5rem', background: generateGradientCSS(g) }}>
@@ -84,11 +94,12 @@ const FavoriteSidebar: React.FC<{ open: boolean; onClose: () => void }> = ({ ope
             </Card>
           ))}
         </Box>
+        <Typography sx={{ fontSize: '0.65rem', p: 0.5, textAlign: 'center', opacity: 0.5 }}>Your favorites are stored in your local storage, so there's a chance they may not persist across sessions.</Typography>
       </Box>
     </Drawer>
   );
 };
-export default FavoriteSidebar;
+export default Favorite;
 const generateGradientCSS = (gradient: GradientFavorite): string => {
   const stops = gradient.colorStops
     .sort((a: ColorStop, b: ColorStop) => a.position - b.position)

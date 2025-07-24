@@ -1,4 +1,4 @@
-import FavoriteSidebar from './FavoriteSidebar';
+import Favorite from './Favorite';
 import { AppBar, Toolbar, IconButton, List, ListItemButton, ListItemText, Badge } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
             </MenuItem>
           ))}
         </Menu>
-        <FavoriteSidebar open={favoriteOpen} onClose={() => setFavoriteOpen(false)} />
+        <Favorite open={favoriteOpen} onClose={() => setFavoriteOpen(false)} showSnackbar={showSnackbar} />
       </Toolbar>
     </AppBar>
   );
