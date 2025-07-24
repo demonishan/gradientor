@@ -4,7 +4,7 @@ A modern, interactive gradient generator built with React and TypeScript.
 
 ## Demo
 
-**[https://demonishan.github.io/gradientor](https://demonishan.github.io/gradientor)**
+**[https://www.666de666.com/utility/gradientor/](https://www.666de666.com/utility/gradientor/)**
 
 ## Features
 
