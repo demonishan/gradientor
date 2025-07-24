@@ -6,6 +6,7 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import logo from '../assets/logo.webp';
 import React from 'react';
+import useDebounce from '../helpers/useDebounce';
 import { generateRandomGradient } from '../modules/randomGradient';
 interface HeaderProps {
   darkMode: boolean;
@@ -16,6 +17,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, setGradient }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
+  const randomButtonRef = React.useRef<any>(null);
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,14 +28,13 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
     setDarkMode(!darkMode);
     showSnackbar(!darkMode ? 'Switched to dark mode' : 'Switched to light mode');
   };
-  const handleRandomGradient = () => {
+  const debouncedRandomGradient = useDebounce(() => {
     setGradient(generateRandomGradient());
     showSnackbar('Random gradient generated!');
     handleMenuClose();
-  };
+  }, randomButtonRef);
   const menuItems = [
-    { label: 'Menu 1', onClick: handleMenuClose },
-    { label: 'Random Gradient', onClick: handleRandomGradient },
+    { label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef },
   ];
   return (
     <AppBar position="static" color={darkMode ? 'primary' : 'default'}>
@@ -41,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
         <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
         <List sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1 }}>
           {menuItems.map((item, idx) => (
-            <ListItemButton key={idx} sx={{ flexGrow: 0 }}>
+            <ListItemButton key={idx} sx={{ flexGrow: 0 }} ref={item.buttonRef as any}>
               <ListItemText primary={item.label} onClick={item.onClick} />
             </ListItemButton>
           ))}
@@ -54,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
         </IconButton>
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
           {menuItems.map((item, idx) => (
-            <MenuItem key={idx} onClick={item.onClick}>
+            <MenuItem key={idx} onClick={item.onClick} ref={item.buttonRef as any}>
               {item.label}
             </MenuItem>
           ))}

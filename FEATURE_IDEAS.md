@@ -15,9 +15,6 @@
 6. Gradient Presets Library
    - Provide a library of popular or trending gradient presets for quick use.
 
-7. Random Gradient Generator
-   - Add a button to generate random gradients for inspiration.
-
 8. Color Palette Suggestions
    - Suggest harmonious color stops using color theory or APIs.
 

@@ -3,11 +3,11 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import React, { useState, useCallback } from 'react';
-import Snackbar from '@mui/material/Snackbar';
+//
 import TextField from '@mui/material/TextField';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig } from '../modules/share';
-import useSnackbar from '../helpers/useSnackbar';
+// import useSnackbar from '../helpers/useSnackbar';
 import useClipboard from '../helpers/useClipboard';
 import { Box, Menu, MenuItem } from '@mui/material';
 import { exportCSS, exportPNG, exportSVG } from '../modules/export';
@@ -15,7 +15,7 @@ import { exportCSS, exportPNG, exportSVG } from '../modules/export';
 interface CSSOutputProps {
   gradient: GradientConfig;
 }
-const CSSOutput: React.FC<CSSOutputProps> = ({ gradient }) => {
+const CSSOutput: React.FC<CSSOutputProps & { showSnackbar: (msg: string) => void }> = ({ gradient, showSnackbar }) => {
   const [maxCompatibility, setMaxCompatibility] = useState(false);
   const hexToRgba = (hex: string, opacity: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -74,7 +74,7 @@ background: ${gradientCSS};`;
     await copyToClipboard(generateFullCSS());
     showSnackbar('CSS copied to clipboard!');
   };
-  const [snackbarOpen, snackbarMsg, showSnackbar, hideSnackbar] = useSnackbar();
+  // Snackbar is now global, use showSnackbar from props
   const handleShare = async () => {
     const link = generateShareLink(gradient as GradientShareConfig);
     await copyToClipboard(link);
@@ -105,10 +105,9 @@ background: ${gradientCSS};`;
   };
   return (
     <>
-      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
       <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" maxRows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
       <Box display="flex" alignItems="center" mt={1.5} gap={1}>
-        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
+        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={e => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
         <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }}>
           Share
         </Button>

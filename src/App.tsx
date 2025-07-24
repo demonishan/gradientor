@@ -16,6 +16,7 @@ import Grid from '@mui/material/Grid';
 import Header from './components/Header';
 import useLocalStorage from './helpers/useLocalStorage';
 import useSnackbar from './helpers/useSnackbar';
+import Snackbar from '@mui/material/Snackbar';
 export interface ColorStop {
   id: string;
   color: string;
@@ -103,7 +104,7 @@ const App = () => {
   const updateConicPosition = (pos: { x: number; y: number }) => setGradient((prev) => ({ ...prev, conicPosition: pos }));
   const updateRadialDirection = (dir: string) => setGradient((prev) => ({ ...prev, radialDirection: dir }));
   const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
-  const [, , showSnackbar] = useSnackbar();
+  const [snackbarOpen, snackbarMsg, showSnackbar, hideSnackbar] = useSnackbar();
   const theme = useMemo(
     () =>
       createTheme({
@@ -132,6 +133,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <GradientAnimation darkMode={darkMode} />
       <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
+      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
       <GradientPreview gradient={gradient} />
       <main>
         <Container>
@@ -146,7 +148,7 @@ const App = () => {
             <Grid mb={2} size={{ xs: 12, md: 6 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
-                  <CSSOutput gradient={gradient} />
+                  <CSSOutput gradient={gradient} showSnackbar={showSnackbar} />
                 </CardContent>
               </Card>
             </Grid>
