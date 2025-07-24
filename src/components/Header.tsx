@@ -18,38 +18,36 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, setGradient }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-  const randomButtonRef = React.useRef<{ disabled: boolean }>(null);
-  const randomButtonElRef = React.useRef<HTMLButtonElement>(null);
+  const randomButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const darkModeButtonRef = React.useRef<{ disabled: boolean }>(null);
-  const darkModeButtonElRef = React.useRef<HTMLButtonElement>(null);
+  const darkModeButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const handleToggleDarkMode = useDebounce(() => {
     setDarkMode(!darkMode);
     showSnackbar(!darkMode ? 'Switched to dark mode' : 'Switched to light mode');
-  }, darkModeButtonRef as React.RefObject<{ disabled: boolean }>);
+  }, darkModeButtonRef);
   const debouncedRandomGradient = useDebounce(() => {
     setGradient(generateRandomGradient());
     showSnackbar('Random gradient generated!');
     handleMenuClose();
-  }, randomButtonRef as React.RefObject<{ disabled: boolean }>);
-  const menuItems = [{ label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef, elRef: randomButtonElRef }];
+  }, randomButtonRef);
+  const menuItems = [{ label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef }];
   return (
     <AppBar position="static" color={darkMode ? 'primary' : 'default'}>
       <Toolbar>
         <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
         <List sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1 }}>
           {menuItems.map((item, idx) => (
-            <ListItemButton component="button" key={idx} sx={{ flexGrow: 0 }} ref={item.elRef}>
+            <ListItemButton component="button" key={idx} sx={{ flexGrow: 0 }} ref={item.buttonRef}>
               <ListItemText primary={item.label} onClick={item.onClick} />
             </ListItemButton>
           ))}
         </List>
-        <IconButton onClick={handleToggleDarkMode} color="primary" size="large" component="button" ref={darkModeButtonElRef}>
+        <IconButton onClick={handleToggleDarkMode} color="primary" size="large" component="button" ref={darkModeButtonRef}>
           {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
         </IconButton>
         <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>

@@ -1,5 +1,5 @@
 import { useRef, useCallback } from 'react';
-const useDebounce = <T extends (...args: unknown[]) => void>(callback: T, buttonRef?: React.RefObject<{ disabled: boolean }>): T => {
+const useDebounce = <T extends (...args: unknown[]) => void>(callback: T, buttonRef?: React.RefObject<HTMLButtonElement | null>): T => {
   const lastCalled = useRef(0);
   const delay = 2500;
   return useCallback(

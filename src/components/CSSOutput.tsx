@@ -70,19 +70,17 @@ background: ${gradientCSS};`;
     }
   }, [generateGradientCSS, maxCompatibility, gradient.colorStops]);
   const copyToClipboard = useClipboard();
-  const copyButtonRef = useRef<{ disabled: boolean }>(null);
-  const copyButtonElRef = useRef<HTMLButtonElement>(null);
+  const copyButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleCopy = useDebounce(async () => {
     await copyToClipboard(generateFullCSS());
     showSnackbar('CSS copied to clipboard!');
-  }, copyButtonRef as React.RefObject<{ disabled: boolean }>);
-  const shareButtonRef = useRef<{ disabled: boolean }>(null);
-  const shareButtonElRef = useRef<HTMLButtonElement>(null);
+  }, copyButtonRef);
+  const shareButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleShare = useDebounce(async () => {
     const link = generateShareLink(gradient as GradientShareConfig);
     await copyToClipboard(link);
     showSnackbar('Shareable link copied to clipboard!');
-  }, shareButtonRef as React.RefObject<{ disabled: boolean }>);
+  }, shareButtonRef);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -111,7 +109,7 @@ background: ${gradientCSS};`;
       <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" maxRows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
       <Box display="flex" alignItems="center" mt={1.5} gap={1}>
         <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
-        <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }} component="button" ref={shareButtonElRef}>
+        <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }} component="button" ref={shareButtonRef}>
           Share
         </Button>
         <Button id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" onClick={handleClick}>
@@ -131,7 +129,7 @@ background: ${gradientCSS};`;
           <MenuItem onClick={handleExportSVG}>SVG</MenuItem>
           <MenuItem onClick={handleExportCSS}>CSS</MenuItem>
         </Menu>
-        <Button variant="contained" color="primary" onClick={handleCopy} component="button" ref={copyButtonElRef}>
+        <Button variant="contained" color="primary" onClick={handleCopy} component="button" ref={copyButtonRef}>
           Copy CSS
         </Button>
       </Box>
