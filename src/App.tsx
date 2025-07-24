@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
+import useLocalStorage from './helpers/useLocalStorage';
+import Header from './components/Header';
+import useSnackbar from './helpers/useSnackbar';
 import { parseShareLink } from './modules/share';
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorPicker from './components/ColorPicker';
@@ -14,9 +15,6 @@ import GradientBar from './components/GradientBar';
 import GradientControls from './components/GradientControls';
 import GradientPreview from './components/GradientPreview';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import logo from './assets/logo.webp';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 export interface ColorStop {
   id: string;
@@ -39,7 +37,12 @@ const App = () => {
     angle: 90,
     colorStops: [
       { id: '1', color: '#ff0000', position: 0, opacity: 1 },
-      { id: '2', color: '#0000ff', position: 100, opacity: 1 },
+      { id: '2', color: '#ffa500', position: 16.7, opacity: 1 },
+      { id: '3', color: '#ffff00', position: 33.3, opacity: 1 },
+      { id: '4', color: '#00ff00', position: 50, opacity: 1 },
+      { id: '5', color: '#00ffff', position: 66.7, opacity: 1 },
+      { id: '6', color: '#0000ff', position: 83.3, opacity: 1 },
+      { id: '7', color: '#8b00ff', position: 100, opacity: 1 },
     ],
     conicPosition: { x: 50, y: 50 },
     radialDirection: 'center',
@@ -50,11 +53,12 @@ const App = () => {
   useEffect(() => {
     const shared = parseShareLink(window.location.href);
     if (shared && Array.isArray(shared.colorStops) && shared.colorStops.length > 0) {
-      setGradient(prev => ({
+      setGradient((prev) => ({
         ...prev,
         ...shared,
-        colorStops: shared.colorStops
+        colorStops: shared.colorStops,
       }));
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
   const updateRepeating = (repeating: boolean) => setGradient((prev) => ({ ...prev, repeating }));
@@ -91,21 +95,14 @@ const App = () => {
   const updateGradientAngle = (angle: number) => setGradient((prev) => ({ ...prev, angle }));
   const updateConicPosition = (pos: { x: number; y: number }) => setGradient((prev) => ({ ...prev, conicPosition: pos }));
   const updateRadialDirection = (dir: string) => setGradient((prev) => ({ ...prev, radialDirection: dir }));
-  const [darkMode, setDarkMode] = useState(() => {
-    const stored = localStorage.getItem('darkMode');
-    return stored ? stored === 'true' : false;
-  });
-  const handleToggleDarkMode = () => {
-    setDarkMode((prev) => {
-      localStorage.setItem('darkMode', String(!prev));
-      return !prev;
-    });
-  };
+  const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
+  const [, , showSnackbar] = useSnackbar();
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
           mode: darkMode ? 'dark' : 'light',
+          primary: { main: '#ffc107' },
         },
       }),
     [darkMode],
@@ -114,16 +111,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className="app">
-        <header className="app-header">
-          <div className="header-content" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <img src={logo} alt="Gradientor Logo" className="app-logo" />
-            <Tooltip title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
-              <IconButton onClick={handleToggleDarkMode} color="inherit" size="large" sx={{ ml: 1 }}>
-                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-              </IconButton>
-            </Tooltip>
-          </div>
-        </header>
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} />
         <GradientPreview gradient={gradient} />
         <main className="app-main">
           <Grid container spacing={2} className="gradient-panels" sx={{ alignItems: 'stretch' }}>
