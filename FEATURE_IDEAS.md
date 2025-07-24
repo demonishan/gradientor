@@ -12,8 +12,5 @@
 6. Accessibility Checker
    - Warn if gradients have poor contrast or are not colorblind-friendly.
 
-8. Live Preview on Elements
-   - Show how the gradient looks on buttons, cards, or backgrounds.
-
 10. Drag-and-Drop Color Stops
    - Improve UX for adding/removing/reordering color stops visually.

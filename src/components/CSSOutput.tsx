@@ -9,7 +9,9 @@ import type { GradientConfig } from '../App';
 import type { GradientShareConfig } from '../modules/share';
 import useSnackbar from '../helpers/useSnackbar';
 import useClipboard from '../helpers/useClipboard';
-import { Box } from '@mui/material';
+import { Box, Menu, MenuItem } from '@mui/material';
+import { exportCSS, exportPNG, exportSVG } from '../modules/export';
+
 interface CSSOutputProps {
   gradient: GradientConfig;
 }
@@ -78,6 +80,29 @@ background: ${gradientCSS};`;
     await copyToClipboard(link);
     showSnackbar('Shareable link copied to clipboard!');
   };
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleExportCSS = () => {
+    exportCSS(generateFullCSS());
+    handleClose();
+    showSnackbar('CSS file exported!');
+  };
+  const handleExportSVG = () => {
+    exportSVG(generateGradientCSS());
+    handleClose();
+    showSnackbar('SVG file exported!');
+  };
+  const handleExportPNG = () => {
+    exportPNG(gradient, hexToRgba);
+    handleClose();
+    showSnackbar('PNG file exported!');
+  };
   return (
     <>
       <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
@@ -87,6 +112,23 @@ background: ${gradientCSS};`;
         <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }}>
           Share
         </Button>
+        <Button id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" onClick={handleClick}>
+          Export
+        </Button>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          slotProps={{
+            list: {
+              'aria-labelledby': 'basic-button',
+            },
+          }}
+        >
+          <MenuItem onClick={handleExportPNG}>PNG</MenuItem>
+          <MenuItem onClick={handleExportSVG}>SVG</MenuItem>
+          <MenuItem onClick={handleExportCSS}>CSS</MenuItem>
+        </Menu>
         <Button variant="contained" color="primary" onClick={handleCopy}>
           Copy CSS
         </Button>
