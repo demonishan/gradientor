@@ -134,9 +134,6 @@ const App = () => {
             <Grid size={4}>
               <Card className="left-panel" sx={{ height: '100%' }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: 'text.primary', fontSize: 14 }}>
-                    Picker
-                  </Typography>
                   <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
                 </CardContent>
               </Card>
@@ -144,9 +141,6 @@ const App = () => {
             <Grid size={4}>
               <Card className="right-panel" sx={{ height: '100%' }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: 'text.primary', fontSize: 14 }}>
-                    Stops
-                  </Typography>
                   <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
                 </CardContent>
               </Card>
@@ -154,9 +148,6 @@ const App = () => {
             <Grid size={4}>
               <Card className="third-panel" sx={{ height: '100%' }}>
                 <CardContent>
-                  <Typography gutterBottom sx={{ color: 'text.primary', fontSize: 14 }}>
-                    Controls
-                  </Typography>
                   <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} />
                 </CardContent>
               </Card>

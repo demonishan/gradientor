@@ -1,20 +1,18 @@
-import FormControlLabel from '@mui/material/FormControlLabel';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CheckIcon from '@mui/icons-material/Check';
-import React, { useState, useCallback } from 'react';
-import useSnackbar from '../helpers/useSnackbar';
-import Checkbox from '@mui/material/Checkbox';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Snackbar from '@mui/material/Snackbar';
-import type { GradientConfig } from '../App';
 import { generateShareLink } from '../modules/share';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import React, { useState, useCallback } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+import type { GradientConfig } from '../App';
 import type { GradientShareConfig } from '../modules/share';
+import useSnackbar from '../helpers/useSnackbar';
+import { Box } from '@mui/material';
 interface CSSOutputProps {
   gradient: GradientConfig;
 }
 const CSSOutput: React.FC<CSSOutputProps> = ({ gradient }) => {
-  const [copied, setCopied] = useState(false);
   const [maxCompatibility, setMaxCompatibility] = useState(false);
   const hexToRgba = (hex: string, opacity: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -71,8 +69,7 @@ background: ${gradientCSS};`;
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(generateFullCSS());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      showSnackbar('CSS copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy:', err);
     }
@@ -88,21 +85,19 @@ background: ${gradientCSS};`;
     }
   };
   return (
-    <div className="css-output">
-      <div className="css-code">
-        <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" inputProps={{ readOnly: true, style: { fontFamily: 'monospace' } }} />
-      </div>
-      <div className="css-controls">
+    <>
+      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} />
+      <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" maxRows={3} inputProps={{ readOnly: true, style: { fontFamily: 'monospace' } }} />
+      <Box display="flex" alignItems="center" mt={1.5} gap={1}>
         <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
-        <Button variant="text" color="primary" onClick={handleShare}>
+        <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }}>
           Share
         </Button>
-        <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} />
-        <Button variant="contained" color={copied ? 'success' : 'primary'} onClick={handleCopy} startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}>
-          {copied ? 'Copied!' : 'Copy CSS'}
+        <Button variant="contained" color="primary" onClick={handleCopy}>
+          Copy CSS
         </Button>
-      </div>
-    </div>
+      </Box>
+    </>
   );
 };
 export default CSSOutput;
