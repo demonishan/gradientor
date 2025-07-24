@@ -67,27 +67,19 @@ background: ${gradientCSS};`;
     }
   }, [generateGradientCSS, maxCompatibility, gradient.colorStops]);
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(generateFullCSS());
-      showSnackbar('CSS copied to clipboard!');
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
+    await navigator.clipboard.writeText(generateFullCSS());
+    showSnackbar('CSS copied to clipboard!');
   };
   const [snackbarOpen, snackbarMsg, showSnackbar, hideSnackbar] = useSnackbar();
   const handleShare = async () => {
-    try {
-      const link = generateShareLink(gradient as GradientShareConfig);
-      await navigator.clipboard.writeText(link);
-      showSnackbar('Shareable link copied to clipboard!');
-    } catch (err) {
-      console.error('Failed to copy share link:', err);
-    }
+    const link = generateShareLink(gradient as GradientShareConfig);
+    await navigator.clipboard.writeText(link);
+    showSnackbar('Shareable link copied to clipboard!');
   };
   return (
     <>
-      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} />
-      <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" maxRows={3} inputProps={{ readOnly: true, style: { fontFamily: 'monospace' } }} />
+      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
+      <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" maxRows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
       <Box display="flex" alignItems="center" mt={1.5} gap={1}>
         <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
         <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }}>

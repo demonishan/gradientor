@@ -104,6 +104,9 @@ const App = () => {
           mode: darkMode ? 'dark' : 'light',
           primary: { main: '#ffc107' },
         },
+        typography: {
+          fontFamily: `'Work Sans', sans-serif`,
+        },
       }),
     [darkMode],
   );

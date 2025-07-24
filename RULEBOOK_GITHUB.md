@@ -4,7 +4,7 @@
 
 1. **Update Version in package.json**
    - Before deploying, update the "version" field in package.json to reflect the new release.
-   - Use semantic versioning (e.g., 1.0.1 → 1.0.2).
+   - Use semantic versioning. e.g., 1.0.1 → 1.0.2, 1.0.9 → 1.1.0
 
 2. **Run ESLint**
    - Command: `npx eslint . --ext .js,.jsx,.ts,.tsx,.css --max-warnings=0`

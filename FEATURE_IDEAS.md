@@ -15,8 +15,5 @@
 8. Live Preview on Elements
    - Show how the gradient looks on buttons, cards, or backgrounds.
 
-9. Shareable Links
-   - Generate a unique URL for each gradient to share with others.
-
 10. Drag-and-Drop Color Stops
-    - Improve UX for adding/removing/reordering color stops visually.
+   - Improve UX for adding/removing/reordering color stops visually.
