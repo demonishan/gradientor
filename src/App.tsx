@@ -133,7 +133,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <GradientAnimation darkMode={darkMode} />
       <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
-      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
+      <Snackbar open={snackbarOpen} autoHideDuration={2500} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
       <GradientPreview gradient={gradient} />
       <main>
         <Container>

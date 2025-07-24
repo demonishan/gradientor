@@ -12,6 +12,10 @@ input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+[disabled] {
+  opacity: 0.2;
+  pointer-events: none;
+}
 .rcp {
   background: none !important;
   border: 0 !important;

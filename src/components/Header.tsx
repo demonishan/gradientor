@@ -24,30 +24,29 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const handleToggleDarkMode = () => {
+  const darkModeButtonRef = React.useRef<any>(null);
+  const handleToggleDarkMode = useDebounce(() => {
     setDarkMode(!darkMode);
     showSnackbar(!darkMode ? 'Switched to dark mode' : 'Switched to light mode');
-  };
+  }, darkModeButtonRef);
   const debouncedRandomGradient = useDebounce(() => {
     setGradient(generateRandomGradient());
     showSnackbar('Random gradient generated!');
     handleMenuClose();
   }, randomButtonRef);
-  const menuItems = [
-    { label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef },
-  ];
+  const menuItems = [{ label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef }];
   return (
     <AppBar position="static" color={darkMode ? 'primary' : 'default'}>
       <Toolbar>
         <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
         <List sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1 }}>
           {menuItems.map((item, idx) => (
-            <ListItemButton key={idx} sx={{ flexGrow: 0 }} ref={item.buttonRef as any}>
+            <ListItemButton component="button" key={idx} sx={{ flexGrow: 0 }} ref={item.buttonRef as any}>
               <ListItemText primary={item.label} onClick={item.onClick} />
             </ListItemButton>
           ))}
         </List>
-        <IconButton onClick={handleToggleDarkMode} color="primary" size="large">
+        <IconButton onClick={handleToggleDarkMode} color="primary" size="large" component="button" ref={darkModeButtonRef}>
           {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
         </IconButton>
         <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>

@@ -2,12 +2,12 @@ import { generateShareLink } from '../modules/share';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 //
 import TextField from '@mui/material/TextField';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig } from '../modules/share';
-// import useSnackbar from '../helpers/useSnackbar';
+import useDebounce from '../helpers/useDebounce';
 import useClipboard from '../helpers/useClipboard';
 import { Box, Menu, MenuItem } from '@mui/material';
 import { exportCSS, exportPNG, exportSVG } from '../modules/export';
@@ -70,16 +70,17 @@ background: ${gradientCSS};`;
     }
   }, [generateGradientCSS, maxCompatibility, gradient.colorStops]);
   const copyToClipboard = useClipboard();
-  const handleCopy = async () => {
+  const copyButtonRef = useRef<any>(null);
+  const handleCopy = useDebounce(async () => {
     await copyToClipboard(generateFullCSS());
     showSnackbar('CSS copied to clipboard!');
-  };
-  // Snackbar is now global, use showSnackbar from props
-  const handleShare = async () => {
+  }, copyButtonRef);
+  const shareButtonRef = useRef<any>(null);
+  const handleShare = useDebounce(async () => {
     const link = generateShareLink(gradient as GradientShareConfig);
     await copyToClipboard(link);
     showSnackbar('Shareable link copied to clipboard!');
-  };
+  }, shareButtonRef);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -107,8 +108,8 @@ background: ${gradientCSS};`;
     <>
       <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" maxRows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
       <Box display="flex" alignItems="center" mt={1.5} gap={1}>
-        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={e => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
-        <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }}>
+        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
+        <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }} component="button" ref={shareButtonRef}>
           Share
         </Button>
         <Button id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" onClick={handleClick}>
@@ -128,7 +129,7 @@ background: ${gradientCSS};`;
           <MenuItem onClick={handleExportSVG}>SVG</MenuItem>
           <MenuItem onClick={handleExportCSS}>CSS</MenuItem>
         </Menu>
-        <Button variant="contained" color="primary" onClick={handleCopy}>
+        <Button variant="contained" color="primary" onClick={handleCopy} component="button" ref={copyButtonRef}>
           Copy CSS
         </Button>
       </Box>
