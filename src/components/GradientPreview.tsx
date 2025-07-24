@@ -27,6 +27,6 @@ const GradientPreview: React.FC<GradientPreviewProps> = ({ gradient }) => {
     const prefix = gradient.repeating ? 'repeating-linear-gradient' : 'linear-gradient';
     bg = `${prefix}(${gradient.angle}deg, ${stops})`;
   }
-  return <Box sx={{ m: 2, borderRadius: 1, height: 200, background: bg }} />;
+  return <Box sx={{ m: 2, borderRadius: 1, height: '10rem', background: bg }} />;
 };
 export default GradientPreview;

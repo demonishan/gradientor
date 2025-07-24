@@ -1,4 +1,5 @@
 import './App.css';
+import { Container } from '@mui/material';
 import { parseShareLink } from './modules/share';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useState, useMemo, useEffect } from 'react';
@@ -6,8 +7,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorPicker from './components/ColorPicker';
 import ColorStopsList from './components/ColorStops';
-import CssBaseline from '@mui/material/CssBaseline';
 import CSSOutput from './components/CSSOutput';
+import GradientAnimation from './modules/background.tsx';
 import GradientBar from './components/GradientBar';
 import GradientControls from './components/GradientControls';
 import GradientPreview from './components/GradientPreview';
@@ -15,7 +16,6 @@ import Grid from '@mui/material/Grid';
 import Header from './components/Header';
 import useLocalStorage from './helpers/useLocalStorage';
 import useSnackbar from './helpers/useSnackbar';
-import { Container } from '@mui/material';
 export interface ColorStop {
   id: string;
   color: string;
@@ -109,21 +109,21 @@ const App = () => {
   );
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <GradientAnimation darkMode={darkMode} />
       <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} />
       <GradientPreview gradient={gradient} />
-      <main className="app-main">
+      <main>
         <Container>
           <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
             <Grid size={6} mb={2}>
-              <Card className="gradient-display-panel" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+              <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                 <CardContent sx={{ flex: 1 }}>
                   <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
                 </CardContent>
               </Card>
             </Grid>
             <Grid size={6} mb={2}>
-              <Card className="gradient-controls-panel" sx={{ height: '100%' }}>
+              <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <CSSOutput gradient={gradient} />
                 </CardContent>
@@ -132,21 +132,21 @@ const App = () => {
           </Grid>
           <Grid container spacing={2} className="editor-section" sx={{ alignItems: 'stretch' }}>
             <Grid size={4} mb={2}>
-              <Card className="left-panel" sx={{ height: '100%' }}>
+              <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
                 </CardContent>
               </Card>
             </Grid>
             <Grid size={4} mb={2}>
-              <Card className="right-panel" sx={{ height: '100%' }}>
+              <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
                 </CardContent>
               </Card>
             </Grid>
             <Grid size={4} mb={2}>
-              <Card className="third-panel" sx={{ height: '100%' }}>
+              <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} />
                 </CardContent>

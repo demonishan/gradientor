@@ -48,7 +48,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
     <>
       <ReactColorPicker color={color} onChange={handleColorChange} height={180} />
       <TextField
-        label="HEX"
+        label="Hex"
         size="small"
         fullWidth
         value={color.hex}

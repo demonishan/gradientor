@@ -25,4 +25,4 @@ A modern, interactive gradient generator built with React and TypeScript.
 
 ## Inspiration
 
-**[https://cssgradient.io/](https://cssgradient.io/)**
+- https://cssgradient.io

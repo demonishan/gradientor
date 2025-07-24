@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
+import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import Radio from '@mui/material/Radio';
 import type { ColorStop } from '../App';
 interface ColorStopsListProps {
@@ -30,7 +30,7 @@ const ColorStopsList: React.FC<ColorStopsListProps> = ({ colorStops, selectedSto
           <TextField label="Position" size="small" type="number" value={Math.round(stop.position)} onChange={(e) => handlePositionChange(stop.id, e.target.value)} onClick={(e) => e.stopPropagation()} />
           {colorStops.length > 2 && (
             <IconButton size="small" onClick={() => onDeleteStop(stop.id)} title="Delete color stop">
-              <DeleteIcon fontSize="small" />
+              <BackspaceOutlinedIcon fontSize="small" />
             </IconButton>
           )}
         </Box>
