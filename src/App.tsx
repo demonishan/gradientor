@@ -64,6 +64,13 @@ const App = () => {
   const updateRepeating = (repeating: boolean) => setGradient((prev) => ({ ...prev, repeating }));
   const updateRadialSize = (size: string) => setGradient((prev) => ({ ...prev, radialSize: size }));
   const [selectedStopId, setSelectedStopId] = useState<string>('1');
+
+  // Ensure the first stop is selected after a random gradient is generated
+  const handleSetGradient = (g: GradientConfig) => {
+    setGradient(g);
+    const first = g.colorStops.find((stop) => stop.id === '1');
+    setSelectedStopId(first ? '1' : g.colorStops[0]?.id || '');
+  };
   const addColorStop = (position: number) => {
     const newStop: ColorStop = {
       id: Date.now().toString(),
@@ -124,7 +131,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GradientAnimation darkMode={darkMode} />
-      <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} />
+      <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
       <GradientPreview gradient={gradient} />
       <main>
         <Container>
