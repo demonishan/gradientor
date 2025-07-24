@@ -1,10 +1,7 @@
-import { useState, useMemo, useEffect } from 'react';
-import useLocalStorage from './helpers/useLocalStorage';
-import Header from './components/Header';
-import useSnackbar from './helpers/useSnackbar';
-import { parseShareLink } from './modules/share';
 import './App.css';
+import { parseShareLink } from './modules/share';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useState, useMemo, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorPicker from './components/ColorPicker';
@@ -15,7 +12,10 @@ import GradientBar from './components/GradientBar';
 import GradientControls from './components/GradientControls';
 import GradientPreview from './components/GradientPreview';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import Header from './components/Header';
+import useLocalStorage from './helpers/useLocalStorage';
+import useSnackbar from './helpers/useSnackbar';
+import { Container } from '@mui/material';
 export interface ColorStop {
   id: string;
   color: string;
@@ -110,19 +110,19 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="app">
-        <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} />
-        <GradientPreview gradient={gradient} />
-        <main className="app-main">
+      <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} />
+      <GradientPreview gradient={gradient} />
+      <main className="app-main">
+        <Container>
           <Grid container spacing={2} className="gradient-panels" sx={{ alignItems: 'stretch' }}>
-            <Grid size={8}>
+            <Grid size={6}>
               <Card className="gradient-display-panel" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                 <CardContent sx={{ flex: 1 }}>
                   <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={4}>
+            <Grid size={6}>
               <Card className="gradient-controls-panel" sx={{ height: '100%' }}>
                 <CardContent>
                   <CSSOutput gradient={gradient} />
@@ -153,8 +153,8 @@ const App = () => {
               </Card>
             </Grid>
           </Grid>
-        </main>
-      </div>
+        </Container>
+      </main>
     </ThemeProvider>
   );
 };
