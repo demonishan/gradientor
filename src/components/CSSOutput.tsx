@@ -10,8 +10,10 @@ import type { GradientShareConfig } from '../modules/share';
 import useDebounce from '../helpers/useDebounce';
 import useClipboard from '../helpers/useClipboard';
 import { Box, Menu, MenuItem } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { addFavorite } from './FavoriteSidebar';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { exportCSS, exportPNG, exportSVG } from '../modules/export';
-
 interface CSSOutputProps {
   gradient: GradientConfig;
 }
@@ -25,8 +27,8 @@ const CSSOutput: React.FC<CSSOutputProps & { showSnackbar: (msg: string) => void
   };
   const generateGradientCSS = useCallback(() => {
     const stops = gradient.colorStops
-      .sort((a, b) => a.position - b.position)
-      .map((stop) => {
+      .sort((a: GradientConfig['colorStops'][number], b: GradientConfig['colorStops'][number]) => a.position - b.position)
+      .map((stop: GradientConfig['colorStops'][number]) => {
         const colorValue = stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color;
         return `${colorValue} ${stop.position.toFixed(1)}%`;
       })
@@ -56,6 +58,12 @@ const CSSOutput: React.FC<CSSOutputProps & { showSnackbar: (msg: string) => void
     }
     return '';
   }, [gradient]);
+  // Debounced Add to Favorites
+  const addFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
+  const handleAddFavorite = useDebounce(() => {
+    addFavorite(gradient as import('./FavoriteSidebar').GradientFavorite);
+    showSnackbar('Added to favorites!');
+  }, addFavoriteButtonRef);
   const generateFullCSS = useCallback(() => {
     const gradientCSS = generateGradientCSS();
     if (maxCompatibility) {
@@ -106,14 +114,17 @@ background: ${gradientCSS};`;
   };
   return (
     <>
-      <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" maxRows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
-      <Box display="flex" alignItems="center" mt={1.5} gap={1}>
-        <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
-        <Button variant="text" color="primary" onClick={handleShare} sx={{ ml: 'auto' }} component="button" ref={shareButtonRef}>
+      <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" rows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
+      <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
+      <Box display="flex" justifyContent="flex-end" mt={1.5} gap={1}>
+        <Button variant="text" color="primary" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} sx={{ minWidth: 'auto' }}>
+          <FavoriteBorderIcon />
+        </Button>
+        <Button variant="text" color="primary" onClick={handleShare} component="button" ref={shareButtonRef}>
           Share
         </Button>
         <Button id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" onClick={handleClick}>
-          Export
+          Export <KeyboardArrowDownIcon fontSize="small" />
         </Button>
         <Menu
           anchorEl={anchorEl}
