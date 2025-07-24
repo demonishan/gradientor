@@ -129,14 +129,14 @@ const App = () => {
       <main>
         <Container>
           <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
-            <Grid size={6} mb={2}>
+            <Grid mb={2} size={{ xs: 12, md: 6 }}>
               <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                 <CardContent sx={{ flex: 1 }}>
                   <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={6} mb={2}>
+            <Grid mb={2} size={{ xs: 12, md: 6 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <CSSOutput gradient={gradient} />
@@ -145,21 +145,21 @@ const App = () => {
             </Grid>
           </Grid>
           <Grid container spacing={2} className="editor-section" sx={{ alignItems: 'stretch' }}>
-            <Grid size={4} mb={2}>
+            <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={4} mb={2}>
+            <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={4} mb={2}>
+            <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} />

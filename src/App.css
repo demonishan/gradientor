@@ -81,7 +81,7 @@ input[type='number'] {
   gap: 0 !important;
 }
 .gradient-bar-container {
-  margin: 0 30px;
+  margin: 3rem 2rem;
 }
 .gradient-bar-container .gradient-bar {
   width: 100%;

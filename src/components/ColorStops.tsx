@@ -26,8 +26,8 @@ const ColorStopsList: React.FC<ColorStopsListProps> = ({ colorStops, selectedSto
       {sortedStops.map((stop) => (
         <Box key={stop.id} display="flex" alignItems="center" gap={1}>
           <Radio checked={selectedStopId === stop.id} onChange={() => onStopSelect(stop.id)} sx={{ borderRadius: '4px', p: 1, backgroundColor: stop.color }} />
-          <TextField label="Hex" size="small" value={stop.color.toUpperCase()} onChange={(e) => onUpdateStop(stop.id, { color: e.target.value })} onClick={(e) => e.stopPropagation()} />
-          <TextField label="Position" size="small" type="number" value={stop.position} onChange={(e) => handlePositionChange(stop.id, e.target.value)} onClick={(e) => e.stopPropagation()} />
+          <TextField label="Hex" size="small" value={stop.color.toUpperCase()} onChange={(e) => onUpdateStop(stop.id, { color: e.target.value })} onClick={(e) => e.stopPropagation()} sx={{ flexGrow: 1 }} />
+          <TextField label="Position" size="small" type="number" value={stop.position} onChange={(e) => handlePositionChange(stop.id, e.target.value)} onClick={(e) => e.stopPropagation()} sx={{ flexGrow: 1 }} />
           {colorStops.length > 2 && (
             <IconButton size="small" onClick={() => onDeleteStop(stop.id)} title="Delete color stop">
               <BackspaceOutlinedIcon fontSize="small" />
