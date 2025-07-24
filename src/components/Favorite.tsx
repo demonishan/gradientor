@@ -2,7 +2,8 @@ import React from 'react';
 // Removed local useSnackbar, will use showSnackbar from props
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button } from '@mui/material';
+import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, ListItemButton } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 // Utility types for favorites
@@ -29,6 +30,7 @@ export function addFavorite(gradient: GradientFavorite) {
   window.dispatchEvent(new Event('favorites-updated'));
 }
 import { Drawer } from '@mui/material';
+import { WidthFull } from '@mui/icons-material';
 interface FavoriteProps {
   open: boolean;
   onClose: () => void;
@@ -62,41 +64,48 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar }) => {
     showSnackbar('Gradient removed from favorites');
   };
   return (
-    <Drawer anchor="right" open={open} onClose={onClose}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: 320, position: 'relative', height: '100%' }}>
-        <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }} aria-label="close">
-          <CloseIcon />
-        </IconButton>
-        <Typography variant="h6" sx={{ m: 2, mb: 1 }}>
-          Favorites
-        </Typography>
-        <Box sx={{ overflowY: 'auto', flexGrow: 1, p: 2, pt: 0 }}>
-          {gradients.map((g, idx) => (
-            <Card key={idx} sx={{ mb: 2, position: 'relative' }}>
-              <CardMedia style={{ position: 'relative', height: '5rem', background: generateGradientCSS(g) }}>
-                <Button variant="contained" aria-label="remove favorite" color="error" sx={{ minWidth: 'auto', p: 0.5, position: 'absolute', top: 4, right: 4, zIndex: 2 }} onClick={() => handleRemove(idx)}>
-                  <DeleteIcon />
-                </Button>
-              </CardMedia>
-              <CardContent sx={{ mb: -2, px: 2, pt: 1 }}>
-                <Typography variant="subtitle2" gutterBottom>
-                  {g.type} Gradient
-                </Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {g.colorStops.map((stop, i) => (
-                    <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <Box sx={{ width: 16, height: 16, bgcolor: stop.color, borderRadius: '50%', border: '1px solid #ccc' }} />
-                      <Typography variant="caption">{stop.position}%</Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
+    <>
+      <Backdrop open={open} onClick={onClose} />
+      <Drawer anchor="right" open={open} onClose={onClose}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: 320, position: 'relative', height: '100%' }}>
+          <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }} aria-label="close">
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ m: '1rem 1rem 0.5rem' }}>
+            Favorites
+          </Typography>
+          <List sx={{ overflowY: 'auto', flexGrow: 1, p: 0 }}>
+            {gradients.map((g, idx) => (
+              <ListItem key={idx} sx={{ p: 0 }}>
+                <ListItemButton sx={{ p: '0.5rem 1rem 1rem' }}>
+                  <Card sx={{ width: '100%', position: 'relative' }}>
+                    <CardMedia style={{ position: 'relative', height: '5rem', background: generateGradientCSS(g) }}>
+                      <Button variant="contained" aria-label="remove favorite" color="error" sx={{ minWidth: 'auto', p: 0.5, position: 'absolute', top: 4, right: 4, zIndex: 2 }} onClick={() => handleRemove(idx)}>
+                        <DeleteIcon />
+                      </Button>
+                    </CardMedia>
+                    <CardContent sx={{ mb: -1, px: 2, pt: 1 }}>
+                      <Typography variant="subtitle2" gutterBottom>
+                        {g.type} Gradient
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                        {g.colorStops.map((stop, i) => (
+                          <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <Box sx={{ width: 16, height: 16, bgcolor: stop.color, borderRadius: '50%', border: '1px solid #ccc' }} />
+                            <Typography variant="caption">{stop.position}%</Typography>
+                          </Box>
+                        ))}
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Typography sx={{ fontSize: '0.65rem', p: 0.5, textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>The favorites are stored in the local storage, so there's a chance they may not persist across sessions.</Typography>
         </Box>
-        <Typography sx={{ fontSize: '0.65rem', p: 0.5, textAlign: 'center', opacity: 0.5 }}>Your favorites are stored in your local storage, so there's a chance they may not persist across sessions.</Typography>
-      </Box>
-    </Drawer>
+      </Drawer>
+    </>
   );
 };
 export default Favorite;
