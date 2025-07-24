@@ -1,19 +1,19 @@
-import React from 'react';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { Divider, Box, Typography, TextField, MenuItem } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowUpwardLeftIcon from '@mui/icons-material/NorthWest';
-import ArrowUpwardRightIcon from '@mui/icons-material/NorthEast';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDownwardLeftIcon from '@mui/icons-material/SouthWest';
 import ArrowDownwardRightIcon from '@mui/icons-material/SouthEast';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowUpwardLeftIcon from '@mui/icons-material/NorthWest';
+import ArrowUpwardRightIcon from '@mui/icons-material/NorthEast';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import React from 'react';
+import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Slider from '@mui/material/Slider';
-import { Divider, Box, Typography, TextField, MenuItem } from '@mui/material';
 interface GradientControlsProps {
   type: 'linear' | 'radial' | 'conic' | 'elliptical';
   angle: number;
@@ -49,46 +49,47 @@ const GradientControls: React.FC<
     if (!isNaN(num)) onConicPositionChange({ ...conicPosition, [name]: num });
   };
   return (
-    <div className="gradient-controls-panel-content">
-      <ToggleButtonGroup value={type} exclusive onChange={(_, val) => val && onTypeChange(val)} color="primary" sx={{ mr: 2 }}>
+    <>
+      <ToggleButtonGroup size="small" value={type} fullWidth exclusive onChange={(_, val) => val && onTypeChange(val)} sx={{ mb: 1 }}>
         <ToggleButton value="linear">Linear</ToggleButton>
         <ToggleButton value="radial">Radial</ToggleButton>
         <ToggleButton value="elliptical">Elliptical</ToggleButton>
         <ToggleButton value="conic">Conic</ToggleButton>
       </ToggleButtonGroup>
-      <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} color="primary" />} label="Repeating" sx={{ mr: 2 }} />
-      <Divider orientation="vertical" flexItem />
+      <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} />} label="Repeating" sx={{ mb: 0.5 }} />
+      <Divider sx={{ mb: 2 }}></Divider>
       {(type === 'linear' || type === 'conic') && (
-        <Box display="flex" alignItems="center" gap={2} mt={1.5}>
+        <Box display="flex" alignItems="center" gap={2} mb={2}>
           <Typography>Angle</Typography>
-          <Slider value={angle} onChange={(_, val) => typeof val === 'number' && onAngleChange(val)} min={0} max={360} step={10} valueLabelDisplay="auto" sx={{ width: 180 }} />
-          <input
+          <Slider value={angle} onChange={(_, val) => typeof val === 'number' && onAngleChange(val)} min={0} max={360} step={10} valueLabelDisplay="auto" sx={{ flexGrow: 1 }} />
+          <TextField
             type="number"
-            min={0}
-            max={360}
+            size="small"
             value={angle}
             onChange={(e) => {
               const v = parseInt(e.target.value);
               if (!isNaN(v)) onAngleChange(Math.max(0, Math.min(360, v)));
             }}
-            style={{ width: 60, marginLeft: 8, padding: '4px 8px', borderRadius: 4, border: '1px solid #ccc', fontSize: 14 }}
+            inputProps={{ min: 0, max: 360 }}
+            sx={{ width: 120 }}
           />
         </Box>
       )}
       {type === 'conic' && (
-        <Box display="flex" alignItems="center" gap={2} mt={3}>
-          <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: 100 }} />
-          <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: 100 }} />
+        <Box display="flex" alignItems="center" gap={2}>
+          <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: '50%' }} />
+          <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: '50%' }} />
         </Box>
       )}
       {(type === 'radial' || type === 'elliptical') && (
         <>
+          <Typography>Direction</Typography>
           {onRadialDirectionChange && (
-            <Box display="flex" flexDirection="column" gap={0} mt={1.5}>
+            <Box display="flex" flexDirection="column" gap={0} mb={3}>
               {radialDirections.map((row, i) => (
-                <ToggleButtonGroup key={i} value={radialDirection} exclusive onChange={(_, val) => val && onRadialDirectionChange(val)} size="small" sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <ToggleButtonGroup key={i} value={radialDirection} exclusive onChange={(_, val) => val && onRadialDirectionChange(val)} size="small" fullWidth>
                   {row.map((dir, j) => (
-                    <ToggleButton key={dir} value={dir} sx={{ minWidth: 36, px: 1 }}>
+                    <ToggleButton key={dir} value={dir} sx={{ flexGrow: 1 }}>
                       {directionLabels[i][j]}
                     </ToggleButton>
                   ))}
@@ -97,17 +98,15 @@ const GradientControls: React.FC<
             </Box>
           )}
           {onRadialSizeChange && (
-            <Box mt={3}>
-              <TextField select label="Size" id="radial-size-select" value={radialSize} onChange={(e) => onRadialSizeChange(e.target.value)}>
-                <MenuItem value="None">None</MenuItem>
-                <MenuItem value="farthest-side">farthest-side</MenuItem>
-                <MenuItem value="farthest-corner">farthest-corner</MenuItem>
-              </TextField>
-            </Box>
+            <TextField select fullWidth size="small" label="Size" id="radial-size-select" value={radialSize} onChange={(e) => onRadialSizeChange(e.target.value)}>
+              <MenuItem value="None">None</MenuItem>
+              <MenuItem value="farthest-side">farthest-side</MenuItem>
+              <MenuItem value="farthest-corner">farthest-corner</MenuItem>
+            </TextField>
           )}
         </>
       )}
-    </div>
+    </>
   );
 };
 export default GradientControls;
