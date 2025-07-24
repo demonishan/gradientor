@@ -9,7 +9,7 @@ import ArrowUpwardLeftIcon from '@mui/icons-material/NorthWest';
 import ArrowUpwardRightIcon from '@mui/icons-material/NorthEast';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import React from 'react';
 import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -39,7 +39,7 @@ const GradientControls: React.FC<
   ];
   const directionLabels = [
     [<ArrowUpwardLeftIcon fontSize="small" />, <ArrowUpwardIcon fontSize="small" />, <ArrowUpwardRightIcon fontSize="small" />],
-    [<ArrowBackIcon fontSize="small" />, <RadioButtonCheckedIcon fontSize="small" />, <ArrowForwardIcon fontSize="small" />],
+    [<ArrowBackIcon fontSize="small" />, <RadioButtonUncheckedIcon fontSize="small" />, <ArrowForwardIcon fontSize="small" />],
     [<ArrowDownwardLeftIcon fontSize="small" />, <ArrowDownwardIcon fontSize="small" />, <ArrowDownwardRightIcon fontSize="small" />],
   ];
   const handleConicPositionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
