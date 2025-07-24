@@ -1,9 +1,9 @@
 import { useRef, useCallback } from 'react';
-const useDebounce = <T extends (...args: any[]) => void>(callback: T, buttonRef?: React.RefObject<{ disabled: boolean }>): T => {
+const useDebounce = <T extends (...args: unknown[]) => void>(callback: T, buttonRef?: React.RefObject<{ disabled: boolean }>): T => {
   const lastCalled = useRef(0);
   const delay = 2500;
   return useCallback(
-    (...args: any[]) => {
+    (...args: unknown[]) => {
       const now = Date.now();
       if (now - lastCalled.current < delay) return;
       lastCalled.current = now;

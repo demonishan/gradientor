@@ -26,10 +26,6 @@
    - Command: `git push`
    - Push the committed changes to the main branch on GitHub.
 
-7. **Deploy to GitHub Pages**
-   - Command: `npm run deploy` (or the appropriate command for your project)
-   - Ensure the latest build is published to GitHub Pages.
-
 ---
 
 **Note:**
