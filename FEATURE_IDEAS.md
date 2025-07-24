@@ -9,9 +9,6 @@
 3. Gradient History/Undo-Redo
    - Track changes and allow users to undo/redo gradient edits.
 
-4. Mobile-Friendly UI
-   - Optimize the interface for mobile and tablet users.
-
 5. Contrast Ratio Tool
    - Show contrast ratios for text over the gradient, not just accessibility warnings.
 
