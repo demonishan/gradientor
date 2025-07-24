@@ -1,8 +1,5 @@
 # Feature Ideas for Gradientor
 
-2. Export Options
-   - Export gradients as PNG, SVG, or CSS files.
-
 3. Random Gradient Generator
    - Add a button to generate random gradients for inspiration.
 
