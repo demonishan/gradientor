@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Radio from '@mui/material/Radio';
 import type { ColorStop } from '../App';
 interface ColorStopsListProps {
   colorStops: ColorStop[];
@@ -21,22 +22,14 @@ const ColorStopsList: React.FC<ColorStopsListProps> = ({ colorStops, selectedSto
     }
   };
   return (
-    <Box display="flex" flexDirection="column" gap={1}>
+    <Box display="flex" flexDirection="column" gap={1.75}>
       {sortedStops.map((stop) => (
-        <Box key={stop.id} display="flex" alignItems="center" gap={1.5} p={1} bgcolor={selectedStopId === stop.id ? 'action.selected' : 'background.paper'} boxShadow={selectedStopId === stop.id ? 2 : 0} onClick={() => onStopSelect(stop.id)}>
-          <Box sx={{ width: 24, height: 24, borderRadius: '4px', bgcolor: stop.color, border: '1px solid #ccc' }} />
+        <Box key={stop.id} display="flex" alignItems="center" gap={1}>
+          <Radio checked={selectedStopId === stop.id} onChange={() => onStopSelect(stop.id)} sx={{ borderRadius: '4px', p: 1, backgroundColor: stop.color }} />
           <TextField label="Hex" size="small" value={stop.color.toUpperCase()} onChange={(e) => onUpdateStop(stop.id, { color: e.target.value })} onClick={(e) => e.stopPropagation()} />
-          <TextField label="Pos" size="small" type="number" value={Math.round(stop.position)} onChange={(e) => handlePositionChange(stop.id, e.target.value)} onClick={(e) => e.stopPropagation()} />
+          <TextField label="Position" size="small" type="number" value={Math.round(stop.position)} onChange={(e) => handlePositionChange(stop.id, e.target.value)} onClick={(e) => e.stopPropagation()} />
           {colorStops.length > 2 && (
-            <IconButton
-              size="small"
-              color="error"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDeleteStop(stop.id);
-              }}
-              title="Delete color stop"
-            >
+            <IconButton size="small" onClick={() => onDeleteStop(stop.id)} title="Delete color stop">
               <DeleteIcon fontSize="small" />
             </IconButton>
           )}
