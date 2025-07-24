@@ -2,6 +2,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
 import React, { useState, useCallback } from 'react';
+import useSnackbar from '../helpers/useSnackbar';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -76,17 +77,16 @@ background: ${gradientCSS};`;
       console.error('Failed to copy:', err);
     }
   };
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarOpen, snackbarMsg, showSnackbar, hideSnackbar] = useSnackbar();
   const handleShare = async () => {
     try {
       const link = generateShareLink(gradient as GradientShareConfig);
       await navigator.clipboard.writeText(link);
-      setSnackbarOpen(true);
+      showSnackbar('Shareable link copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy share link:', err);
     }
   };
-  const handleSnackbarClose = () => setSnackbarOpen(false);
   return (
     <div className="css-output">
       <div className="css-code">
@@ -97,7 +97,7 @@ background: ${gradientCSS};`;
         <Button variant="text" color="primary" onClick={handleShare}>
           Share
         </Button>
-        <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleSnackbarClose} message="Shareable link copied to clipboard!" anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} />
+        <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} />
         <Button variant="contained" color={copied ? 'success' : 'primary'} onClick={handleCopy} startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}>
           {copied ? 'Copied!' : 'Copy CSS'}
         </Button>

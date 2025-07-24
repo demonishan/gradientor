@@ -15,7 +15,6 @@ const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onS
     const b = parseInt(hex.slice(5, 7), 16);
     return `rgba(${r}, ${g}, ${b}, ${opacity.toFixed(1)})`;
   };
-
   const generateGradientCSS = useCallback(() => {
     const stops = gradient.colorStops
       .sort((a, b) => a.position - b.position)

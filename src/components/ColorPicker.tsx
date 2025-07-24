@@ -55,7 +55,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
         <ReactColorPicker color={color} onChange={handleColorChange} height={180} />
         <TextField
           label="HEX"
-          variant="outlined"
           size="small"
           fullWidth
           value={color.hex}
@@ -70,12 +69,10 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
           }}
         />
         <Grid container spacing={2}>
-          {' '}
           <Grid size={3}>
             <TextField
               label="R"
               type="number"
-              variant="outlined"
               size="small"
               fullWidth
               value={Math.round(color.rgb.r)}
@@ -88,12 +85,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
               }}
               inputProps={{ min: 0, max: 255, step: 1 }}
             />
-          </Grid>{' '}
+          </Grid>
           <Grid size={3}>
             <TextField
               label="G"
               type="number"
-              variant="outlined"
               size="small"
               fullWidth
               value={Math.round(color.rgb.g)}
@@ -106,12 +102,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
               }}
               inputProps={{ min: 0, max: 255, step: 1 }}
             />
-          </Grid>{' '}
+          </Grid>
           <Grid size={3}>
             <TextField
               label="B"
               type="number"
-              variant="outlined"
               size="small"
               fullWidth
               value={Math.round(color.rgb.b)}
@@ -124,7 +119,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
               }}
               inputProps={{ min: 0, max: 255, step: 1 }}
             />
-          </Grid>{' '}
+          </Grid>
           <Grid size={3}>
             <TextField
               label="A"
