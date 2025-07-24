@@ -1,6 +1,6 @@
+import FavoriteSidebar from './FavoriteSidebar';
 import { AppBar, Toolbar, IconButton, List, ListItemButton, ListItemText, Badge } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteSidebar from './FavoriteSidebar';
 import MenuIcon from '@mui/icons-material/Menu';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -91,9 +91,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
             </MenuItem>
           ))}
         </Menu>
-        <FavoriteSidebar open={favoriteOpen} onClose={() => setFavoriteOpen(false)}>
-          {/* TODO: Render favorite gradients here using favorites.ts */}
-        </FavoriteSidebar>
+        <FavoriteSidebar open={favoriteOpen} onClose={() => setFavoriteOpen(false)} />
       </Toolbar>
     </AppBar>
   );

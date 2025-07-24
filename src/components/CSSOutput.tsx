@@ -12,6 +12,7 @@ import useClipboard from '../helpers/useClipboard';
 import { Box, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { addFavorite } from './FavoriteSidebar';
+import type { GradientFavorite } from './FavoriteSidebar';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { exportCSS, exportPNG, exportSVG } from '../modules/export';
 interface CSSOutputProps {
@@ -61,7 +62,7 @@ const CSSOutput: React.FC<CSSOutputProps & { showSnackbar: (msg: string) => void
   // Debounced Add to Favorites
   const addFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleAddFavorite = useDebounce(() => {
-    addFavorite(gradient as import('./FavoriteSidebar').GradientFavorite);
+    addFavorite(gradient as GradientFavorite);
     showSnackbar('Added to favorites!');
   }, addFavoriteButtonRef);
   const generateFullCSS = useCallback(() => {
