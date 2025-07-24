@@ -107,6 +107,17 @@ const App = () => {
         typography: {
           fontFamily: `'Work Sans', sans-serif`,
         },
+        components: {
+          MuiCard: {
+            styleOverrides: {
+              root: {
+                borderRadius: 8,
+                backgroundColor: darkMode ? '#121212' : '#eee',
+                marginBottom: '-0.5rem',
+              },
+            },
+          },
+        },
       }),
     [darkMode],
   );

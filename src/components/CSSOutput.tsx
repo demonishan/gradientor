@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig } from '../modules/share';
 import useSnackbar from '../helpers/useSnackbar';
+import useClipboard from '../helpers/useClipboard';
 import { Box } from '@mui/material';
 interface CSSOutputProps {
   gradient: GradientConfig;
@@ -66,14 +67,15 @@ background: ${gradientCSS};`;
       return `background: ${gradientCSS};`;
     }
   }, [generateGradientCSS, maxCompatibility, gradient.colorStops]);
+  const copyToClipboard = useClipboard();
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(generateFullCSS());
+    await copyToClipboard(generateFullCSS());
     showSnackbar('CSS copied to clipboard!');
   };
   const [snackbarOpen, snackbarMsg, showSnackbar, hideSnackbar] = useSnackbar();
   const handleShare = async () => {
     const link = generateShareLink(gradient as GradientShareConfig);
-    await navigator.clipboard.writeText(link);
+    await copyToClipboard(link);
     showSnackbar('Shareable link copied to clipboard!');
   };
   return (
