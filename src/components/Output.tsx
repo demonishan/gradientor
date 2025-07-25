@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useDebounce, useClipboard } from '../helpers';
-import { generateShareLink, addFavorite, exportCSS, exportPNG, exportSVG } from '../modules';
+import { generateShareLink, addFavorite, exportCSS, exportPNG, exportSVG, exportJSON } from '../modules';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig, GradientFavorite } from '../modules';
 import { Box, Button, Checkbox, FormControlLabel, Menu, MenuItem } from '@mui/material';
@@ -104,6 +104,11 @@ background: ${gradientCSS};`;
     handleClose();
     showSnackbar('PNG file exported!');
   };
+  const handleExportJSON = () => {
+    exportJSON(gradient);
+    handleClose();
+    showSnackbar('JSON file exported!');
+  };
   return (
     <>
       <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" rows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
@@ -131,6 +136,7 @@ background: ${gradientCSS};`;
           <MenuItem onClick={handleExportPNG}>PNG</MenuItem>
           <MenuItem onClick={handleExportSVG}>SVG</MenuItem>
           <MenuItem onClick={handleExportCSS}>CSS</MenuItem>
+          <MenuItem onClick={handleExportJSON}>JSON</MenuItem>
         </Menu>
         <Button variant="contained" color="inherit" onClick={handleCopy} component="button" ref={copyButtonRef} aria-label="Copy CSS to clipboard">
           Copy CSS

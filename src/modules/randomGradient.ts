@@ -13,10 +13,10 @@ const randomColor = (): string => {
 
 /**
  * Generates an array of random color stops.
- * @param {number} count Number of stops (default: random between 2 and 8)
+ * @param {number} count Number of stops (default: random between 2 and 7)
  * @returns {Array} Array of color stops
  */
-const randomStops = (count = 2 + Math.floor(Math.random() * 7)) =>
+const randomStops = (count = 2 + Math.floor(Math.random() * 6)) =>
   Array.from({ length: count }, (_, i) => ({
     id: i === 0 ? '1' : `${Date.now()}-${Math.random().toString(36).slice(2)}-${i}`,
     color: randomColor(),

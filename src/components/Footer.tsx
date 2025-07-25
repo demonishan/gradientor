@@ -1,11 +1,10 @@
 /**
- * Footer component
- *
- * Displays a simple footer for the Gradientor app.
- * You can customize the content as needed.
- *
- * @returns {JSX.Element} Footer UI.
+ * Footer component for the Gradientor app.
+ * Displays app version, copyright, author info, and icons.
+ * Uses Material-UI for styling and icons.
+ * @returns {JSX.Element} The rendered footer element.
  */
+
 import { Box, Typography, useTheme } from '@mui/material';
 import BlurOnRoundedIcon from '@mui/icons-material/BlurOnRounded';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
@@ -17,9 +16,9 @@ function Footer() {
     <Box component="footer" aria-label="Gradientor app footer" sx={{ pt: 2, pb: 4 }}>
       <Typography variant="body2" sx={{ color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
         v{packageJson.version}
-        <BlurOnRoundedIcon color='primary' fontSize="small" sx={{ verticalAlign: 'middle' }} aria-label="divider icon" />
+        <BlurOnRoundedIcon color="primary" fontSize="small" sx={{ verticalAlign: 'middle' }} aria-label="divider icon" />
         &copy; {new Date().getFullYear()}
-        <BlurOnRoundedIcon color='primary' fontSize="small" sx={{ verticalAlign: 'middle' }} aria-label="divider icon" />
+        <BlurOnRoundedIcon color="primary" fontSize="small" sx={{ verticalAlign: 'middle' }} aria-label="divider icon" />
         Made with
         <FavoriteTwoToneIcon fontSize="small" sx={{ verticalAlign: 'middle', color: 'error.main' }} aria-label="favorite icon" />
         by
