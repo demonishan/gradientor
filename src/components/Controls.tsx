@@ -1,4 +1,8 @@
 import { Divider, Box, Typography, TextField, MenuItem } from '@mui/material';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 import { visuallyHidden } from '@mui/utils';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -49,76 +53,93 @@ const Controls: React.FC<
     const num = parseInt(value);
     if (!isNaN(num)) onConicPositionChange({ ...conicPosition, [name]: num });
   };
+  const [value, setValue] = React.useState('1');
+  const handleChange = (_: React.SyntheticEvent, value: string) => {
+    setValue(value);
+  };
   return (
     <>
-      <ToggleButtonGroup size="small" value={type} fullWidth exclusive onChange={(_, val) => val && onTypeChange(val)} sx={{ mb: 1 }}>
-        <ToggleButton value="linear">Linear</ToggleButton>
-        <ToggleButton value="radial">Radial</ToggleButton>
-        <ToggleButton value="elliptical">Elliptical</ToggleButton>
-        <ToggleButton value="conic">Conic</ToggleButton>
-      </ToggleButtonGroup>
-      <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} />} label="Repeating" sx={{ mb: 0.5 }} />
-      <Divider sx={{ mb: 2 }}></Divider>
-      {(type === 'linear' || type === 'conic') && (
-        <Box display="flex" alignItems="center" gap={2} mb={2}>
-          <Typography>Angle</Typography>
-          <Slider value={angle} onChange={(_, val) => typeof val === 'number' && onAngleChange(val)} min={0} max={360} step={10} valueLabelDisplay="auto" aria-label="Gradient angle slider" sx={{ flexGrow: 1 }} />
-          <label style={visuallyHidden} htmlFor="gradient-angle">
-            Angle
-          </label>
-          <TextField
-            type="number"
-            size="small"
-            value={angle}
-            id="gradient-angle"
-            aria-label="Gradient angle"
-            inputProps={{ min: 0, max: 360 }}
-            onChange={(e) => {
-              const v = parseInt(e.target.value);
-              if (!isNaN(v)) onAngleChange(Math.max(0, Math.min(360, v)));
-            }}
-            sx={{ width: 120 }}
-          />
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="Controls" value="1" />
+            <Tab label="Hue/Saturation" value="2" />
+          </TabList>
         </Box>
-      )}
-      {type === 'conic' && (
-        <Box display="flex" alignItems="center" gap={2}>
-          <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic X position' }} sx={{ width: '50%' }} />
-          <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic Y position' }} sx={{ width: '50%' }} />
-          <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} inputProps={{ 'aria-label': 'Toggle repeating gradient' }} />} label="Repeating" sx={{ mb: 0.5 }} />
-        </Box>
-      )}
-      {(type === 'radial' || type === 'elliptical') && (
-        <>
-          <Typography>Direction</Typography>
-          {onRadialDirectionChange && (
-            <Box display="flex" flexDirection="column" gap={0} mb={3}>
-              {radialDirections.map((row, i) => (
-                <ToggleButtonGroup key={i} value={radialDirection} exclusive onChange={(_, val) => val && onRadialDirectionChange(val)} size="small" fullWidth>
-                  {row.map((dir, j) => (
-                    <ToggleButton key={dir} value={dir} sx={{ flexGrow: 1 }}>
-                      {directionLabels[i][j]}
-                    </ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              ))}
+        <TabPanel value="1" sx={{ px: 0 }}>
+          <ToggleButtonGroup size="small" value={type} fullWidth exclusive onChange={(_, val) => val && onTypeChange(val)} sx={{ mb: 1 }}>
+            <ToggleButton value="linear">Linear</ToggleButton>
+            <ToggleButton value="radial">Radial</ToggleButton>
+            <ToggleButton value="elliptical">Elliptical</ToggleButton>
+            <ToggleButton value="conic">Conic</ToggleButton>
+          </ToggleButtonGroup>
+          <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} />} label="Repeating" sx={{ mb: 0.5 }} />
+          <Divider sx={{ mb: 2 }}></Divider>
+          {(type === 'linear' || type === 'conic') && (
+            <Box display="flex" alignItems="center" gap={2} mb={2}>
+              <Typography>Angle</Typography>
+              <Slider value={angle} onChange={(_, val) => typeof val === 'number' && onAngleChange(val)} min={0} max={360} step={10} valueLabelDisplay="auto" aria-label="Gradient angle slider" sx={{ flexGrow: 1 }} />
+              <label style={visuallyHidden} htmlFor="gradient-angle">
+                Angle
+              </label>
+              <TextField
+                type="number"
+                size="small"
+                value={angle}
+                id="gradient-angle"
+                aria-label="Gradient angle"
+                inputProps={{ min: 0, max: 360 }}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value);
+                  if (!isNaN(v)) onAngleChange(Math.max(0, Math.min(360, v)));
+                }}
+                sx={{ width: 120 }}
+              />
             </Box>
           )}
-          {onRadialSizeChange && (
-            <TextField select fullWidth size="small" label="Size" id="radial-size-select" value={radialSize} onChange={(e) => onRadialSizeChange(e.target.value)}>
-              <MenuItem value="None" aria-label="No radial size">
-                None
-              </MenuItem>
-              <MenuItem value="farthest-side" aria-label="Farthest side">
-                farthest-side
-              </MenuItem>
-              <MenuItem value="farthest-corner" aria-label="Farthest corner">
-                farthest-corner
-              </MenuItem>
-            </TextField>
+          {type === 'conic' && (
+            <Box display="flex" alignItems="center" gap={2}>
+              <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic X position' }} sx={{ width: '50%' }} />
+              <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic Y position' }} sx={{ width: '50%' }} />
+              <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} inputProps={{ 'aria-label': 'Toggle repeating gradient' }} />} label="Repeating" sx={{ mb: 0.5 }} />
+            </Box>
           )}
-        </>
-      )}
+          {(type === 'radial' || type === 'elliptical') && (
+            <>
+              <Typography>Direction</Typography>
+              {onRadialDirectionChange && (
+                <Box display="flex" flexDirection="column" gap={0} mb={3}>
+                  {radialDirections.map((row, i) => (
+                    <ToggleButtonGroup key={i} value={radialDirection} exclusive onChange={(_, val) => val && onRadialDirectionChange(val)} size="small" fullWidth>
+                      {row.map((dir, j) => (
+                        <ToggleButton key={dir} value={dir} sx={{ flexGrow: 1 }}>
+                          {directionLabels[i][j]}
+                        </ToggleButton>
+                      ))}
+                    </ToggleButtonGroup>
+                  ))}
+                </Box>
+              )}
+              {onRadialSizeChange && (
+                <TextField select fullWidth size="small" label="Size" id="radial-size-select" value={radialSize} onChange={(e) => onRadialSizeChange(e.target.value)}>
+                  <MenuItem value="None" aria-label="No radial size">
+                    None
+                  </MenuItem>
+                  <MenuItem value="farthest-side" aria-label="Farthest side">
+                    farthest-side
+                  </MenuItem>
+                  <MenuItem value="farthest-corner" aria-label="Farthest corner">
+                    farthest-corner
+                  </MenuItem>
+                </TextField>
+              )}
+            </>
+          )}
+        </TabPanel>
+        <TabPanel value="2" sx={{ px: 0 }}>
+          Item Two
+        </TabPanel>
+      </TabContext>
     </>
   );
 };

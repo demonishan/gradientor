@@ -114,7 +114,7 @@ background: ${gradientCSS};`;
   return (
     <>
       <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" rows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
-      <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Max compatibility" />
+      <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Compatibility" />
       <Box display="flex" justifyContent="flex-end" mt={1.5} gap={1}>
         <Button variant="text" color="primary" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} sx={{ minWidth: 'auto' }} aria-label="Add to favorites">
           <FavoriteBorderIcon />
