@@ -1,5 +1,5 @@
 import Favorite from './Favorite';
-import { AppBar, Toolbar, IconButton, List, ListItemButton, ListItemText, Badge } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Badge, Button, Box } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MenuIcon from '@mui/icons-material/Menu';
 import Menu from '@mui/material/Menu';
@@ -71,13 +71,13 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
     <AppBar position="static" color={darkMode ? 'primary' : 'default'}>
       <Toolbar>
         <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
-        <List sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1 }}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1 }}>
           {menuItems.map((item, idx) => (
-            <ListItemButton component="button" key={idx} sx={{ flexGrow: 0 }} ref={item.buttonRef} onClick={item.onClick}>
-              <ListItemText primary={item.label} />
-            </ListItemButton>
+            <Button component="button" key={idx} sx={{ flexGrow: 0 }} ref={item.buttonRef} onClick={item.onClick}>
+              {item.label}
+            </Button>
           ))}
-        </List>
+        </Box>
         <IconButton onClick={handleToggleDarkMode} component="button" ref={darkModeButtonRef} aria-label="Toggle dark mode">
           {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
         </IconButton>

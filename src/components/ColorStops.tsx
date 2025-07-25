@@ -1,10 +1,12 @@
 import React from 'react';
+import { visuallyHidden } from '@mui/utils';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import Radio from '@mui/material/Radio';
 import type { ColorStop } from '../App';
+import { RadioGroup } from '@mui/material';
 interface ColorStopsListProps {
   colorStops: ColorStop[];
   selectedStopId: string;
@@ -22,10 +24,13 @@ const ColorStopsList: React.FC<ColorStopsListProps> = ({ colorStops, selectedSto
     }
   };
   return (
-    <Box display="flex" flexDirection="column" gap={1.75}>
+    <RadioGroup sx={{ display: 'flex', flexDirection: 'column', gap: 1.75 }}>
       {sortedStops.map((stop) => (
         <Box key={stop.id} display="flex" alignItems="center" gap={1}>
-          <Radio checked={selectedStopId === stop.id} onChange={() => onStopSelect(stop.id)} aria-label={`Select color stop ${stop.id}`} sx={{ borderRadius: '4px', p: 1, backgroundColor: stop.color }} />
+          <label style={visuallyHidden} htmlFor={`color-stop-label-${stop.id}`}>
+            Select color stop {stop.id}
+          </label>
+          <Radio id={`color-stop-label-${stop.id}`} checked={selectedStopId === stop.id} onChange={() => onStopSelect(stop.id)} aria-labelledby={`color-stop-label-${stop.id}`} sx={{ borderRadius: '4px', p: 1, backgroundColor: stop.color }} />
           <TextField label="Hex" size="small" value={stop.color.toUpperCase()} onChange={(e) => onUpdateStop(stop.id, { color: e.target.value })} onClick={(e) => e.stopPropagation()} sx={{ flexGrow: 1 }} />
           <TextField label="Position" size="small" type="number" value={stop.position.toFixed(1)} onChange={(e) => handlePositionChange(stop.id, e.target.value)} onClick={(e) => e.stopPropagation()} sx={{ flexGrow: 1 }} />
           {colorStops.length > 2 && (
@@ -35,7 +40,7 @@ const ColorStopsList: React.FC<ColorStopsListProps> = ({ colorStops, selectedSto
           )}
         </Box>
       ))}
-    </Box>
+    </RadioGroup>
   );
 };
 export default ColorStopsList;

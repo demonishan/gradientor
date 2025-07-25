@@ -139,14 +139,14 @@ const App = () => {
       <main>
         <Container>
           <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
-            <Grid mb={2} size={{ xs: 12, md: 6 }}>
+            <Grid mb={2} size={{ xs: 12, md: 8 }}>
               <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                 <CardContent sx={{ flex: 1 }}>
                   <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
                 </CardContent>
               </Card>
             </Grid>
-            <Grid mb={2} size={{ xs: 12, md: 6 }}>
+            <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <CSSOutput gradient={gradient} showSnackbar={showSnackbar} />

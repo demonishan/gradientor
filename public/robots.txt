@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /utility/gradientor/private/
+Allow: /utility/gradientor/
+Sitemap: https://www.666de666.com/utility/gradientor/sitemap.xml
