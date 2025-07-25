@@ -21,6 +21,12 @@
 • Instant CSS Clipboard Copy
   - Provides a one-click function to copy the generated CSS code for any gradient.
 
+• Hue Adjustment Slider
+  - Allows users to fine-tune the hue of all gradient colors with a dedicated slider, enabling quick color harmonization and creative effects.
+
+• Saturation Adjustment Slider
+  - Lets users increase or decrease the saturation of all gradient colors with a dedicated slider, enabling vivid or muted gradient effects instantly.
+
 • Shareable Gradient Links
   - Generates unique, shareable links for each created gradient.
 

@@ -1,10 +1,8 @@
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions } from '@mui/material';
-import Backdrop from '@mui/material/Backdrop';
-import { Drawer } from '@mui/material';
-import { FAVORITES_KEY } from '../modules/favoriteUtils';
-import type { GradientFavorite, ColorStop } from '../modules/favoriteUtils';
+import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Backdrop, Drawer } from '@mui/material';
+import { FAVORITES_KEY } from '../modules';
+import type { GradientFavorite, ColorStop } from '../modules';
 interface FavoriteProps {
   open: boolean;
   onClose: () => void;

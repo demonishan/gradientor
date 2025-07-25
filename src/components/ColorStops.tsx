@@ -1,12 +1,8 @@
 import React from 'react';
 import { visuallyHidden } from '@mui/utils';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
+import { Box, TextField, IconButton, Radio, RadioGroup } from '@mui/material';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
-import Radio from '@mui/material/Radio';
 import type { ColorStop } from '../App';
-import { RadioGroup } from '@mui/material';
 interface ColorStopsListProps {
   colorStops: ColorStop[];
   selectedStopId: string;

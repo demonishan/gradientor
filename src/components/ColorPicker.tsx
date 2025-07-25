@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import { ColorPicker as ReactColorPicker, useColor } from 'react-color-palette';
 import type { IColor } from 'react-color-palette';
 import 'react-color-palette/dist/css/rcp.css';
-import type { ColorStop } from '../App';
+import type { ColorStop } from '../modules';
 import { TextField, Grid, Typography } from '@mui/material';
-
-interface ColorPickerProps {
+export interface ColorPickerProps {
   selectedStop: ColorStop | undefined;
   onColorChange: (color: string) => void;
   onOpacityChange: (opacity: number) => void;
 }
-const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, onOpacityChange }) => {
+export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, onOpacityChange }) => {
   const [color, setColor] = useColor('#ffffff');
   const hexToColor = (hex: string, alpha: number = 1): IColor => {
     const r = parseInt(hex.slice(1, 3), 16),
@@ -52,7 +51,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
         size="small"
         fullWidth
         value={color.hex}
-        sx={{ mt: 3, mb: 2.5}}
+        sx={{ mt: 3, mb: 2.5 }}
         onChange={(e) => {
           const hex = e.target.value;
           if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
@@ -135,4 +134,3 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, 
     </>
   );
 };
-export default ColorPicker;

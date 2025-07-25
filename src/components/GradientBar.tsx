@@ -17,8 +17,8 @@ const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onS
   };
   const generateGradientCSS = useCallback(() => {
     const stops = gradient.colorStops
-      .sort((a, b) => a.position - b.position)
-      .map((stop) => {
+      .sort((a: ColorStop, b: ColorStop) => a.position - b.position)
+      .map((stop: ColorStop) => {
         const colorValue = stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color;
         return `${colorValue} ${stop.position}%`;
       })
@@ -58,8 +58,8 @@ const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onS
   };
   return (
     <div className="gradient-bar-container">
-      <div ref={barRef} className="gradient-bar" style={{ background: generateGradientCSS() }} onClick={handleBarClick} role="slider" aria-label="Gradient bar - click to add color stops" aria-valuenow={selectedStopId ? gradient.colorStops.find((s) => s.id === selectedStopId)?.position ?? 0 : 0} aria-valuemin={0} aria-valuemax={100} tabIndex={0}>
-        {gradient.colorStops.map((stop) => (
+      <div ref={barRef} className="gradient-bar" style={{ background: generateGradientCSS() }} onClick={handleBarClick} role="slider" aria-label="Gradient bar - click to add color stops" aria-valuenow={selectedStopId ? gradient.colorStops.find((s: ColorStop) => s.id === selectedStopId)?.position ?? 0 : 0} aria-valuemin={0} aria-valuemax={100} tabIndex={0}>
+        {gradient.colorStops.map((stop: ColorStop) => (
           <div key={stop.id} className={`color-stop ${selectedStopId === stop.id ? 'selected' : ''}`} style={{ left: `${stop.position}%`, backgroundColor: stop.color }} onClick={handleStopClick} onMouseDown={(e) => handleStopMouseDown(e, stop.id)} role="button" aria-label={`Color stop at ${stop.position}% with color ${stop.color}`} aria-pressed={selectedStopId === stop.id} tabIndex={0} />
         ))}
       </div>

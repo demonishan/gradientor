@@ -1,12 +1,12 @@
 import { Box } from '@mui/material';
-import type { GradientConfig } from '../App';
+import type { GradientConfig, ColorStop } from '../App';
 interface GradientPreviewProps {
   gradient: GradientConfig;
 }
 const GradientPreview: React.FC<GradientPreviewProps> = ({ gradient }) => {
   const stops = gradient.colorStops
-    .sort((a, b) => a.position - b.position)
-    .map((s) => `rgba(${parseInt(s.color.slice(1, 3), 16)},${parseInt(s.color.slice(3, 5), 16)},${parseInt(s.color.slice(5, 7), 16)},${s.opacity}) ${s.position}%`)
+    .sort((a: ColorStop, b: ColorStop) => a.position - b.position)
+    .map((s: ColorStop) => `rgba(${parseInt(s.color.slice(1, 3), 16)},${parseInt(s.color.slice(3, 5), 16)},${parseInt(s.color.slice(5, 7), 16)},${s.opacity}) ${s.position}%`)
     .join(', ');
   let bg = '';
   if (gradient.type === 'radial' || gradient.type === 'elliptical') {

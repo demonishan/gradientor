@@ -8,8 +8,8 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import logo from '../assets/logo.webp';
 import React from 'react';
-import useDebounce from '../helpers/useDebounce';
-import { generateRandomGradient } from '../modules/randomGradient';
+import { useDebounce } from '../helpers';
+import { generateRandomGradient } from '../modules';
 import type { GradientConfig } from '../App';
 interface HeaderProps {
   darkMode: boolean;

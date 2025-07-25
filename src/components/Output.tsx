@@ -1,19 +1,12 @@
-import { generateShareLink } from '../modules/share';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import React, { useState, useCallback, useRef } from 'react';
-import TextField from '@mui/material/TextField';
+import { useDebounce, useClipboard } from '../helpers';
+import { generateShareLink, addFavorite, exportCSS, exportPNG, exportSVG } from '../modules';
 import type { GradientConfig } from '../App';
-import type { GradientShareConfig } from '../modules/share';
-import useDebounce from '../helpers/useDebounce';
-import useClipboard from '../helpers/useClipboard';
-import { Box, Menu, MenuItem } from '@mui/material';
+import type { GradientShareConfig, GradientFavorite } from '../modules';
+import { Box, Button, Checkbox, FormControlLabel, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { addFavorite } from '../modules/favoriteUtils';
-import type { GradientFavorite } from '../modules/favoriteUtils';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { exportCSS, exportPNG, exportSVG } from '../modules/export';
+import TextField from '@mui/material/TextField';
 interface OutputProps {
   gradient: GradientConfig;
 }

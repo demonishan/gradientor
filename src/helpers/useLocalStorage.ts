@@ -1,8 +1,9 @@
 /**
  * React hook to persist state in localStorage.
- * @param key Storage key
- * @param initialValue Initial value if nothing is stored
- * @returns Tuple of value and setter function
+ * @template T State type
+ * @param {string} key Storage key
+ * @param {T} initialValue Initial value if nothing is stored
+ * @returns {[T, (v: T) => void]} Tuple of value and setter function
  */
 import { useState } from 'react';
 function useLocalStorage<T>(key: string, initialValue: T): [T, (v: T) => void] {

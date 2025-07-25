@@ -1,6 +1,5 @@
-// Destructure hue and onHueChange from props
-// ...existing code...
-import { Divider, Box, Typography, TextField, MenuItem } from '@mui/material';
+import React from 'react';
+import { Divider, Box, Typography, TextField, MenuItem, Checkbox, FormControlLabel, Slider, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -14,13 +13,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowUpwardLeftIcon from '@mui/icons-material/NorthWest';
 import ArrowUpwardRightIcon from '@mui/icons-material/NorthEast';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import React from 'react';
-import Slider from '@mui/material/Slider';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 interface ControlsProps {
   type: 'linear' | 'radial' | 'conic' | 'elliptical';
   angle: number;
@@ -32,6 +25,8 @@ interface ControlsProps {
   onRadialSizeChange?: (size: string) => void;
   hue?: number;
   onHueChange?: (hue: number) => void;
+  saturation?: number;
+  onSaturationChange?: (saturation: number) => void;
 }
 const Controls: React.FC<
   ControlsProps & {
@@ -41,7 +36,7 @@ const Controls: React.FC<
     onRepeatingChange?: (repeating: boolean) => void;
   }
 > = (props) => {
-  const { type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange, radialSize = 'farthest-side', onRadialSizeChange, repeating = false, onRepeatingChange, hue = 0, onHueChange } = props;
+  const { type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange, radialSize = 'farthest-side', onRadialSizeChange, repeating = false, onRepeatingChange, hue = 0, onHueChange, saturation = 0, onSaturationChange } = props;
   // ...existing code...
   const radialDirections = [
     ['at left top', 'at top', 'at right top'],
@@ -143,26 +138,46 @@ const Controls: React.FC<
           )}
         </TabPanel>
         <TabPanel value="2" sx={{ px: 0 }}>
-          <Box display="flex" alignItems="center" gap={2} mb={2}>
-            <Typography sx={{ ml: 2 }}>Hue</Typography>
-            <Slider value={typeof hue === 'number' ? hue : 0} onChange={(_, val) => typeof val === 'number' && onHueChange && onHueChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient hue slider" sx={{ flexGrow: 1, ml: 2, borderRadius: '4px', background: 'linear-gradient(to right, hsl( 0, 100%, 50%) 0%, hsl( 60, 100%, 50%) 16.67%, hsl(120, 100%, 50%) 33.33%, hsl(180, 100%, 50%) 50%, hsl(240, 100%, 50%) 66.67%, hsl(320, 100%, 50%) 83.33%, hsl(360, 100%, 50%) 100% );' }} />
-            <label style={visuallyHidden} htmlFor="gradient-hue">
-              Hue
-            </label>
+          <Box display="flex" alignItems="flex-end" justifyContent="space-between" gap={2} mb={1}>
+            <Typography>Hue</Typography>
             <TextField
               type="number"
               size="small"
-              value={typeof hue === 'number' ? hue : 0}
               id="gradient-hue"
               aria-label="Gradient hue"
+              value={typeof hue === 'number' ? hue : 0}
               inputProps={{ min: -100, max: 100 }}
               onChange={(e) => {
                 const v = parseInt(e.target.value);
                 if (!isNaN(v) && onHueChange) onHueChange(Math.max(-100, Math.min(100, v)));
               }}
-              sx={{ width: 120, ml: 2 }}
+              sx={{ width: 80, ml: 2 }}
             />
           </Box>
+          <Slider value={typeof hue === 'number' ? hue : 0} onChange={(_, val) => typeof val === 'number' && onHueChange && onHueChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient hue slider" sx={{ borderRadius: '4px', mb: 2, background: 'linear-gradient(to right, hsl( 0, 100%, 50%) 0%, hsl( 60, 100%, 50%) 16.67%, hsl(120, 100%, 50%) 33.33%, hsl(180, 100%, 50%) 50%, hsl(240, 100%, 50%) 66.67%, hsl(320, 100%, 50%) 83.33%, hsl(360, 100%, 50%) 100% );' }} />
+          <label style={visuallyHidden} htmlFor="gradient-hue">
+            Hue
+          </label>
+          <Box display="flex" alignItems="flex-end" justifyContent="space-between" gap={2} mb={1}>
+            <Typography>Saturation</Typography>
+            <label style={visuallyHidden} htmlFor="gradient-saturation">
+              Saturation
+            </label>
+            <TextField
+              type="number"
+              size="small"
+              value={typeof saturation === 'number' ? saturation : 0}
+              id="gradient-saturation"
+              aria-label="Gradient saturation"
+              inputProps={{ min: -100, max: 100 }}
+              onChange={(e) => {
+                const v = parseInt(e.target.value);
+                if (!isNaN(v) && onSaturationChange) onSaturationChange(Math.max(-100, Math.min(100, v)));
+              }}
+              sx={{ width: 80, ml: 2 }}
+            />
+          </Box>
+          <Slider value={typeof saturation === 'number' ? saturation : 0} onChange={(_, val) => typeof val === 'number' && onSaturationChange && onSaturationChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient saturation slider" sx={{ borderRadius: '4px', mb: 2, background: 'linear-gradient(to right, hsl(0,0%,50%) 0%, hsl(0,100%,50%) 100%)' }} />
         </TabPanel>
       </TabContext>
     </>

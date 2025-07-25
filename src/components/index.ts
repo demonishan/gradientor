@@ -1,4 +1,4 @@
-export { default as ColorPicker } from './ColorPicker';
+export { ColorPicker } from './ColorPicker';
 export { default as ColorStopsList } from './ColorStops';
 export { default as Controls } from './Controls';
 export { default as Favorite } from './Favorite';

@@ -1,22 +1,20 @@
 import './App.css';
+import { ColorPicker } from './components/ColorPicker';
 import { Container } from '@mui/material';
-import { parseShareLink } from './modules/share';
+import { parseShareLink, adjustHue, adjustSaturation } from './modules';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useLocalStorage, useSnackbar } from './helpers';
 import { useState, useMemo, useEffect } from 'react';
-import { adjustHue } from './modules/hue';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import ColorPicker from './components/ColorPicker';
 import ColorStopsList from './components/ColorStops';
-import Output from './components/Output';
+import Controls from './components/Controls';
 import GradientAnimation from './modules/background.tsx';
 import GradientBar from './components/GradientBar';
-import Controls from './components/Controls';
 import GradientPreview from './components/GradientPreview';
 import Grid from '@mui/material/Grid';
 import Header from './components/Header';
-import useLocalStorage from './helpers/useLocalStorage';
-import useSnackbar from './helpers/useSnackbar';
+import Output from './components/Output';
 import Snackbar from '@mui/material/Snackbar';
 export interface ColorStop {
   id: string;
@@ -35,6 +33,7 @@ export interface GradientConfig {
 }
 const App = () => {
   const [hue, setHue] = useState(0);
+  const [saturation, setSaturation] = useState(0);
   const [gradient, setGradient] = useState<GradientConfig>({
     type: 'linear',
     angle: 90,
@@ -72,6 +71,7 @@ const App = () => {
   const handleSetGradient = (g: GradientConfig) => {
     setGradient(g);
     setHue(0);
+    setSaturation(0);
     const first = g.colorStops.find((stop) => stop.id === '1');
     setSelectedStopId(first ? '1' : g.colorStops[0]?.id || '');
   };
@@ -93,6 +93,7 @@ const App = () => {
       const oldStop = gradient.colorStops.find((stop) => stop.id === id);
       if (oldStop && oldStop.color !== updates.color) {
         setHue(0);
+        setSaturation(0);
       }
     }
     setGradient((prev) => {
@@ -120,6 +121,17 @@ const App = () => {
       colorStops: adjustHue(
         prev.colorStops.map((cs) => cs.color),
         newHue,
+      ).map((color, i) => ({ ...prev.colorStops[i], color })),
+    }));
+  };
+  // Update all colors when saturation changes
+  const handleSaturationChange = (newSaturation: number) => {
+    setSaturation(newSaturation);
+    setGradient((prev) => ({
+      ...prev,
+      colorStops: adjustSaturation(
+        prev.colorStops.map((cs) => cs.color),
+        newSaturation,
       ).map((color, i) => ({ ...prev.colorStops[i], color })),
     }));
   };
@@ -195,7 +207,7 @@ const App = () => {
             <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
-                  <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} hue={hue} onHueChange={handleHueChange} />
+                  <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} hue={hue} onHueChange={handleHueChange} saturation={saturation} onSaturationChange={handleSaturationChange} />
                 </CardContent>
               </Card>
             </Grid>

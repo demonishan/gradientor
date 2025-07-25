@@ -11,7 +11,13 @@ export const adjustHue = (hexColors: string[], hueShift: number): string[] =>
     h = (h + hueShift + 360) % 360;
     return hslToHex(h, s, l);
   });
-const hexToHsl = (hex: string) => {
+
+/**
+ * Converts a hex color to HSL.
+ * @param hex Hex color string
+ * @returns HSL object
+ */
+const hexToHsl = (hex: string): { h: number; s: number; l: number } => {
   hex = hex.replace(/^#/, '');
   const r = parseInt(hex.substring(0, 2), 16) / 255;
   const g = parseInt(hex.substring(2, 4), 16) / 255;
@@ -39,6 +45,14 @@ const hexToHsl = (hex: string) => {
   }
   return { h, s: s * 100, l: l * 100 };
 };
+
+/**
+ * Converts HSL to hex color.
+ * @param h Hue
+ * @param s Saturation
+ * @param l Lightness
+ * @returns Hex color string
+ */
 const hslToHex = (h: number, s: number, l: number): string => {
   s /= 100;
   l /= 100;

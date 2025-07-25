@@ -3,17 +3,34 @@
  * @param darkMode If true, uses dark colors; otherwise, uses light colors
  */
 import React, { useRef, useEffect, useMemo } from 'react';
-function generateColors(min: number, max: number) {
-  return Array.from({ length: 6 }, () => {
+
+/**
+ * Generates an array of random RGB colors.
+ * @param min Minimum value for RGB channels
+ * @param max Maximum value for RGB channels
+ * @returns Array of RGB color arrays
+ */
+const generateColors = (min: number, max: number): number[][] =>
+  Array.from({ length: 6 }, () => {
     const r = min + Math.floor(Math.random() * (max - min + 1));
     const g = min + Math.floor(Math.random() * (max - min + 1));
     const b = min + Math.floor(Math.random() * (max - min + 1));
     return [r, g, b];
   });
-}
+
+/**
+ * Props for GradientAnimation component.
+ * @property darkMode If true, uses dark colors; otherwise, uses light colors
+ */
 interface GradientAnimationProps {
   darkMode?: boolean;
 }
+
+/**
+ * Animated background gradient React component.
+ * @param props GradientAnimationProps
+ * @returns JSX.Element
+ */
 const GradientAnimation: React.FC<GradientAnimationProps> = ({ darkMode = false }) => {
   const ref = useRef<HTMLDivElement>(null);
   const colors = useMemo(() => darkMode ? generateColors(0, 99) : generateColors(180, 255), [darkMode]);
