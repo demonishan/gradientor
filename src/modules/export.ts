@@ -1,18 +1,9 @@
-/**
- * Exports a gradient as SVG, PNG, or CSS file and triggers download in browser.
- * @param gradientCSS CSS string for SVG or CSS export
- * @param filename Name of the file to download
- * @param gradient GradientConfig for PNG export
- * @param hexToRgba Function to convert hex to RGBA for PNG export
- * @param width Width of PNG export
- * @param height Height of PNG export
- */
 import type { GradientConfig } from '../App';
 
 /**
- * Exports a gradient as an SVG file and triggers download in browser.
- * @param gradientCSS CSS string for SVG background
- * @param filename Name of the file to download (default: 'gradientor.svg')
+ * Exports a CSS gradient as an SVG file and triggers a download.
+ * @param gradientCSS CSS gradient string (e.g., 'linear-gradient(...)').
+ * @param filename Name of the SVG file to download (default: 'gradientor.svg').
  */
 export function exportSVG(gradientCSS: string, filename = 'gradientor.svg') {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><style>svg{background:${gradientCSS};}</style></svg>`;
@@ -25,20 +16,14 @@ export function exportSVG(gradientCSS: string, filename = 'gradientor.svg') {
 }
 
 /**
- * Exports a gradient as a PNG file and triggers download in browser.
- * @param gradient GradientConfig for PNG export
- * @param hexToRgba Function to convert hex to RGBA for PNG export
- * @param filename Name of the file to download (default: 'gradientor.png')
- * @param width Width of PNG export (default: 1920)
- * @param height Height of PNG export (default: 1080)
+ * Exports a gradient as a PNG image and triggers a download.
+ * @param gradient Gradient configuration object.
+ * @param hexToRgba Function to convert hex color and opacity to RGBA string.
+ * @param filename Name of the PNG file to download (default: 'gradientor.png').
+ * @param width Width of the PNG image (default: 1920).
+ * @param height Height of the PNG image (default: 1080).
  */
-export function exportPNG(
-  gradient: GradientConfig,
-  hexToRgba: (hex: string, opacity: number) => string,
-  filename = 'gradientor.png',
-  width = 1920,
-  height = 1080
-) {
+export function exportPNG(gradient: GradientConfig, hexToRgba: (hex: string, opacity: number) => string, filename = 'gradientor.png', width = 1920, height = 1080) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -64,9 +49,9 @@ export function exportPNG(
 }
 
 /**
- * Exports a gradient as a CSS file and triggers download in browser.
- * @param css CSS string for gradient
- * @param filename Name of the file to download (default: 'gradientor.css')
+ * Exports CSS code as a .css file and triggers a download.
+ * @param css CSS string to export.
+ * @param filename Name of the CSS file to download (default: 'gradientor.css').
  */
 export function exportCSS(css: string, filename = 'gradientor.css') {
   const wrapped = `body {\n  ${css.replace(/\n/g, '\n  ')}\n}`;

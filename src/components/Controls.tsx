@@ -27,6 +27,8 @@ interface ControlsProps {
   onHueChange?: (hue: number) => void;
   saturation?: number;
   onSaturationChange?: (saturation: number) => void;
+  lightness?: number;
+  onLightnessChange?: (lightness: number) => void;
 }
 const Controls: React.FC<
   ControlsProps & {
@@ -36,8 +38,7 @@ const Controls: React.FC<
     onRepeatingChange?: (repeating: boolean) => void;
   }
 > = (props) => {
-  const { type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange, radialSize = 'farthest-side', onRadialSizeChange, repeating = false, onRepeatingChange, hue = 0, onHueChange, saturation = 0, onSaturationChange } = props;
-  // ...existing code...
+  const { type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange, radialSize = 'farthest-side', onRadialSizeChange, repeating = false, onRepeatingChange, hue = 0, onHueChange, saturation = 0, onSaturationChange, lightness = 0, onLightnessChange } = props;
   const radialDirections = [
     ['at left top', 'at top', 'at right top'],
     ['at left', 'center', 'at right'],
@@ -54,7 +55,7 @@ const Controls: React.FC<
     const num = parseInt(value);
     if (!isNaN(num)) onConicPositionChange({ ...conicPosition, [name]: num });
   };
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = React.useState('2');
   const handleChange = (_: React.SyntheticEvent, value: string) => {
     setValue(value);
   };
@@ -178,6 +179,26 @@ const Controls: React.FC<
             />
           </Box>
           <Slider value={typeof saturation === 'number' ? saturation : 0} onChange={(_, val) => typeof val === 'number' && onSaturationChange && onSaturationChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient saturation slider" sx={{ borderRadius: '4px', mb: 2, background: 'linear-gradient(to right, hsl(0,0%,50%) 0%, hsl(0,100%,50%) 100%)' }} />
+          <Box display="flex" alignItems="flex-end" justifyContent="space-between" gap={2} mb={1}>
+            <Typography>Lightness</Typography>
+            <label style={visuallyHidden} htmlFor="gradient-lightness">
+              Lightness
+            </label>
+            <TextField
+              type="number"
+              size="small"
+              value={typeof lightness === 'number' ? lightness : 0}
+              id="gradient-lightness"
+              aria-label="Gradient lightness"
+              inputProps={{ min: -100, max: 100 }}
+              onChange={(e) => {
+                const v = parseInt(e.target.value);
+                if (!isNaN(v) && onLightnessChange) onLightnessChange(Math.max(-100, Math.min(100, v)));
+              }}
+              sx={{ width: 80, ml: 2 }}
+            />
+          </Box>
+          <Slider value={typeof lightness === 'number' ? lightness : 0} onChange={(_, val) => typeof val === 'number' && onLightnessChange && onLightnessChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient lightness slider" sx={{ borderRadius: '3px', mb: 2, background: 'linear-gradient(to right, hsl(0,100%,0%) 0%, hsl(0,100%,100%) 100%)' }} />
         </TabPanel>
       </TabContext>
     </>

@@ -6,6 +6,7 @@ export * from './background';
 export * from './export';
 export * from './favoriteUtils';
 export * from './hue';
+export * from './lightness';
 export * from './randomGradient';
 export * from './saturation';
 export * from './share';

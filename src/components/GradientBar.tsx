@@ -1,5 +1,23 @@
+/**
+ * GradientBar component
+ *
+ * Renders a horizontal gradient bar with draggable color stops.
+ * Allows adding, selecting, and updating color stops interactively.
+ *
+ * @param {GradientBarProps} props - The props for the component.
+ * @returns {JSX.Element} Gradient bar UI.
+ */
 import React, { useRef, useCallback } from 'react';
 import type { GradientConfig, ColorStop } from '../App';
+
+/**
+ * Props for GradientBar component.
+ * @property gradient - Gradient configuration object.
+ * @property selectedStopId - ID of the selected color stop.
+ * @property onStopSelect - Function to select a color stop.
+ * @property onAddStop - Function to add a color stop at a position.
+ * @property onUpdateStop - Function to update a color stop's properties.
+*/
 interface GradientBarProps {
   gradient: GradientConfig;
   selectedStopId: string;
@@ -9,45 +27,52 @@ interface GradientBarProps {
 }
 const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onStopSelect, onAddStop, onUpdateStop }) => {
   const barRef = useRef<HTMLDivElement>(null);
-  const hexToRgba = (hex: string, opacity: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${opacity.toFixed(1)})`;
-  };
-  const generateGradientCSS = useCallback(() => {
-    const stops = gradient.colorStops
-      .sort((a: ColorStop, b: ColorStop) => a.position - b.position)
-      .map((stop: ColorStop) => {
-        const colorValue = stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color;
-        return `${colorValue} ${stop.position}%`;
-      })
-      .join(', ');
-    return `linear-gradient(90deg, ${stops})`;
-  }, [gradient]);
+
+  /**
+   * Converts a hex color and opacity to an RGBA string.
+   * @param hex Hex color string.
+   * @param opacity Opacity value (0-1).
+   * @returns RGBA color string.
+   */
+  const hexToRgba = (hex: string, opacity: number) =>
+    `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, ${opacity.toFixed(1)})`;
+
+  /**
+   * Generates the CSS for the gradient bar background.
+   * @returns CSS linear-gradient string.
+   */
+  const generateGradientCSS = useCallback(() =>
+    `linear-gradient(90deg, ${gradient.colorStops
+      .sort((a, b) => a.position - b.position)
+      .map(stop => `${stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color} ${stop.position}%`)
+      .join(', ')})`,
+    [gradient]
+  );
+
+  /**
+   * Handles click on the gradient bar to add a new color stop.
+   */
   const handleBarClick = (e: React.MouseEvent) => {
-    if (e.target === barRef.current) {
-      if (!barRef.current) return;
-      const rect = barRef.current.getBoundingClientRect();
-      const position = ((e.clientX - rect.left) / rect.width) * 100;
-      const clampedPosition = Math.max(0, Math.min(100, position));
-      onAddStop(clampedPosition);
-    }
+    if (e.target !== barRef.current || !barRef.current) return;
+    const rect = barRef.current.getBoundingClientRect();
+    const position = ((e.clientX - rect.left) / rect.width) * 100;
+    onAddStop(Math.max(0, Math.min(100, position)));
   };
   const handleStopClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
     e.preventDefault();
   };
+
+  /**
+   * Handles mouse down on a color stop for dragging.
+   */
   const handleStopMouseDown = (e: React.MouseEvent, stopId: string) => {
     e.preventDefault();
-    e.stopPropagation();
     onStopSelect(stopId);
     const handleMouseMove = (e: MouseEvent) => {
       if (!barRef.current) return;
       const rect = barRef.current.getBoundingClientRect();
       const position = ((e.clientX - rect.left) / rect.width) * 100;
-      const clampedPosition = Math.max(0, Math.min(100, position));
-      onUpdateStop(stopId, { position: clampedPosition });
+      onUpdateStop(stopId, { position: Math.max(0, Math.min(100, position)) });
     };
     const handleMouseUp = () => {
       document.removeEventListener('mousemove', handleMouseMove);

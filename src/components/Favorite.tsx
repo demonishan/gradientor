@@ -1,8 +1,25 @@
+/**
+ * Favorite component
+ *
+ * Displays a drawer with a list of favorite gradients stored in localStorage.
+ * Allows loading and removing gradients, and shows a preview for each.
+ *
+ * @param {FavoriteProps} props - The props for the component.
+ * @returns {JSX.Element} Drawer UI for managing favorite gradients.
+ */
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Backdrop, Drawer } from '@mui/material';
 import { FAVORITES_KEY } from '../modules';
 import type { GradientFavorite, ColorStop } from '../modules';
+
+/**
+ * Props for Favorite component.
+ * @property open - Whether the drawer is open.
+ * @property onClose - Function to close the drawer.
+ * @property showSnackbar - Function to show a snackbar message.
+ * @property onGradientSelect - Function to load a selected gradient.
+ */
 interface FavoriteProps {
   open: boolean;
   onClose: () => void;
@@ -14,27 +31,28 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
   React.useEffect(() => {
     const fetchGradients = () => {
       try {
-        const item = window.localStorage.getItem(FAVORITES_KEY);
-        const favs: GradientFavorite[] = item ? JSON.parse(item) : [];
-        setGradients(Array.isArray(favs) ? favs : []);
+        setGradients(JSON.parse(window.localStorage.getItem(FAVORITES_KEY) || '[]'));
       } catch {
         setGradients([]);
       }
     };
     fetchGradients();
     window.addEventListener('favorites-updated', fetchGradients);
-    return () => {
-      window.removeEventListener('favorites-updated', fetchGradients);
-    };
+    return () => window.removeEventListener('favorites-updated', fetchGradients);
   }, []);
   const handleRemove = (idx: number) => {
-    const item = window.localStorage.getItem(FAVORITES_KEY);
-    const favs: GradientFavorite[] = item ? JSON.parse(item) : [];
+    const favs = JSON.parse(window.localStorage.getItem(FAVORITES_KEY) || '[]');
     favs.splice(idx, 1);
     window.localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
     window.dispatchEvent(new Event('favorites-updated'));
     showSnackbar('Gradient removed from favorites!');
   };
+
+  /**
+   * Generates a CSS gradient string from a GradientFavorite object.
+   * @param gradient GradientFavorite object.
+   * @returns CSS gradient string.
+   */
   const generateGradientCSS = (gradient: GradientFavorite): string => {
     const stops = gradient.colorStops
       .sort((a: ColorStop, b: ColorStop) => a.position - b.position)
@@ -67,18 +85,14 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
           <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }} aria-label="close">
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ m: '1rem 1rem 0.5rem' }}>
-            Favorites
-          </Typography>
+          <Typography variant="h6" sx={{ m: '1rem 1rem 0.5rem' }}>Favorites</Typography>
           <List sx={{ overflowY: 'auto', flexGrow: 1, p: 0 }}>
             {gradients.map((g, idx) => (
               <ListItem key={idx} sx={{ p: 0 }}>
                 <Card sx={{ width: '100%', m: '0.5rem 1rem' }}>
-                  <CardMedia style={{ height: '7.5rem', background: generateGradientCSS(g) }}></CardMedia>
+                  <CardMedia style={{ height: '7.5rem', background: generateGradientCSS(g) }} />
                   <CardContent>
-                    <Typography variant="subtitle2" gutterBottom sx={{ textTransform: 'capitalize' }}>
-                      {g.type} Gradient
-                    </Typography>
+                    <Typography variant="subtitle2" gutterBottom sx={{ textTransform: 'capitalize' }}>{g.type} Gradient</Typography>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                       {g.colorStops.map((stop, i) => (
                         <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -97,29 +111,20 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
                         showSnackbar('Gradient loaded from favorites!');
                         onClose();
                       }}
-                    >
-                      Load
-                    </Button>
+                    >Load</Button>
                     <Button
                       size="small"
-                      color='error'
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemove(idx);
-                      }}
-                    >
-                      Remove
-                    </Button>
+                      color="error"
+                      onClick={() => handleRemove(idx)}
+                    >Remove</Button>
                   </CardActions>
                 </Card>
               </ListItem>
             ))}
-            <Typography sx={{ fontSize: '0.8rem', p: 0.5, textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>
-              The favorites are stored in the local storage,
-              <br />
-              so they may not persist across sessions.
-            </Typography>
           </List>
+          <Typography sx={{ fontSize: '0.8rem', p: 0.5, textAlign: 'center', fontStyle: 'italic', opacity: 0.5, m: 0 }}>
+            The favorites are stored in the local storage,<br />so they may not persist across sessions.
+          </Typography>
         </Box>
       </Drawer>
     </>

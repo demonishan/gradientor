@@ -14,9 +14,6 @@ function useSnackbar(): [boolean, string, (msg: string) => void, () => void] {
     setMessage(msg);
     setOpen(true);
   }, []);
-  /**
-   * Hides the snackbar.
-   */
   const hide = useCallback(() => setOpen(false), []);
   return [open, message, show, hide];
 }

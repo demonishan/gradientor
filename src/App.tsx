@@ -1,13 +1,13 @@
 import './App.css';
 import { ColorPicker } from './components/ColorPicker';
 import { Container } from '@mui/material';
-import { parseShareLink, adjustHue, adjustSaturation } from './modules';
+import { parseShareLink, adjustHue, adjustSaturation, adjustLightness } from './modules';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useLocalStorage, useSnackbar } from './helpers';
 import { useState, useMemo, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import ColorStopsList from './components/ColorStops';
+import ColorStops from './components/ColorStops';
 import Controls from './components/Controls';
 import GradientAnimation from './modules/background.tsx';
 import GradientBar from './components/GradientBar';
@@ -34,6 +34,7 @@ export interface GradientConfig {
 const App = () => {
   const [hue, setHue] = useState(0);
   const [saturation, setSaturation] = useState(0);
+  const [lightness, setLightness] = useState(0);
   const [gradient, setGradient] = useState<GradientConfig>({
     type: 'linear',
     angle: 90,
@@ -72,6 +73,7 @@ const App = () => {
     setGradient(g);
     setHue(0);
     setSaturation(0);
+    setLightness(0);
     const first = g.colorStops.find((stop) => stop.id === '1');
     setSelectedStopId(first ? '1' : g.colorStops[0]?.id || '');
   };
@@ -94,6 +96,7 @@ const App = () => {
       if (oldStop && oldStop.color !== updates.color) {
         setHue(0);
         setSaturation(0);
+        setLightness(0);
       }
     }
     setGradient((prev) => {
@@ -132,6 +135,17 @@ const App = () => {
       colorStops: adjustSaturation(
         prev.colorStops.map((cs) => cs.color),
         newSaturation,
+      ).map((color, i) => ({ ...prev.colorStops[i], color })),
+    }));
+  };
+  // Update all colors when lightness changes
+  const handleLightnessChange = (newLightness: number) => {
+    setLightness(newLightness);
+    setGradient((prev) => ({
+      ...prev,
+      colorStops: adjustLightness(
+        prev.colorStops.map((cs) => cs.color),
+        newLightness,
       ).map((color, i) => ({ ...prev.colorStops[i], color })),
     }));
   };
@@ -200,14 +214,33 @@ const App = () => {
             <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
-                  <ColorStopsList colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
+                  <ColorStops colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
                 </CardContent>
               </Card>
             </Grid>
             <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
-                  <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} hue={hue} onHueChange={handleHueChange} saturation={saturation} onSaturationChange={handleSaturationChange} />
+                  <Controls
+                    type={gradient.type}
+                    angle={gradient.angle}
+                    onTypeChange={updateGradientType}
+                    onAngleChange={updateGradientAngle}
+                    conicPosition={gradient.conicPosition}
+                    onConicPositionChange={updateConicPosition}
+                    radialDirection={gradient.radialDirection}
+                    onRadialDirectionChange={updateRadialDirection}
+                    radialSize={gradient.radialSize}
+                    onRadialSizeChange={updateRadialSize}
+                    repeating={gradient.repeating}
+                    onRepeatingChange={updateRepeating}
+                    hue={hue}
+                    onHueChange={handleHueChange}
+                    saturation={saturation}
+                    onSaturationChange={handleSaturationChange}
+                    lightness={lightness}
+                    onLightnessChange={handleLightnessChange}
+                  />
                 </CardContent>
               </Card>
             </Grid>

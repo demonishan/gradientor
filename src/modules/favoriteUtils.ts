@@ -31,11 +31,6 @@ export type GradientFavorite = {
 };
 
 /**
- * Key for storing favorites in localStorage.
- */
-export const FAVORITES_KEY = 'gradientor-favorites';
-
-/**
  * Adds a gradient configuration to favorites in localStorage and dispatches an update event.
  * @param gradient GradientFavorite object to add
  */
@@ -46,3 +41,8 @@ export function addFavorite(gradient: GradientFavorite) {
   window.localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs.slice(0, 50)));
   window.dispatchEvent(new Event('favorites-updated'));
 }
+
+/**
+ * Key for storing favorites in localStorage.
+ */
+export const FAVORITES_KEY = 'gradientor-favorites';

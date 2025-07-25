@@ -27,6 +27,9 @@
 - Saturation Adjustment Slider
   - Lets users increase or decrease the saturation of all gradient colors with a dedicated slider, enabling vivid or muted gradient effects instantly.
 
+- Lightness Adjustment Slider
+  - Allows users to adjust the brightness and darkness of all gradient colors through a dedicated slider, granting immediate control over the gradients' luminosity and contrast.
+
 - Shareable Gradient Links
   - Generates unique, shareable links for each created gradient.
 
