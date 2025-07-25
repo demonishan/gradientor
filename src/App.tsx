@@ -1,5 +1,6 @@
 import './App.css';
 import { ColorPicker } from './components/ColorPicker';
+import Box from '@mui/material/Box';
 import { Container } from '@mui/material';
 import { Footer } from './components';
 import { parseShareLink, adjustHue, adjustSaturation, adjustLightness } from './modules';
@@ -10,7 +11,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorStops from './components/ColorStops';
 import Controls from './components/Controls';
-import GradientAnimation from './modules/background.tsx';
+
 import GradientBar from './components/GradientBar';
 import GradientPreview from './components/GradientPreview';
 import Grid from '@mui/material/Grid';
@@ -160,32 +161,25 @@ const App = () => {
       createTheme({
         palette: {
           mode: darkMode ? 'dark' : 'light',
-          primary: { main: '#9e9e9e' },
+          primary: { main: '#fb8c00', light: '#ffa726', dark: '#ffb74d' },
+          secondary: { main: '#ff5722', light: '#e64a19', dark: '#ff8a65' },
+          background: {
+            default: darkMode ? '#121212' : '#cccccc',
+            paper: darkMode ? '#1e1e1e' : '#f7f7f7',
+          },
         },
         typography: {
           fontFamily: `'Poppins', sans-serif`,
-        },
-        components: {
-          MuiCard: {
-            styleOverrides: {
-              root: {
-                borderRadius: 8,
-                backgroundColor: darkMode ? '#121212' : '#eee',
-                marginBottom: '-0.5rem',
-              },
-            },
-          },
         },
       }),
     [darkMode],
   );
   return (
-    <>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Box sx={{ bgcolor: theme.palette.background.default, minHeight: '100vh' }}>
         <style>{darkMode ? '::-webkit-scrollbar-thumb{background:#333}::-webkit-scrollbar-track{background:#777}' : '::-webkit-scrollbar-thumb{background:#ddd}::-webkit-scrollbar-track{background:#ccc}'}</style>
-        <GradientAnimation darkMode={darkMode} />
-        <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
         <Snackbar open={snackbarOpen} autoHideDuration={2500} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
         <GradientPreview gradient={gradient} />
         <main>
           <Container>
@@ -231,8 +225,8 @@ const App = () => {
           </Container>
         </main>
         <Footer />
-      </ThemeProvider>
-    </>
+      </Box>
+    </ThemeProvider>
   );
 };
 export default App;

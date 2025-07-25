@@ -55,7 +55,7 @@ const Controls: React.FC<
     const num = parseInt(value);
     if (!isNaN(num)) onConicPositionChange({ ...conicPosition, [name]: num });
   };
-  const [value, setValue] = React.useState('2');
+  const [value, setValue] = React.useState('1');
   const handleChange = (_: React.SyntheticEvent, value: string) => {
     setValue(value);
   };

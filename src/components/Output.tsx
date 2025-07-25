@@ -109,13 +109,13 @@ background: ${gradientCSS};`;
       <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" rows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
       <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Compatibility" />
       <Box display="flex" justifyContent="flex-end" mt={1.5} gap={1}>
-        <Button variant="text" color="primary" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} sx={{ minWidth: 'auto' }} aria-label="Add to favorites">
+        <Button variant="text" color="inherit" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} sx={{ minWidth: 'auto', px: 0 }} aria-label="Add to favorites">
           <FavoriteBorderIcon />
         </Button>
-        <Button variant="text" color="primary" onClick={handleShare} component="button" ref={shareButtonRef} aria-label="Copy shareable link">
+        <Button variant="text" color="inherit" onClick={handleShare} component="button" ref={shareButtonRef} aria-label="Copy shareable link">
           Share
         </Button>
-        <Button id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" onClick={handleClick} aria-label="Export options">
+        <Button variant="text" color="inherit" id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" onClick={handleClick} aria-label="Export options">
           Export <KeyboardArrowDownIcon fontSize="small" />
         </Button>
         <Menu
@@ -132,7 +132,7 @@ background: ${gradientCSS};`;
           <MenuItem onClick={handleExportSVG}>SVG</MenuItem>
           <MenuItem onClick={handleExportCSS}>CSS</MenuItem>
         </Menu>
-        <Button variant="contained" color="primary" onClick={handleCopy} component="button" ref={copyButtonRef} aria-label="Copy CSS to clipboard">
+        <Button variant="contained" color="inherit" onClick={handleCopy} component="button" ref={copyButtonRef} aria-label="Copy CSS to clipboard">
           Copy CSS
         </Button>
       </Box>

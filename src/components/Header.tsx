@@ -56,37 +56,32 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
     showSnackbar('Random gradient generated!');
     handleMenuClose();
   }, randomButtonRef);
-  const menuItems = [
-    { label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef },
-    {
-      label: (
-        <Badge badgeContent={favoriteCount} max={99} color="primary">
-          <FavoriteBorderIcon aria-label="Open favorites" />
-        </Badge>
-      ),
-      onClick: () => setFavoriteOpen(true),
-    },
-  ];
+  const menuItems = [{ label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef }];
   return (
-    <AppBar position="static" color={darkMode ? 'primary' : 'default'}>
+    <AppBar position="static" sx={{ '--Paper-overlay': 'none !important', boxShadow: 1 }}>
       <Toolbar>
         <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1 }}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1, gap: 2 }}>
           {menuItems.map((item, idx) => (
-            <Button component="button" key={idx} sx={{ flexGrow: 0 }} ref={item.buttonRef} onClick={item.onClick}>
+            <Button component="button" color="inherit" key={idx} ref={typeof item.label === 'string' ? item.buttonRef : undefined} onClick={item.onClick} sx={{ minWidth: 'auto' }} aria-label={typeof item.label === 'string' ? item.label : undefined}>
               {item.label}
             </Button>
           ))}
         </Box>
-        <IconButton onClick={handleToggleDarkMode} component="button" ref={darkModeButtonRef} aria-label="Toggle dark mode">
+        <Button component="button" color="inherit" onClick={() => setFavoriteOpen(true)} sx={{ minWidth: 'auto' }} aria-label="Open favorites">
+          <Badge badgeContent={favoriteCount} max={99} color="secondary">
+            <FavoriteBorderIcon aria-label="Open favorites" />
+          </Badge>
+        </Button>
+        <Button component="button" color="inherit" ref={darkModeButtonRef} onClick={handleToggleDarkMode} sx={{ minWidth: 'auto' }} aria-label="Toggle dark mode">
           {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
-        </IconButton>
+        </Button>
         <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>
           <MenuIcon />
         </IconButton>
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
           {menuItems.map((item, idx) => (
-            <MenuItem key={idx} onClick={item.onClick}>
+            <MenuItem color="inherit" key={idx} onClick={item.onClick}>
               {item.label}
             </MenuItem>
           ))}
