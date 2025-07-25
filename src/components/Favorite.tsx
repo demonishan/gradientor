@@ -1,7 +1,6 @@
 import React from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, ListItemButton, CardActions } from '@mui/material';
+import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop';
 import { Drawer } from '@mui/material';
 import { FAVORITES_KEY } from '../modules/favoriteUtils';
