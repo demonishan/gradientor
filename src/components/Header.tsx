@@ -61,7 +61,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
     {
       label: (
         <Badge badgeContent={favoriteCount} max={99} color="primary">
-          <FavoriteBorderIcon />
+          <FavoriteBorderIcon aria-label="Open favorites" />
         </Badge>
       ),
       onClick: () => setFavoriteOpen(true),
@@ -78,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
             </ListItemButton>
           ))}
         </List>
-        <IconButton onClick={handleToggleDarkMode} component="button" ref={darkModeButtonRef}>
+        <IconButton onClick={handleToggleDarkMode} component="button" ref={darkModeButtonRef} aria-label="Toggle dark mode">
           {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
         </IconButton>
         <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>

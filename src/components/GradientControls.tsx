@@ -66,6 +66,7 @@ const GradientControls: React.FC<
             type="number"
             size="small"
             value={angle}
+            aria-label="Gradient angle"
             onChange={(e) => {
               const v = parseInt(e.target.value);
               if (!isNaN(v)) onAngleChange(Math.max(0, Math.min(360, v)));
@@ -77,8 +78,9 @@ const GradientControls: React.FC<
       )}
       {type === 'conic' && (
         <Box display="flex" alignItems="center" gap={2}>
-          <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: '50%' }} />
-          <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 } }} sx={{ width: '50%' }} />
+          <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic X position' }} sx={{ width: '50%' }} />
+          <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic Y position' }} sx={{ width: '50%' }} />
+      <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} inputProps={{ 'aria-label': 'Toggle repeating gradient' }} />} label="Repeating" sx={{ mb: 0.5 }} />
         </Box>
       )}
       {(type === 'radial' || type === 'elliptical') && (
@@ -99,9 +101,9 @@ const GradientControls: React.FC<
           )}
           {onRadialSizeChange && (
             <TextField select fullWidth size="small" label="Size" id="radial-size-select" value={radialSize} onChange={(e) => onRadialSizeChange(e.target.value)}>
-              <MenuItem value="None">None</MenuItem>
-              <MenuItem value="farthest-side">farthest-side</MenuItem>
-              <MenuItem value="farthest-corner">farthest-corner</MenuItem>
+              <MenuItem value="None" aria-label="No radial size">None</MenuItem>
+              <MenuItem value="farthest-side" aria-label="Farthest side">farthest-side</MenuItem>
+              <MenuItem value="farthest-corner" aria-label="Farthest corner">farthest-corner</MenuItem>
             </TextField>
           )}
         </>
