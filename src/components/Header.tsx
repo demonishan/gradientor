@@ -95,14 +95,16 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
           open={favoriteOpen}
           onClose={() => setFavoriteOpen(false)}
           showSnackbar={showSnackbar}
-          onGradientSelect={(fav) => setGradient({
-            ...fav,
-            angle: fav.angle ?? 90,
-            colorStops: fav.colorStops.map((stop, i) => ({
-              ...stop,
-              id: String(i + 1),
-            })),
-          })}
+          onGradientSelect={(fav) =>
+            setGradient({
+              ...fav,
+              angle: fav.angle ?? 90,
+              colorStops: fav.colorStops.map((stop, i) => ({
+                ...stop,
+                id: String(i + 1),
+              })),
+            })
+          }
         />
       </Toolbar>
     </AppBar>

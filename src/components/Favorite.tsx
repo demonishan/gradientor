@@ -1,7 +1,7 @@
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, ListItemButton } from '@mui/material';
+import { IconButton, Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, ListItemButton, CardActions } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop';
 import { Drawer } from '@mui/material';
 import { FAVORITES_KEY } from '../modules/favoriteUtils';
@@ -76,44 +76,45 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
           <List sx={{ overflowY: 'auto', flexGrow: 1, p: 0 }}>
             {gradients.map((g, idx) => (
               <ListItem key={idx} sx={{ p: 0 }}>
-                <ListItemButton
-                  sx={{ p: '0.5rem 1rem 1rem' }}
-                  onClick={() => {
-                    onGradientSelect(g);
-                    showSnackbar('Gradient loaded from favorites!');
-                    onClose();
-                  }}
-                >
-                  <Card sx={{ width: '100%', position: 'relative' }}>
-                    <CardMedia style={{ position: 'relative', height: '5rem', background: generateGradientCSS(g) }}>
-                      <Button
-                        variant="contained"
-                        aria-label="remove favorite"
-                        color="error"
-                        sx={{ minWidth: 'auto', p: 0.5, position: 'absolute', top: 4, right: 4, zIndex: 2 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleRemove(idx);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </CardMedia>
-                    <CardContent sx={{ mb: -1, px: 2, pt: 1 }}>
-                      <Typography variant="subtitle2" gutterBottom sx={{ textTransform: 'capitalize' }}>
-                        {g.type} Gradient
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                        {g.colorStops.map((stop, i) => (
-                          <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <Box sx={{ width: 16, height: 16, bgcolor: stop.color, borderRadius: '50%', border: '1px solid #ccc' }} />
-                            <Typography sx={{ fontSize: '0.75rem' }}>{stop.position}%</Typography>
-                          </Box>
-                        ))}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </ListItemButton>
+                <Card sx={{ width: '100%', m: '0.5rem 1rem' }}>
+                  <CardMedia style={{ height: '7.5rem', background: generateGradientCSS(g) }}></CardMedia>
+                  <CardContent>
+                    <Typography variant="subtitle2" gutterBottom sx={{ textTransform: 'capitalize' }}>
+                      {g.type} Gradient
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                      {g.colorStops.map((stop, i) => (
+                        <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Box sx={{ width: 16, height: 16, bgcolor: stop.color, borderRadius: '50%', border: '1px solid #ccc' }} />
+                          <Typography sx={{ fontSize: '0.75rem' }}>{stop.position}%</Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => {
+                        onGradientSelect(g);
+                        showSnackbar('Gradient loaded from favorites!');
+                        onClose();
+                      }}
+                    >
+                      Load
+                    </Button>
+                    <Button
+                      size="small"
+                      color='error'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemove(idx);
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  </CardActions>
+                </Card>
               </ListItem>
             ))}
             <Typography sx={{ fontSize: '0.8rem', p: 0.5, textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>

@@ -110,10 +110,10 @@ const App = () => {
       createTheme({
         palette: {
           mode: darkMode ? 'dark' : 'light',
-          primary: { main: '#ffc107' },
+          primary: { main: '#9e9e9e' },
         },
         typography: {
-          fontFamily: `'Work Sans', sans-serif`,
+          fontFamily: `'Poppins', sans-serif`,
         },
         components: {
           MuiCard: {

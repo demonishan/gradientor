@@ -33,6 +33,8 @@
 • Minimalist and Responsive User Interface
   - Features a clean, intuitive, and highly responsive UI, designed with Material-UI (MUI) for optimal usability across all devices.
 
+• Gradient Favorites
+  - Allows user to save their favorite gradients for easy access and reuse.
 
 # Feature Ideas
 
@@ -44,9 +46,6 @@
 
 • Gradient History/Undo-Redo
   - Track changes and allow users to undo/redo gradient edits.
-
-• Gradient Favorites
-  - Allow users to save their favorite gradients or view a history of recently created ones for easy access and reuse.
 
 • Contrast Ratio Tool
   - Show contrast ratios for text over the gradient, not just accessibility warnings.
