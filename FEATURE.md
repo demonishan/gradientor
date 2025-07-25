@@ -6,8 +6,11 @@
 • Color Stop Customization
   - Each color stop offers control over its color, alpha (opacity), and exact position.
 
-• Advanced Gradient Types:
+• Advanced Gradient Types
   - Supports various gradient types, including linear, radial, conic, and repeating gradients, offering greater design flexibility.
+
+• Gradient Favorites
+  - Allows user to save their favorite gradients for easy access and reuse.
 
 • Intelligent Random Gradient Generation
   - Generates diverse random gradients based on user-defined constraints for color and distribution.
@@ -32,9 +35,6 @@
 
 • Minimalist and Responsive User Interface
   - Features a clean, intuitive, and highly responsive UI, designed with Material-UI (MUI) for optimal usability across all devices.
-
-• Gradient Favorites
-  - Allows user to save their favorite gradients for easy access and reuse.
 
 # Feature Ideas
 
