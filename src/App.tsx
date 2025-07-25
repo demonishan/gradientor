@@ -7,10 +7,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorPicker from './components/ColorPicker';
 import ColorStopsList from './components/ColorStops';
-import CSSOutput from './components/CSSOutput';
+import Output from './components/Output';
 import GradientAnimation from './modules/background.tsx';
 import GradientBar from './components/GradientBar';
-import GradientControls from './components/GradientControls';
+import Controls from './components/Controls';
 import GradientPreview from './components/GradientPreview';
 import Grid from '@mui/material/Grid';
 import Header from './components/Header';
@@ -149,7 +149,7 @@ const App = () => {
             <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
-                  <CSSOutput gradient={gradient} showSnackbar={showSnackbar} />
+                  <Output gradient={gradient} showSnackbar={showSnackbar} />
                 </CardContent>
               </Card>
             </Grid>
@@ -172,7 +172,7 @@ const App = () => {
             <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
-                  <GradientControls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} />
+                  <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} />
                 </CardContent>
               </Card>
             </Grid>

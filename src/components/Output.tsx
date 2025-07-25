@@ -14,10 +14,10 @@ import { addFavorite } from '../modules/favoriteUtils';
 import type { GradientFavorite } from '../modules/favoriteUtils';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { exportCSS, exportPNG, exportSVG } from '../modules/export';
-interface CSSOutputProps {
+interface OutputProps {
   gradient: GradientConfig;
 }
-const CSSOutput: React.FC<CSSOutputProps & { showSnackbar: (msg: string) => void }> = ({ gradient, showSnackbar }) => {
+const Output: React.FC<OutputProps & { showSnackbar: (msg: string) => void }> = ({ gradient, showSnackbar }) => {
   const [maxCompatibility, setMaxCompatibility] = useState(false);
   const hexToRgba = (hex: string, opacity: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -146,4 +146,4 @@ background: ${gradientCSS};`;
     </>
   );
 };
-export default CSSOutput;
+export default Output;

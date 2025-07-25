@@ -15,7 +15,7 @@ import React from 'react';
 import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-interface GradientControlsProps {
+interface ControlsProps {
   type: 'linear' | 'radial' | 'conic' | 'elliptical';
   angle: number;
   onTypeChange: (type: 'linear' | 'radial' | 'conic' | 'elliptical') => void;
@@ -25,8 +25,8 @@ interface GradientControlsProps {
   radialSize?: string;
   onRadialSizeChange?: (size: string) => void;
 }
-const GradientControls: React.FC<
-  GradientControlsProps & {
+const Controls: React.FC<
+  ControlsProps & {
     conicPosition?: { x: number; y: number };
     onConicPositionChange?: (pos: { x: number; y: number }) => void;
     repeating?: boolean;
@@ -122,4 +122,4 @@ const GradientControls: React.FC<
     </>
   );
 };
-export default GradientControls;
+export default Controls;
