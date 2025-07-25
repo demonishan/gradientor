@@ -49,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
   const darkModeButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const handleToggleDarkMode = useDebounce(() => {
     setDarkMode(!darkMode);
-    showSnackbar(!darkMode ? 'Switched to dark mode' : 'Switched to light mode');
+    showSnackbar(!darkMode ? 'Switched to dark mode!' : 'Switched to light mode!');
   }, darkModeButtonRef);
   const debouncedRandomGradient = useDebounce(() => {
     setGradient(generateRandomGradient());
@@ -91,7 +91,19 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
             </MenuItem>
           ))}
         </Menu>
-        <Favorite open={favoriteOpen} onClose={() => setFavoriteOpen(false)} showSnackbar={showSnackbar} />
+        <Favorite
+          open={favoriteOpen}
+          onClose={() => setFavoriteOpen(false)}
+          showSnackbar={showSnackbar}
+          onGradientSelect={(fav) => setGradient({
+            ...fav,
+            angle: fav.angle ?? 90,
+            colorStops: fav.colorStops.map((stop, i) => ({
+              ...stop,
+              id: String(i + 1),
+            })),
+          })}
+        />
       </Toolbar>
     </AppBar>
   );

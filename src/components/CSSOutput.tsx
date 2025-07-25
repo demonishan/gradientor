@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import React, { useState, useCallback, useRef } from 'react';
-//
 import TextField from '@mui/material/TextField';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig } from '../modules/share';
@@ -11,8 +10,8 @@ import useDebounce from '../helpers/useDebounce';
 import useClipboard from '../helpers/useClipboard';
 import { Box, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { addFavorite } from './Favorite';
-import type { GradientFavorite } from './Favorite';
+import { addFavorite } from '../modules/favoriteUtils';
+import type { GradientFavorite } from '../modules/favoriteUtils';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { exportCSS, exportPNG, exportSVG } from '../modules/export';
 interface CSSOutputProps {
@@ -59,7 +58,6 @@ const CSSOutput: React.FC<CSSOutputProps & { showSnackbar: (msg: string) => void
     }
     return '';
   }, [gradient]);
-  // Debounced Add to Favorites
   const addFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleAddFavorite = useDebounce(() => {
     addFavorite(gradient as GradientFavorite);

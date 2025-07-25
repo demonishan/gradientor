@@ -131,6 +131,7 @@ const App = () => {
   );
   return (
     <ThemeProvider theme={theme}>
+      <style>{darkMode ? '::-webkit-scrollbar-thumb{background:#333}::-webkit-scrollbar-track{background:#777}' : '::-webkit-scrollbar-thumb{background:#ddd}::-webkit-scrollbar-track{background:#ccc}'}</style>
       <GradientAnimation darkMode={darkMode} />
       <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
       <Snackbar open={snackbarOpen} autoHideDuration={2500} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
