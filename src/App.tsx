@@ -1,6 +1,7 @@
 import './App.css';
 import { ColorPicker } from './components/ColorPicker';
 import { Container } from '@mui/material';
+import { Footer } from './components';
 import { parseShareLink, adjustHue, adjustSaturation, adjustLightness } from './modules';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useLocalStorage, useSnackbar } from './helpers';
@@ -179,75 +180,59 @@ const App = () => {
     [darkMode],
   );
   return (
-    <ThemeProvider theme={theme}>
-      <style>{darkMode ? '::-webkit-scrollbar-thumb{background:#333}::-webkit-scrollbar-track{background:#777}' : '::-webkit-scrollbar-thumb{background:#ddd}::-webkit-scrollbar-track{background:#ccc}'}</style>
-      <GradientAnimation darkMode={darkMode} />
-      <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
-      <Snackbar open={snackbarOpen} autoHideDuration={2500} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
-      <GradientPreview gradient={gradient} />
-      <main>
-        <Container>
-          <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
-            <Grid mb={2} size={{ xs: 12, md: 8 }}>
-              <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                <CardContent sx={{ flex: 1 }}>
-                  <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
-                </CardContent>
-              </Card>
+    <>
+      <ThemeProvider theme={theme}>
+        <style>{darkMode ? '::-webkit-scrollbar-thumb{background:#333}::-webkit-scrollbar-track{background:#777}' : '::-webkit-scrollbar-thumb{background:#ddd}::-webkit-scrollbar-track{background:#ccc}'}</style>
+        <GradientAnimation darkMode={darkMode} />
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
+        <Snackbar open={snackbarOpen} autoHideDuration={2500} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
+        <GradientPreview gradient={gradient} />
+        <main>
+          <Container>
+            <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
+              <Grid mb={2} size={{ xs: 12, md: 8 }}>
+                <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                  <CardContent sx={{ flex: 1 }}>
+                    <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid mb={2} size={{ xs: 12, md: 4 }}>
+                <Card sx={{ height: '100%' }}>
+                  <CardContent>
+                    <Output gradient={gradient} showSnackbar={showSnackbar} />
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-            <Grid mb={2} size={{ xs: 12, md: 4 }}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <Output gradient={gradient} showSnackbar={showSnackbar} />
-                </CardContent>
-              </Card>
+            <Grid container spacing={2} className="editor-section" sx={{ alignItems: 'stretch' }}>
+              <Grid mb={2} size={{ xs: 12, md: 4 }}>
+                <Card sx={{ height: '100%' }}>
+                  <CardContent>
+                    <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid mb={2} size={{ xs: 12, md: 4 }}>
+                <Card sx={{ height: '100%' }}>
+                  <CardContent>
+                    <ColorStops colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid mb={2} size={{ xs: 12, md: 4 }}>
+                <Card sx={{ height: '100%' }}>
+                  <CardContent>
+                    <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} hue={hue} onHueChange={handleHueChange} saturation={saturation} onSaturationChange={handleSaturationChange} lightness={lightness} onLightnessChange={handleLightnessChange} />
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid container spacing={2} className="editor-section" sx={{ alignItems: 'stretch' }}>
-            <Grid mb={2} size={{ xs: 12, md: 4 }}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid mb={2} size={{ xs: 12, md: 4 }}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <ColorStops colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid mb={2} size={{ xs: 12, md: 4 }}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <Controls
-                    type={gradient.type}
-                    angle={gradient.angle}
-                    onTypeChange={updateGradientType}
-                    onAngleChange={updateGradientAngle}
-                    conicPosition={gradient.conicPosition}
-                    onConicPositionChange={updateConicPosition}
-                    radialDirection={gradient.radialDirection}
-                    onRadialDirectionChange={updateRadialDirection}
-                    radialSize={gradient.radialSize}
-                    onRadialSizeChange={updateRadialSize}
-                    repeating={gradient.repeating}
-                    onRepeatingChange={updateRepeating}
-                    hue={hue}
-                    onHueChange={handleHueChange}
-                    saturation={saturation}
-                    onSaturationChange={handleSaturationChange}
-                    lightness={lightness}
-                    onLightnessChange={handleLightnessChange}
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
-      </main>
-    </ThemeProvider>
+          </Container>
+        </main>
+        <Footer />
+      </ThemeProvider>
+    </>
   );
 };
 export default App;
