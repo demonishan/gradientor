@@ -1,3 +1,7 @@
+/**
+ * React hook to manage a snackbar's open state and message.
+ * @returns Tuple: open state, message, show function, hide function
+ */
 import { useState, useCallback } from 'react';
 function useSnackbar(): [boolean, string, (msg: string) => void, () => void] {
   const [open, setOpen] = useState(false);

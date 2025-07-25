@@ -1,3 +1,7 @@
+/**
+ * Adds a gradient configuration to favorites in localStorage and dispatches an update event.
+ * @param gradient GradientFavorite object to add
+ */
 export type ColorStop = {
   color: string;
   position: number;

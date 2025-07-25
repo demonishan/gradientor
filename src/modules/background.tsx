@@ -1,3 +1,7 @@
+/**
+ * Animated background gradient component for the app.
+ * @param darkMode If true, uses dark colors; otherwise, uses light colors
+ */
 import React, { useRef, useEffect, useMemo } from 'react';
 function generateColors(min: number, max: number) {
   return Array.from({ length: 6 }, () => {

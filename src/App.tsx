@@ -71,6 +71,7 @@ const App = () => {
   // Ensure the first stop is selected after a random gradient is generated
   const handleSetGradient = (g: GradientConfig) => {
     setGradient(g);
+    setHue(0);
     const first = g.colorStops.find((stop) => stop.id === '1');
     setSelectedStopId(first ? '1' : g.colorStops[0]?.id || '');
   };
@@ -88,10 +89,19 @@ const App = () => {
     setSelectedStopId(newStop.id);
   };
   const updateColorStop = (id: string, updates: Partial<ColorStop>) => {
-    setGradient((prev) => ({
-      ...prev,
-      colorStops: prev.colorStops.map((stop) => (stop.id === id ? { ...stop, ...updates } : stop)),
-    }));
+    if (updates.color !== undefined) {
+      const oldStop = gradient.colorStops.find((stop) => stop.id === id);
+      if (oldStop && oldStop.color !== updates.color) {
+        setHue(0);
+      }
+    }
+    setGradient((prev) => {
+      const newStops = prev.colorStops.map((stop) => (stop.id === id ? { ...stop, ...updates } : stop));
+      return {
+        ...prev,
+        colorStops: newStops,
+      };
+    });
   };
   const deleteColorStop = (id: string) => {
     if (gradient.colorStops.length <= 2) return;

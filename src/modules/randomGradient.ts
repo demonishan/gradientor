@@ -1,3 +1,7 @@
+/**
+ * Generates a random gradient configuration (linear, radial/elliptical, or conic).
+ * @returns {GradientConfig} A random gradient configuration object
+ */
 import type { GradientConfig } from '../App';
 function randomColor() {
   const r = Math.floor(Math.random() * 256);

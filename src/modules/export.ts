@@ -1,3 +1,12 @@
+/**
+ * Exports a gradient as SVG, PNG, or CSS file and triggers download in browser.
+ * @param gradientCSS CSS string for SVG or CSS export
+ * @param filename Name of the file to download
+ * @param gradient GradientConfig for PNG export
+ * @param hexToRgba Function to convert hex to RGBA for PNG export
+ * @param width Width of PNG export
+ * @param height Height of PNG export
+ */
 import type { GradientConfig } from '../App';
 export function exportSVG(gradientCSS: string, filename = 'gradientor.svg') {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><style>svg{background:${gradientCSS};}</style></svg>`;
