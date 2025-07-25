@@ -1,9 +1,4 @@
-import React from 'react';
 import { Divider, Box, Typography, TextField, MenuItem, Checkbox, FormControlLabel, Slider, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
 import { visuallyHidden } from '@mui/utils';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -14,6 +9,11 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowUpwardLeftIcon from '@mui/icons-material/NorthWest';
 import ArrowUpwardRightIcon from '@mui/icons-material/NorthEast';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import React from 'react';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 interface ControlsProps {
   type: 'linear' | 'radial' | 'conic' | 'elliptical';
   angle: number;
