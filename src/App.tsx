@@ -3,6 +3,7 @@ import { Container } from '@mui/material';
 import { parseShareLink } from './modules/share';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useState, useMemo, useEffect } from 'react';
+import { adjustHue } from './modules/hue';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorPicker from './components/ColorPicker';
@@ -33,6 +34,7 @@ export interface GradientConfig {
   repeating?: boolean;
 }
 const App = () => {
+  const [hue, setHue] = useState(0);
   const [gradient, setGradient] = useState<GradientConfig>({
     type: 'linear',
     angle: 90,
@@ -100,6 +102,17 @@ const App = () => {
     if (selectedStopId === id) setSelectedStopId(gradient.colorStops[0].id);
   };
   const updateGradientType = (type: 'linear' | 'radial' | 'conic' | 'elliptical') => setGradient((prev) => ({ ...prev, type }));
+  // Update all colors when hue changes
+  const handleHueChange = (newHue: number) => {
+    setHue(newHue);
+    setGradient((prev) => ({
+      ...prev,
+      colorStops: adjustHue(
+        prev.colorStops.map((cs) => cs.color),
+        newHue,
+      ).map((color, i) => ({ ...prev.colorStops[i], color })),
+    }));
+  };
   const updateGradientAngle = (angle: number) => setGradient((prev) => ({ ...prev, angle }));
   const updateConicPosition = (pos: { x: number; y: number }) => setGradient((prev) => ({ ...prev, conicPosition: pos }));
   const updateRadialDirection = (dir: string) => setGradient((prev) => ({ ...prev, radialDirection: dir }));
@@ -172,7 +185,7 @@ const App = () => {
             <Grid mb={2} size={{ xs: 12, md: 4 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
-                  <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} />
+                  <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} hue={hue} onHueChange={handleHueChange} />
                 </CardContent>
               </Card>
             </Grid>

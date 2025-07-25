@@ -1,3 +1,5 @@
+// Destructure hue and onHueChange from props
+// ...existing code...
 import { Divider, Box, Typography, TextField, MenuItem } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -28,6 +30,8 @@ interface ControlsProps {
   onRadialDirectionChange?: (dir: string) => void;
   radialSize?: string;
   onRadialSizeChange?: (size: string) => void;
+  hue?: number;
+  onHueChange?: (hue: number) => void;
 }
 const Controls: React.FC<
   ControlsProps & {
@@ -36,7 +40,9 @@ const Controls: React.FC<
     repeating?: boolean;
     onRepeatingChange?: (repeating: boolean) => void;
   }
-> = ({ type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange, radialSize = 'farthest-side', onRadialSizeChange, repeating = false, onRepeatingChange }) => {
+> = (props) => {
+  const { type, angle, onTypeChange, onAngleChange, conicPosition = { x: 50, y: 50 }, onConicPositionChange, radialDirection = 'center', onRadialDirectionChange, radialSize = 'farthest-side', onRadialSizeChange, repeating = false, onRepeatingChange, hue = 0, onHueChange } = props;
+  // ...existing code...
   const radialDirections = [
     ['at left top', 'at top', 'at right top'],
     ['at left', 'center', 'at right'],
@@ -137,7 +143,26 @@ const Controls: React.FC<
           )}
         </TabPanel>
         <TabPanel value="2" sx={{ px: 0 }}>
-          Item Two
+          <Box display="flex" alignItems="center" gap={2} mb={2}>
+            <Typography sx={{ ml: 2 }}>Hue</Typography>
+            <Slider value={typeof hue === 'number' ? hue : 0} onChange={(_, val) => typeof val === 'number' && onHueChange && onHueChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient hue slider" sx={{ flexGrow: 1, ml: 2, borderRadius: '4px', background: 'linear-gradient(to right, hsl( 0, 100%, 50%) 0%, hsl( 60, 100%, 50%) 16.67%, hsl(120, 100%, 50%) 33.33%, hsl(180, 100%, 50%) 50%, hsl(240, 100%, 50%) 66.67%, hsl(320, 100%, 50%) 83.33%, hsl(360, 100%, 50%) 100% );' }} />
+            <label style={visuallyHidden} htmlFor="gradient-hue">
+              Hue
+            </label>
+            <TextField
+              type="number"
+              size="small"
+              value={typeof hue === 'number' ? hue : 0}
+              id="gradient-hue"
+              aria-label="Gradient hue"
+              inputProps={{ min: -100, max: 100 }}
+              onChange={(e) => {
+                const v = parseInt(e.target.value);
+                if (!isNaN(v) && onHueChange) onHueChange(Math.max(-100, Math.min(100, v)));
+              }}
+              sx={{ width: 120, ml: 2 }}
+            />
+          </Box>
         </TabPanel>
       </TabContext>
     </>
