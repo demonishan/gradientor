@@ -31,10 +31,10 @@ export const getGradientPresets = async (limit: number = 12, skip: number = 0) =
       return {
         id: item.sys?.id,
         title: fields.title || 'N/A',
-        rawInput: fields.rawInput || 'N/A',
+        rawInput: fields.rawInput.replace(/^background:\s*/, '').replace(/;/, '') || 'N/A',
         type: Array.isArray(fields.type) ? fields.type[0] : 'N/A',
         tags: fields.tags || 'N/A',
-        angle: fields.angle || 'N/A',
+        angle: isNaN(fields.angle) ? 0 : fields.angle,
         lightness: fields.lightness || 'N/A',
         colorStops: fields.colorStops || [],
       };

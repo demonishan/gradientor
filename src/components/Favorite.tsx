@@ -7,12 +7,11 @@
  * @param {`FavoriteProps`} `props` - The props for the component.
  * @returns {`JSX.Element`} Drawer UI for managing favorite gradients.
  */
-import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Drawer, Chip } from '@mui/material';
+import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Drawer } from '@mui/material';
 import { FAVORITES_KEY } from '../modules';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import type { GradientFavorite, ColorStop } from '../modules';
-import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 /**
  * Props for `Favorite` component.
