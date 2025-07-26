@@ -3,14 +3,19 @@
  * Module for handling gradient library content (placeholder).
  * Intended for future integration with Contentful or similar CMS.
  */
-export const getGradientPresets = async () => {
+/**
+ * Fetch gradient presets from Contentful with pagination support.
+ * @param {number} limit - Number of items to fetch per request.
+ * @param {number} skip - Number of items to skip (for pagination).
+ */
+export const getGradientPresets = async (limit: number = 12, skip: number = 0) => {
   const SPACE_ID = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
   const ACCESS_TOKEN = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
   const ENVIRONMENT = import.meta.env.VITE_CONTENTFUL_ENVIRONMENT || 'master';
   if (!SPACE_ID || !ACCESS_TOKEN) {
     throw new Error('Contentful API credentials are missing.');
   }
-  const url = `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/${ENVIRONMENT}/entries?content_type=gradient&limit=12`;
+  const url = `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/${ENVIRONMENT}/entries?content_type=gradient&limit=${limit}&skip=${skip}`;
   const res = await fetch(url, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
