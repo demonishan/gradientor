@@ -25,7 +25,7 @@ export interface ColorPickerProps {
   onOpacityChange: (opacity: number) => void;
 }
 export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorChange, onOpacityChange }) => {
-  const [color, setColor] = useColor('#ffffff');
+  const [color, setColor] = useColor(`#ffffff`);
 
   /**
    * Converts a hex color and alpha to IColor object for react-color-palette.
@@ -80,7 +80,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorC
         }}
       />
       <Grid container spacing={1}>
-        {['r', 'g', 'b'].map(ch => (
+        {[`r`, `g`, `b`].map(ch => (
           <Grid size={3} key={ch}>
             <TextField
               label={ch.toUpperCase()}
@@ -90,8 +90,8 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedStop, onColorC
               value={Math.round(color.rgb[ch as keyof typeof color.rgb])}
               onChange={e => {
                 const val = Math.max(0, Math.min(255, parseInt(e.target.value) || 0));
-                const rgb = ['r', 'g', 'b'].map(k => k === ch ? val : Math.round(color.rgb[k as keyof typeof color.rgb]));
-                const hex = `#${rgb.map(x => x.toString(16).padStart(2, '0')).join('')}`;
+                const rgb = [`r`, `g`, `b`].map(k => k === ch ? val : Math.round(color.rgb[k as keyof typeof color.rgb]));
+                const hex = `#${rgb.map(x => x.toString(16).padStart(2, `0`)).join(``)}`;
                 const newColor = hexToColor(hex, color.rgb.a);
                 setColor(newColor);
                 onColorChange(hex);

@@ -6,7 +6,7 @@ import type { GradientConfig } from '../App';
  */
 export function exportSVG(gradientCSS: string) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><style>svg{background:${gradientCSS};}</style></svg>`;
-  const blob = new Blob([svg], { type: 'image/svg+xml' });
+  const blob = new Blob([svg], { type: `image/svg+xml` });
   const link = document.createElement(`a`);
   link.href = URL.createObjectURL(blob);
   link.download = `Gradientor ` + getTimestamp() + `.svg`;
@@ -52,7 +52,7 @@ export function exportPNG(gradient: GradientConfig, hexToRgba: (hex: string, opa
  */
 export function exportCSS(css: string) {
   const wrapped = `body {\n  ${css.replace(/\n/g, `\n  `)}\n}`;
-  const blob = new Blob([wrapped], { type: 'text/css' });
+  const blob = new Blob([wrapped], { type: `text/css` });
   const link = document.createElement(`a`);
   link.href = URL.createObjectURL(blob);
   link.download = `Gradientor ` + getTimestamp() + `.css`;
@@ -62,7 +62,7 @@ export function exportCSS(css: string) {
 
 /**
  * Exports a gradient configuration object as a JSON file and triggers a download.
- * The exported JSON will not include the 'id' property in any color stop.
+ * The exported JSON will not include the `id` property in any color stop.
  * @param gradient Gradient configuration object to export.
  */
 export function exportJSON(gradient: GradientConfig) {

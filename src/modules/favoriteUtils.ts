@@ -21,7 +21,7 @@ export type ColorStop = {
  * @property conicPosition Conic position (optional)
  */
 export type GradientFavorite = {
-  type: 'linear' | 'radial' | 'elliptical' | 'conic';
+  type: `linear` | `radial` | `elliptical` | `conic`;
   angle?: number;
   repeating?: boolean;
   colorStops: ColorStop[];
@@ -39,10 +39,10 @@ export function addFavorite(gradient: GradientFavorite) {
   const favs: GradientFavorite[] = item ? JSON.parse(item) : [];
   favs.unshift(gradient);
   window.localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs.slice(0, 50)));
-  window.dispatchEvent(new Event('favorites-updated'));
+  window.dispatchEvent(new Event(`favorites-updated`));
 }
 
 /**
  * Key for storing favorites in localStorage.
  */
-export const FAVORITES_KEY = 'gradientor-favorites';
+export const FAVORITES_KEY = `gradientor-favorites`;

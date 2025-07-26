@@ -20,41 +20,41 @@ const Output: React.FC<OutputProps & { showSnackbar: (msg: string) => void }> = 
   };
   const generateGradientCSS = useCallback(() => {
     const stops = gradient.colorStops
-      .sort((a: GradientConfig['colorStops'][number], b: GradientConfig['colorStops'][number]) => a.position - b.position)
-      .map((stop: GradientConfig['colorStops'][number]) => {
+      .sort((a: GradientConfig[`colorStops`][number], b: GradientConfig[`colorStops`][number]) => a.position - b.position)
+      .map((stop: GradientConfig[`colorStops`][number]) => {
         const colorValue = stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color;
         return `${colorValue} ${stop.position.toFixed(1)}%`;
       })
-      .join(', ');
-    if (gradient.type === 'linear') {
-      const prefix = gradient.repeating ? 'repeating-linear-gradient' : 'linear-gradient';
+      .join(`, `);
+    if (gradient.type === `linear`) {
+      const prefix = gradient.repeating ? `repeating-linear-gradient` : `linear-gradient`;
       return `${prefix}(${gradient.angle}deg, ${stops})`;
-    } else if (gradient.type === 'radial' || gradient.type === 'elliptical') {
-      let dir = gradient.radialDirection || 'center';
-      if (dir === 'center') dir = 'at center';
-      const size = gradient.radialSize && gradient.radialSize !== 'None' ? gradient.radialSize : '';
-      const prefix = gradient.repeating ? 'repeating-radial-gradient' : 'radial-gradient';
-      const shape = gradient.type === 'elliptical' ? 'ellipse' : 'circle';
-      if (size && dir.startsWith('at ')) {
+    } else if (gradient.type === `radial` || gradient.type === `elliptical`) {
+      let dir = gradient.radialDirection || `center`;
+      if (dir === `center`) dir = `at center`;
+      const size = gradient.radialSize && gradient.radialSize !== `None` ? gradient.radialSize : ``;
+      const prefix = gradient.repeating ? `repeating-radial-gradient` : `radial-gradient`;
+      const shape = gradient.type === `elliptical` ? `ellipse` : `circle`;
+      if (size && dir.startsWith(`at `)) {
         return `${prefix}(${shape} ${size} ${dir}, ${stops})`;
       } else if (size) {
         return `${prefix}(${shape} ${size}, ${stops})`;
-      } else if (dir.startsWith('at ')) {
+      } else if (dir.startsWith(`at `)) {
         return `${prefix}(${shape} ${dir}, ${stops})`;
       } else {
         return `${prefix}(${shape}, ${stops})`;
       }
-    } else if (gradient.type === 'conic') {
+    } else if (gradient.type === `conic`) {
       const pos = gradient.conicPosition || { x: 50, y: 50 };
-      const prefix = gradient.repeating ? 'repeating-conic-gradient' : 'conic-gradient';
+      const prefix = gradient.repeating ? `repeating-conic-gradient` : `conic-gradient`;
       return `${prefix}(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${stops})`;
     }
-    return '';
+    return ``;
   }, [gradient]);
   const addFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleAddFavorite = useDebounce(() => {
     addFavorite(gradient as GradientFavorite);
-    showSnackbar('Added to favorites!');
+    showSnackbar(`Added to favorites!`);
   }, addFavoriteButtonRef);
   const generateFullCSS = useCallback(() => {
     const gradientCSS = generateGradientCSS();
@@ -73,13 +73,13 @@ background: ${gradientCSS};`;
   const copyButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleCopy = useDebounce(async () => {
     await copyToClipboard(generateFullCSS());
-    showSnackbar('CSS copied to clipboard!');
+    showSnackbar(`CSS copied to clipboard!`);
   }, copyButtonRef);
   const shareButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleShare = useDebounce(async () => {
     const link = generateShareLink(gradient as GradientShareConfig);
     await copyToClipboard(link);
-    showSnackbar('Shareable link copied to clipboard!');
+    showSnackbar(`Shareable link copied to clipboard!`);
   }, shareButtonRef);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -92,35 +92,35 @@ background: ${gradientCSS};`;
   const handleExportCSS = () => {
     exportCSS(generateFullCSS());
     handleClose();
-    showSnackbar('CSS file exported!');
+    showSnackbar(`CSS file exported!`);
   };
   const handleExportSVG = () => {
     exportSVG(generateGradientCSS());
     handleClose();
-    showSnackbar('SVG file exported!');
+    showSnackbar(`SVG file exported!`);
   };
   const handleExportPNG = () => {
     exportPNG(gradient, hexToRgba);
     handleClose();
-    showSnackbar('PNG file exported!');
+    showSnackbar(`PNG file exported!`);
   };
   const handleExportJSON = () => {
     exportJSON(gradient);
     handleClose();
-    showSnackbar('JSON file exported!');
+    showSnackbar(`JSON file exported!`);
   };
   return (
     <>
-      <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" rows={3} inputProps={{ readOnly: true, style: { fontSize: '0.875rem' } }} />
+      <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" rows={3} inputProps={{ readOnly: true, style: { fontSize: `0.875rem` } }} />
       <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Compatibility" />
       <Box display="flex" justifyContent="flex-end" mt={1.5} gap={1}>
-        <Button variant="text" color="inherit" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} sx={{ minWidth: 'auto', px: 0 }} aria-label="Add to favorites">
+        <Button variant="text" color="inherit" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} sx={{ minWidth: `auto`, px: 0 }} aria-label="Add to favorites">
           <FavoriteBorderIcon />
         </Button>
         <Button variant="text" color="inherit" onClick={handleShare} component="button" ref={shareButtonRef} aria-label="Copy shareable link">
           Share
         </Button>
-        <Button variant="text" color="inherit" id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" onClick={handleClick} aria-label="Export options">
+        <Button variant="text" color="inherit" id="basic-button" aria-controls={open ? `basic-menu` : undefined} aria-haspopup="true" onClick={handleClick} aria-label="Export options">
           Export <KeyboardArrowDownIcon fontSize="small" />
         </Button>
         <Menu

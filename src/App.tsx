@@ -1,17 +1,16 @@
 import './App.css';
 import { ColorPicker } from './components/ColorPicker';
-import Box from '@mui/material/Box';
 import { Container } from '@mui/material';
 import { Footer } from './components';
 import { parseShareLink, adjustHue, adjustSaturation, adjustLightness } from './modules';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useLocalStorage, useSnackbar } from './helpers';
 import { useState, useMemo, useEffect } from 'react';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ColorStops from './components/ColorStops';
 import Controls from './components/Controls';
-
 import GradientBar from './components/GradientBar';
 import GradientPreview from './components/GradientPreview';
 import Grid from '@mui/material/Grid';
@@ -25,7 +24,7 @@ export interface ColorStop {
   opacity: number;
 }
 export interface GradientConfig {
-  type: 'linear' | 'radial' | 'conic' | 'elliptical';
+  type: `linear` | `radial` | `conic` | `elliptical`;
   angle: number;
   colorStops: ColorStop[];
   conicPosition?: { x: number; y: number };
@@ -38,20 +37,20 @@ const App = () => {
   const [saturation, setSaturation] = useState(0);
   const [lightness, setLightness] = useState(0);
   const [gradient, setGradient] = useState<GradientConfig>({
-    type: 'linear',
+    type: `linear`,
     angle: 90,
     colorStops: [
-      { id: '1', color: '#ff0000', position: 0, opacity: 1 },
-      { id: '2', color: '#ffa500', position: 16.7, opacity: 1 },
-      { id: '3', color: '#ffff00', position: 33.3, opacity: 1 },
-      { id: '4', color: '#00ff00', position: 50, opacity: 1 },
-      { id: '5', color: '#00ffff', position: 66.7, opacity: 1 },
-      { id: '6', color: '#0000ff', position: 83.3, opacity: 1 },
-      { id: '7', color: '#8b00ff', position: 100, opacity: 1 },
+      { id: `1`, color: `#ff0000`, position: 0, opacity: 1 },
+      { id: `2`, color: `#ffa500`, position: 16.7, opacity: 1 },
+      { id: `3`, color: `#ffff00`, position: 33.3, opacity: 1 },
+      { id: `4`, color: `#00ff00`, position: 50, opacity: 1 },
+      { id: `5`, color: `#00ffff`, position: 66.7, opacity: 1 },
+      { id: `6`, color: `#0000ff`, position: 83.3, opacity: 1 },
+      { id: `7`, color: `#8b00ff`, position: 100, opacity: 1 },
     ],
     conicPosition: { x: 50, y: 50 },
-    radialDirection: 'center',
-    radialSize: 'None',
+    radialDirection: `center`,
+    radialSize: `None`,
     repeating: false,
   });
 
@@ -68,7 +67,7 @@ const App = () => {
   }, []);
   const updateRepeating = (repeating: boolean) => setGradient((prev) => ({ ...prev, repeating }));
   const updateRadialSize = (size: string) => setGradient((prev) => ({ ...prev, radialSize: size }));
-  const [selectedStopId, setSelectedStopId] = useState<string>('1');
+  const [selectedStopId, setSelectedStopId] = useState<string>(`1`);
 
   // Ensure the first stop is selected after a random gradient is generated
   const handleSetGradient = (g: GradientConfig) => {
@@ -76,13 +75,13 @@ const App = () => {
     setHue(0);
     setSaturation(0);
     setLightness(0);
-    const first = g.colorStops.find((stop) => stop.id === '1');
-    setSelectedStopId(first ? '1' : g.colorStops[0]?.id || '');
+    const first = g.colorStops.find((stop) => stop.id === `1`);
+    setSelectedStopId(first ? `1` : g.colorStops[0]?.id || ``);
   };
   const addColorStop = (position: number) => {
     const newStop: ColorStop = {
       id: Date.now().toString(),
-      color: '#ffffff',
+      color: `#ffffff`,
       position,
       opacity: 1,
     };
@@ -117,7 +116,7 @@ const App = () => {
     }));
     if (selectedStopId === id) setSelectedStopId(gradient.colorStops[0].id);
   };
-  const updateGradientType = (type: 'linear' | 'radial' | 'conic' | 'elliptical') => setGradient((prev) => ({ ...prev, type }));
+  const updateGradientType = (type: `linear` | `radial` | `conic` | `elliptical`) => setGradient((prev) => ({ ...prev, type }));
   // Update all colors when hue changes
   const handleHueChange = (newHue: number) => {
     setHue(newHue);
@@ -154,18 +153,18 @@ const App = () => {
   const updateGradientAngle = (angle: number) => setGradient((prev) => ({ ...prev, angle }));
   const updateConicPosition = (pos: { x: number; y: number }) => setGradient((prev) => ({ ...prev, conicPosition: pos }));
   const updateRadialDirection = (dir: string) => setGradient((prev) => ({ ...prev, radialDirection: dir }));
-  const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
+  const [darkMode, setDarkMode] = useLocalStorage(`darkMode`, false);
   const [snackbarOpen, snackbarMsg, showSnackbar, hideSnackbar] = useSnackbar();
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
-          mode: darkMode ? 'dark' : 'light',
-          primary: { main: '#fb8c00', light: '#ffa726', dark: '#ffb74d' },
-          secondary: { main: '#ff5722', light: '#e64a19', dark: '#ff8a65' },
+          mode: darkMode ? `dark` : `light`,
+          primary: { main: `#fb8c00`, light: `#ffa726`, dark: `#ffb74d` },
+          secondary: { main: `#ff5722`, light: `#e64a19`, dark: `#ff8a65` },
           background: {
-            default: darkMode ? '#121212' : '#cccccc',
-            paper: darkMode ? '#1e1e1e' : '#f7f7f7',
+            default: darkMode ? `#121212` : `#cccccc`,
+            paper: darkMode ? `#1e1e1e` : `#f7f7f7`,
           },
         },
         typography: {
@@ -176,46 +175,46 @@ const App = () => {
   );
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ bgcolor: theme.palette.background.default, minHeight: '100vh' }}>
-        <style>{darkMode ? '::-webkit-scrollbar-thumb{background:#333}::-webkit-scrollbar-track{background:#777}' : '::-webkit-scrollbar-thumb{background:#ddd}::-webkit-scrollbar-track{background:#ccc}'}</style>
-        <Snackbar open={snackbarOpen} autoHideDuration={2500} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} />
+      <Box sx={{ bgcolor: theme.palette.background.default, minHeight: `100vh` }}>
+        <style>{darkMode ? `::-webkit-scrollbar-thumb{background:#333}::-webkit-scrollbar-track{background:#777}` : `::-webkit-scrollbar-thumb{background:#ddd}::-webkit-scrollbar-track{background:#ccc}`}</style>
+        <Snackbar open={snackbarOpen} autoHideDuration={2500} onClose={hideSnackbar} message={snackbarMsg} anchorOrigin={{ vertical: `bottom`, horizontal: `right` }} />
         <Header darkMode={darkMode} setDarkMode={setDarkMode} showSnackbar={showSnackbar} setGradient={handleSetGradient} />
         <GradientPreview gradient={gradient} />
         <main>
           <Container>
-            <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
+            <Grid container spacing={2} sx={{ alignItems: `stretch` }}>
               <Grid mb={2} size={{ xs: 12, md: 8 }}>
-                <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                <Card sx={{ height: `100%`, display: `flex`, alignItems: `center` }}>
                   <CardContent sx={{ flex: 1 }}>
                     <GradientBar gradient={gradient} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onAddStop={addColorStop} onUpdateStop={updateColorStop} />
                   </CardContent>
                 </Card>
               </Grid>
               <Grid mb={2} size={{ xs: 12, md: 4 }}>
-                <Card sx={{ height: '100%' }}>
+                <Card sx={{ height: `100%` }}>
                   <CardContent>
                     <Output gradient={gradient} showSnackbar={showSnackbar} />
                   </CardContent>
                 </Card>
               </Grid>
             </Grid>
-            <Grid container spacing={2} className="editor-section" sx={{ alignItems: 'stretch' }}>
+            <Grid container spacing={2} className="editor-section" sx={{ alignItems: `stretch` }}>
               <Grid mb={2} size={{ xs: 12, md: 4 }}>
-                <Card sx={{ height: '100%' }}>
+                <Card sx={{ height: `100%` }}>
                   <CardContent>
                     <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
                   </CardContent>
                 </Card>
               </Grid>
               <Grid mb={2} size={{ xs: 12, md: 4 }}>
-                <Card sx={{ height: '100%' }}>
+                <Card sx={{ height: `100%` }}>
                   <CardContent>
                     <ColorStops colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
                   </CardContent>
                 </Card>
               </Grid>
               <Grid mb={2} size={{ xs: 12, md: 4 }}>
-                <Card sx={{ height: '100%' }}>
+                <Card sx={{ height: `100%` }}>
                   <CardContent>
                     <Controls type={gradient.type} angle={gradient.angle} onTypeChange={updateGradientType} onAngleChange={updateGradientAngle} conicPosition={gradient.conicPosition} onConicPositionChange={updateConicPosition} radialDirection={gradient.radialDirection} onRadialDirectionChange={updateRadialDirection} radialSize={gradient.radialSize} onRadialSizeChange={updateRadialSize} repeating={gradient.repeating} onRepeatingChange={updateRepeating} hue={hue} onHueChange={handleHueChange} saturation={saturation} onSaturationChange={handleSaturationChange} lightness={lightness} onLightnessChange={handleLightnessChange} />
                   </CardContent>

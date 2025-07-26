@@ -56,7 +56,7 @@ export const deleteColorStop = (gradient: GradientConfig, id: string): GradientC
  * @param type Gradient type
  * @returns Updated GradientConfig
  */
-export const updateGradientType = (gradient: GradientConfig, type: 'linear' | 'radial' | 'conic' | 'elliptical'): GradientConfig => ({ ...gradient, type });
+export const updateGradientType = (gradient: GradientConfig, type: `linear` | `radial` | `conic` | `elliptical`): GradientConfig => ({ ...gradient, type });
 
 /**
  * Updates the gradient angle.

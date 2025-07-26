@@ -1,17 +1,17 @@
-import Favorite from './Favorite';
 import { AppBar, Toolbar, IconButton, Badge, Button, Box } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import MenuIcon from '@mui/icons-material/Menu';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { generateRandomGradient } from '../modules/randomGradient';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import Favorite from './Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ImportGradient from './ImportGradient';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import logo from '../assets/logo.webp';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
-import ImportGradient from './ImportGradient';
-import useDebounce from '../helpers/useDebounce';
-import { generateRandomGradient } from '../modules/randomGradient';
 import type { GradientConfig } from '../App';
+import useDebounce from '../helpers/useDebounce';
 interface HeaderProps {
   darkMode: boolean;
   setDarkMode: (v: boolean) => void;
@@ -24,18 +24,18 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
   React.useEffect(() => {
     const updateCount = () => {
       try {
-        const favs = JSON.parse(window.localStorage.getItem('gradientor-favorites') || '[]');
+        const favs = JSON.parse(window.localStorage.getItem(`gradientor-favorites`) || `[]`);
         setFavoriteCount(Array.isArray(favs) ? favs.length : 0);
       } catch {
         setFavoriteCount(0);
       }
     };
     updateCount();
-    window.addEventListener('storage', updateCount);
-    window.addEventListener('favorites-updated', updateCount);
+    window.addEventListener(`storage`, updateCount);
+    window.addEventListener(`favorites-updated`, updateCount);
     return () => {
-      window.removeEventListener('storage', updateCount);
-      window.removeEventListener('favorites-updated', updateCount);
+      window.removeEventListener(`storage`, updateCount);
+      window.removeEventListener(`favorites-updated`, updateCount);
     };
   }, []);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -50,42 +50,42 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
   const darkModeButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const handleToggleDarkMode = useDebounce(() => {
     setDarkMode(!darkMode);
-    showSnackbar(!darkMode ? 'Switched to dark mode!' : 'Switched to light mode!');
+    showSnackbar(!darkMode ? `Switched to dark mode!` : `Switched to light mode!`);
   }, darkModeButtonRef);
   const debouncedRandomGradient = useDebounce(() => {
     setGradient(generateRandomGradient());
-    showSnackbar('Random gradient generated!');
+    showSnackbar(`Random gradient generated!`);
     handleMenuClose();
   }, randomButtonRef);
   const [importOpen, setImportOpen] = React.useState(false);
   const menuItems = [
-    { label: 'Import', onClick: () => setImportOpen(true) },
-    { label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef },
+    { label: `Import`, onClick: () => setImportOpen(true) },
+    { label: `Random Gradient`, onClick: debouncedRandomGradient, buttonRef: randomButtonRef },
   ];
   return (
     <>
       <AppBar position="static" sx={{ '--Paper-overlay': 'none !important', boxShadow: 1 }}>
         <Toolbar>
-          <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1, gap: 2 }}>
+          <img src={logo} alt="Gradientor Logo" style={{ height: `2rem`, width: `auto`, marginRight: `auto` }} />
+          <Box sx={{ display: { xs: `none`, md: `flex` }, justifyContent: `flex-end`, flexGrow: 1, gap: 2 }}>
             {menuItems.map((item, idx) => (
-              <Button component="button" color="inherit" key={idx} ref={item.buttonRef} onClick={item.onClick} sx={{ minWidth: 'auto' }} aria-label={item.label}>
+              <Button component="button" color="inherit" key={idx} ref={item.buttonRef} onClick={item.onClick} sx={{ minWidth: `auto` }} aria-label={item.label}>
                 {item.label}
               </Button>
             ))}
           </Box>
-          <Button component="button" color="inherit" onClick={() => setFavoriteOpen(true)} sx={{ minWidth: 'auto' }} aria-label="Open favorites">
+          <Button component="button" color="inherit" onClick={() => setFavoriteOpen(true)} sx={{ minWidth: `auto` }} aria-label="Open favorites">
             <Badge badgeContent={favoriteCount} max={99} color="secondary">
               <FavoriteBorderIcon aria-label="Open favorites" />
             </Badge>
           </Button>
-          <Button component="button" color="inherit" ref={darkModeButtonRef} onClick={handleToggleDarkMode} sx={{ minWidth: 'auto' }} aria-label="Toggle dark mode">
+          <Button component="button" color="inherit" ref={darkModeButtonRef} onClick={handleToggleDarkMode} sx={{ minWidth: `auto` }} aria-label="Toggle dark mode">
             {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
           </Button>
-          <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>
+          <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: `inline-flex`, md: `none` } }}>
             <MenuIcon />
           </IconButton>
-          <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+          <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose} anchorOrigin={{ vertical: `bottom`, horizontal: `right` }}>
             {menuItems.map((item, idx) => (
               <MenuItem color="inherit" key={idx} onClick={item.onClick}>
                 {item.label}
@@ -102,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
         }}
         onImport={(g) => {
           setGradient(g);
-          showSnackbar('Gradient imported!');
+          showSnackbar(`Gradient imported!`);
         }}
       />
       <Favorite

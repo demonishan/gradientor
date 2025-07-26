@@ -6,10 +6,10 @@
  * @param {ColorStopsProps} props - The props for the component.
  * @returns {JSX.Element} Color stops UI.
  */
-import React from 'react';
-import { visuallyHidden } from '@mui/utils';
 import { Box, TextField, IconButton, Radio, RadioGroup } from '@mui/material';
+import { visuallyHidden } from '@mui/utils';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
+import React from 'react';
 import type { ColorStop } from '../App';
 
 /**
@@ -40,7 +40,7 @@ const ColorStops: React.FC<ColorStopsProps> = ({ colorStops, selectedStopId, onS
     }
   };
   return (
-    <RadioGroup sx={{ display: 'flex', flexDirection: 'column', gap: 1.75 }}>
+    <RadioGroup sx={{ display: `flex`, flexDirection: `column`, gap: 1.75 }}>
       {sortedStops.map(stop => (
         <Box key={stop.id} display="flex" alignItems="center" gap={1}>
           <label style={visuallyHidden} htmlFor={`color-stop-label-${stop.id}`}>Select color stop {stop.id}</label>
@@ -49,7 +49,7 @@ const ColorStops: React.FC<ColorStopsProps> = ({ colorStops, selectedStopId, onS
             checked={selectedStopId === stop.id}
             onChange={() => onStopSelect(stop.id)}
             aria-labelledby={`color-stop-label-${stop.id}`}
-            sx={{ borderRadius: '4px', p: 1, backgroundColor: stop.color }}
+            sx={{ borderRadius: `4px`, p: 1, backgroundColor: stop.color }}
           />
           <TextField
             label="Hex"

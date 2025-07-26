@@ -8,7 +8,7 @@ const randomColor = (): string => {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
   const b = Math.floor(Math.random() * 256);
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  return `#${r.toString(16).padStart(2, `0`)}${g.toString(16).padStart(2, `0`)}${b.toString(16).padStart(2, `0`)}`;
 };
 
 /**
@@ -18,7 +18,7 @@ const randomColor = (): string => {
  */
 const randomStops = (count = 2 + Math.floor(Math.random() * 6)) =>
   Array.from({ length: count }, (_, i) => ({
-    id: i === 0 ? '1' : `${Date.now()}-${Math.random().toString(36).slice(2)}-${i}`,
+    id: i === 0 ? `1` : `${Date.now()}-${Math.random().toString(36).slice(2)}-${i}`,
     color: randomColor(),
     position: Math.round((i / (count - 1)) * 100),
     opacity: 1,
@@ -35,7 +35,7 @@ const randomAngle = (): number => 45 * Math.floor(Math.random() * 5);
  * @returns {GradientConfig} Linear gradient config
  */
 const randomLinear = (): GradientConfig => ({
-  type: 'linear',
+  type: `linear`,
   angle: randomAngle(),
   repeating: false,
   colorStops: randomStops(),
@@ -46,12 +46,12 @@ const randomLinear = (): GradientConfig => ({
  * @returns {GradientConfig} Radial or elliptical gradient config
  */
 const randomRadial = (): GradientConfig => {
-  const directions = ['at center', 'at top', 'at bottom', 'at left', 'at right', 'at top left', 'at top right', 'at bottom left', 'at bottom right'];
+  const directions = [`at center`, `at top`, `at bottom`, `at left`, `at right`, `at top left`, `at top right`, `at bottom left`, `at bottom right`];
   return {
-    type: Math.random() < 0.5 ? 'radial' : 'elliptical',
+    type: Math.random() < 0.5 ? `radial` : `elliptical`,
     angle: randomAngle(),
     radialDirection: directions[Math.floor(Math.random() * directions.length)],
-    radialSize: 'None',
+    radialSize: `None`,
     repeating: false,
     colorStops: randomStops(),
   };
@@ -62,7 +62,7 @@ const randomRadial = (): GradientConfig => {
  * @returns {GradientConfig} Conic gradient config
  */
 const randomConic = (): GradientConfig => ({
-  type: 'conic',
+  type: `conic`,
   angle: randomAngle(),
   conicPosition: { x: 50, y: 50 },
   repeating: false,

@@ -18,7 +18,7 @@ export const adjustHue = (hexColors: string[], hueShift: number): string[] =>
  * @returns HSL object
  */
 const hexToHsl = (hex: string): { h: number; s: number; l: number } => {
-  hex = hex.replace(/^#/, '');
+  hex = hex.replace(/^#/, ``);
   const r = parseInt(hex.substring(0, 2), 16) / 255;
   const g = parseInt(hex.substring(2, 4), 16) / 255;
   const b = parseInt(hex.substring(4, 6), 16) / 255;
@@ -69,5 +69,5 @@ const hslToHex = (h: number, s: number, l: number): string => {
   r = Math.round((r + m) * 255);
   g = Math.round((g + m) * 255);
   b = Math.round((b + m) * 255);
-  return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+  return `#` + [r, g, b].map(x => x.toString(16).padStart(2, `0`)).join(``);
 };
