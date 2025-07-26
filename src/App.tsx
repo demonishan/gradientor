@@ -2,6 +2,7 @@ import './App.css';
 import { ColorPicker } from './components/ColorPicker';
 import { Container } from '@mui/material';
 import { Footer } from './components';
+import { Library } from './components';
 import { parseShareLink, adjustHue, adjustSaturation, adjustLightness } from './modules';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useLocalStorage, useSnackbar } from './helpers';
@@ -221,6 +222,11 @@ const App = () => {
                 </Card>
               </Grid>
             </Grid>
+            <Card>
+              <CardContent>
+                <Library />
+              </CardContent>
+            </Card>
           </Container>
         </main>
         <Footer />

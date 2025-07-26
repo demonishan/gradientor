@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.3.8](https://github.com/demonishan/gradientor/compare/v1.3.7...v1.3.8) (2025-07-26)
+
+### [1.3.8] (2025-07-26)
+
+
+### Features
+
+* Implemented Import CSS Gradients: Users can now paste and import CSS gradient code for editing and use within the app.
+
+### Bug Fixes
+
+* Fixed responsive issues in the footer for improved display on all devices.
 
 ### [1.3.7](https://github.com/demonishan/gradientor/compare/v1.3.6...v1.3.7) (2025-07-26)
 

@@ -7,11 +7,12 @@
  * @param {`FavoriteProps`} `props` - The props for the component.
  * @returns {`JSX.Element`} Drawer UI for managing favorite gradients.
  */
-import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Drawer } from '@mui/material';
+import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Drawer, Chip } from '@mui/material';
 import { FAVORITES_KEY } from '../modules';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import type { GradientFavorite, ColorStop } from '../modules';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 /**
  * Props for `Favorite` component.
@@ -40,7 +41,7 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
     window.addEventListener(`favorites-updated`, fetchGradients);
     return () => window.removeEventListener(`favorites-updated`, fetchGradients);
   }, []);
-  
+
   /**
    * Removes a gradient from `localStorage` favorites by index.
    * @param {number} `idx` - Index of the gradient to remove.
@@ -100,12 +101,9 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
                   <Typography variant="subtitle2" gutterBottom sx={{ textTransform: `capitalize` }}>
                     {g.type} Gradient
                   </Typography>
-                  <Box sx={{ display: `flex`, flexWrap: `wrap`, gap: 1 }}>
+                  <Box sx={{ display: `flex`, flexWrap: `wrap`, gap: 0.35 }}>
                     {g.colorStops.map((stop, i) => (
-                      <Box key={i} sx={{ display: `flex`, alignItems: `center`, gap: 0.5 }}>
-                        <Box sx={{ width: 16, height: 16, bgcolor: stop.color, borderRadius: `50%`, border: `1px solid #ccc` }} />
-                        <Typography sx={{ fontSize: `0.75rem` }}>{stop.position}%</Typography>
-                      </Box>
+                      <Chip icon={<StopCircleIcon style={{ color: stop.color }} />} label={`${stop.position}%`} variant="outlined" size="small" key={i} />
                     ))}
                   </Box>
                 </CardContent>
