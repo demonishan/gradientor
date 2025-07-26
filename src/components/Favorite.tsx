@@ -101,9 +101,14 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
                   <Typography variant="subtitle2" gutterBottom sx={{ textTransform: `capitalize` }}>
                     {g.type} Gradient
                   </Typography>
-                  <Box sx={{ display: `flex`, flexWrap: `wrap`, gap: 0.35 }}>
+                  <Box sx={{ display: `flex`, flexWrap: `wrap`, gap: 0.25 }}>
                     {g.colorStops.map((stop, i) => (
-                      <Chip icon={<StopCircleIcon style={{ color: stop.color }} />} label={`${stop.position}%`} variant="outlined" size="small" key={i} />
+                      <Box key={i} sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+                        <Box sx={{ width: '12px', height: '12px', borderRadius: '2px', border: '1px solid #fff', background: stop.color, mr: 0.5 }} />
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                          {stop.position}%
+                        </Typography>
+                      </Box>
                     ))}
                   </Box>
                 </CardContent>

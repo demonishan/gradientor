@@ -10,7 +10,7 @@ export const getGradientPresets = async () => {
   if (!SPACE_ID || !ACCESS_TOKEN) {
     throw new Error('Contentful API credentials are missing.');
   }
-  const url = `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/${ENVIRONMENT}/entries?content_type=gradient&limit=15`;
+  const url = `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/${ENVIRONMENT}/entries?content_type=gradient&limit=12`;
   const res = await fetch(url, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -31,6 +31,7 @@ export const getGradientPresets = async () => {
         tags: fields.tags || 'N/A',
         angle: fields.angle || 'N/A',
         lightness: fields.lightness || 'N/A',
+        colorStops: fields.colorStops || [],
       };
     });
   }

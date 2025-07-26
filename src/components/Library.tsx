@@ -34,15 +34,15 @@ const Library: React.FC = () => {
       ) : presets.length === 0 ? (
         <Typography>No presets found.</Typography>
       ) : (
-        <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(320px, 1fr))" gap={2} mt={2}>
+        <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(220px, 1fr))" gap={2} mt={2}>
           {presets.map((preset: any) => (
-            <Card key={preset.id} sx={{ backgroundColor: 'rgba(125, 125, 125, 0.1)' }}>
+            <Card key={preset.id} sx={{ backgroundColor: 'rgba(125, 125, 125, 0.1)' }} title={preset.title}>
               {(() => {
                 const bg = preset.rawInput.replace(/^background:\s*/, '').replace(/;$/, '');
                 return <CardMedia sx={{ height: 140 }} style={{ background: bg }} title="gradient preview" />;
               })()}
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="subtitle2" component="div" sx={{ fontSize: '1rem' }}>
                   {preset.title}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -54,9 +54,12 @@ const Library: React.FC = () => {
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                   Lightness: {preset.lightness}
                 </Typography>
-                <Stack mt={1} display={'flex'} flexDirection={'row'} flexWrap="wrap" gap={'3px 2px'}>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Stops: {Object.keys(preset.colorStops).length}
+                </Typography>
+                <Stack mt={1} display={'flex'} flexDirection={'row'} flexWrap="wrap" gap={0.25}>
                   {preset.tags.split(',').map((tag: string, i: number) => (
-                    <Chip variant="outlined" key={i} label={tag.trim()} size="small" sx={{ color: 'text.secondary', textTransform: 'capitalize' }} />
+                    <Chip variant="outlined" key={i} label={tag.trim()} size="small" sx={{ color: 'text.secondary', borderRadius: '4px', textTransform: 'capitalize' }} />
                   ))}
                 </Stack>
               </CardContent>
