@@ -16,7 +16,7 @@
   - Generates diverse random gradients based on user-defined constraints for color and distribution.
 
 - Versatile Gradient Export Options
-  - Enables export of gradients in CSS, SVG, and PNG image file formats.
+  - Enables export of gradients in CSS, SVG, PNG image file formats as well as JSON file format for sharing or programmatic use.
 
 - Instant CSS Clipboard Copy
   - Provides a one-click function to copy the generated CSS code for any gradient.
@@ -33,6 +33,9 @@
 - Shareable Gradient Links
   - Generates unique, shareable links for each created gradient.
 
+- Import CSS Gradients
+  - Paste existing CSS gradient code to import and edit within the tool.
+
 - Dynamic Dark Mode Toggle
   - Allows instant switching between a dark and light theme for the user interface.
 
@@ -46,12 +49,6 @@
   - Features a clean, intuitive, and highly responsive UI, designed with Material-UI (MUI) for optimal usability across all devices.
 
 # Feature Ideas
-
-- Export to JSON
-  - Export/import gradient configurations as JSON for sharing or programmatic use.
-
-- Import CSS Gradients
-  - Paste existing CSS gradient code to import and edit within the tool.
 
 - Gradient History/Undo-Redo
   - Track changes and allow users to undo/redo gradient edits.

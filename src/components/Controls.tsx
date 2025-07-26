@@ -63,7 +63,7 @@ const Controls: React.FC<
     <>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="inherit" centered>
             <Tab label="Controls" value="1" />
             <Tab label="Hue/Saturation" value="2" />
           </TabList>
@@ -80,7 +80,7 @@ const Controls: React.FC<
           {(type === 'linear' || type === 'conic') && (
             <Box display="flex" alignItems="center" gap={2} mb={2}>
               <Typography>Angle</Typography>
-              <Slider value={angle} onChange={(_, val) => typeof val === 'number' && onAngleChange(val)} min={0} max={360} step={10} valueLabelDisplay="auto" aria-label="Gradient angle slider" sx={{ flexGrow: 1 }} />
+              <Slider value={angle} onChange={(_, val) => typeof val === 'number' && onAngleChange(val)} min={0} max={360} step={10} valueLabelDisplay="auto" aria-label="Gradient angle slider" sx={{ flexGrow: 1, color: 'inherit' }} />
               <label style={visuallyHidden} htmlFor="gradient-angle">
                 Angle
               </label>
@@ -103,7 +103,6 @@ const Controls: React.FC<
             <Box display="flex" alignItems="center" gap={2}>
               <TextField label="X (%)" name="x" type="number" size="small" value={conicPosition.x} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic X position' }} sx={{ width: '50%' }} />
               <TextField label="Y (%)" name="y" type="number" size="small" value={conicPosition.y} onChange={handleConicPositionChange} inputProps={{ min: 0, max: 100, style: { width: 60 }, 'aria-label': 'Conic Y position' }} sx={{ width: '50%' }} />
-              <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} inputProps={{ 'aria-label': 'Toggle repeating gradient' }} />} label="Repeating" sx={{ mb: 0.5 }} />
             </Box>
           )}
           {(type === 'radial' || type === 'elliptical') && (
@@ -155,7 +154,7 @@ const Controls: React.FC<
               sx={{ width: 80, ml: 2 }}
             />
           </Box>
-          <Slider value={typeof hue === 'number' ? hue : 0} onChange={(_, val) => typeof val === 'number' && onHueChange && onHueChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient hue slider" sx={{ borderRadius: '4px', mb: 2, background: 'linear-gradient(to right, hsl( 0, 100%, 50%) 0%, hsl( 60, 100%, 50%) 16.67%, hsl(120, 100%, 50%) 33.33%, hsl(180, 100%, 50%) 50%, hsl(240, 100%, 50%) 66.67%, hsl(320, 100%, 50%) 83.33%, hsl(360, 100%, 50%) 100% );' }} />
+          <Slider value={typeof hue === 'number' ? hue : 0} onChange={(_, val) => typeof val === 'number' && onHueChange && onHueChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient hue slider" sx={{ borderRadius: '4px', mb: 2, color: 'inherit', background: 'linear-gradient(to right, hsl( 0, 100%, 50%) 0%, hsl( 60, 100%, 50%) 16.67%, hsl(120, 100%, 50%) 33.33%, hsl(180, 100%, 50%) 50%, hsl(240, 100%, 50%) 66.67%, hsl(320, 100%, 50%) 83.33%, hsl(360, 100%, 50%) 100% );' }} />
           <label style={visuallyHidden} htmlFor="gradient-hue">
             Hue
           </label>
@@ -178,7 +177,7 @@ const Controls: React.FC<
               sx={{ width: 80, ml: 2 }}
             />
           </Box>
-          <Slider value={typeof saturation === 'number' ? saturation : 0} onChange={(_, val) => typeof val === 'number' && onSaturationChange && onSaturationChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient saturation slider" sx={{ borderRadius: '4px', mb: 2, background: 'linear-gradient(to right, hsl(0,0%,50%) 0%, hsl(0,100%,50%) 100%)' }} />
+          <Slider value={typeof saturation === 'number' ? saturation : 0} onChange={(_, val) => typeof val === 'number' && onSaturationChange && onSaturationChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient saturation slider" sx={{ borderRadius: '4px', mb: 2, color: 'inherit', background: 'linear-gradient(to right, hsl(0,0%,50%) 0%, hsl(0,100%,50%) 100%)' }} />
           <Box display="flex" alignItems="flex-end" justifyContent="space-between" gap={2} mb={1}>
             <Typography>Lightness</Typography>
             <label style={visuallyHidden} htmlFor="gradient-lightness">
@@ -198,7 +197,7 @@ const Controls: React.FC<
               sx={{ width: 80, ml: 2 }}
             />
           </Box>
-          <Slider value={typeof lightness === 'number' ? lightness : 0} onChange={(_, val) => typeof val === 'number' && onLightnessChange && onLightnessChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient lightness slider" sx={{ borderRadius: '3px', mb: 2, background: 'linear-gradient(to right, hsl(0,100%,0%) 0%, hsl(0,100%,100%) 100%)' }} />
+          <Slider value={typeof lightness === 'number' ? lightness : 0} onChange={(_, val) => typeof val === 'number' && onLightnessChange && onLightnessChange(val)} min={-100} max={100} step={1} valueLabelDisplay="auto" aria-label="Gradient lightness slider" sx={{ borderRadius: '4px', mb: 2, color: 'inherit', background: 'linear-gradient(to right, hsl(0,100%,0%) 0%, hsl(0,100%,100%) 100%)' }} />
         </TabPanel>
       </TabContext>
     </>

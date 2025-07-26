@@ -138,7 +138,7 @@ background: ${gradientCSS};`;
           <MenuItem onClick={handleExportCSS}>CSS</MenuItem>
           <MenuItem onClick={handleExportJSON}>JSON</MenuItem>
         </Menu>
-        <Button variant="contained" color="inherit" onClick={handleCopy} component="button" ref={copyButtonRef} aria-label="Copy CSS to clipboard">
+        <Button variant="outlined" onClick={handleCopy} component="button" ref={copyButtonRef} aria-label="Copy CSS to clipboard">
           Copy CSS
         </Button>
       </Box>

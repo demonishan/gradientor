@@ -8,6 +8,7 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import logo from '../assets/logo.webp';
 import React from 'react';
+import ImportGradient from './ImportGradient';
 import useDebounce from '../helpers/useDebounce';
 import { generateRandomGradient } from '../modules/randomGradient';
 import type { GradientConfig } from '../App';
@@ -56,53 +57,70 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, showSnackbar, se
     showSnackbar('Random gradient generated!');
     handleMenuClose();
   }, randomButtonRef);
-  const menuItems = [{ label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef }];
+  const [importOpen, setImportOpen] = React.useState(false);
+  const menuItems = [
+    { label: 'Import', onClick: () => setImportOpen(true) },
+    { label: 'Random Gradient', onClick: debouncedRandomGradient, buttonRef: randomButtonRef },
+  ];
   return (
-    <AppBar position="static" sx={{ '--Paper-overlay': 'none !important', boxShadow: 1 }}>
-      <Toolbar>
-        <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1, gap: 2 }}>
-          {menuItems.map((item, idx) => (
-            <Button component="button" color="inherit" key={idx} ref={typeof item.label === 'string' ? item.buttonRef : undefined} onClick={item.onClick} sx={{ minWidth: 'auto' }} aria-label={typeof item.label === 'string' ? item.label : undefined}>
-              {item.label}
-            </Button>
-          ))}
-        </Box>
-        <Button component="button" color="inherit" onClick={() => setFavoriteOpen(true)} sx={{ minWidth: 'auto' }} aria-label="Open favorites">
-          <Badge badgeContent={favoriteCount} max={99} color="secondary">
-            <FavoriteBorderIcon aria-label="Open favorites" />
-          </Badge>
-        </Button>
-        <Button component="button" color="inherit" ref={darkModeButtonRef} onClick={handleToggleDarkMode} sx={{ minWidth: 'auto' }} aria-label="Toggle dark mode">
-          {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
-        </Button>
-        <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>
-          <MenuIcon />
-        </IconButton>
-        <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-          {menuItems.map((item, idx) => (
-            <MenuItem color="inherit" key={idx} onClick={item.onClick}>
-              {item.label}
-            </MenuItem>
-          ))}
-        </Menu>
-        <Favorite
-          open={favoriteOpen}
-          onClose={() => setFavoriteOpen(false)}
-          showSnackbar={showSnackbar}
-          onGradientSelect={(fav) =>
-            setGradient({
-              ...fav,
-              angle: fav.angle ?? 90,
-              colorStops: fav.colorStops.map((stop, i) => ({
-                ...stop,
-                id: String(i + 1),
-              })),
-            })
-          }
-        />
-      </Toolbar>
-    </AppBar>
+    <>
+      <AppBar position="static" sx={{ '--Paper-overlay': 'none !important', boxShadow: 1 }}>
+        <Toolbar>
+          <img src={logo} alt="Gradientor Logo" style={{ height: '2rem', width: 'auto', marginRight: 'auto' }} />
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', flexGrow: 1, gap: 2 }}>
+            {menuItems.map((item, idx) => (
+              <Button component="button" color="inherit" key={idx} ref={item.buttonRef} onClick={item.onClick} sx={{ minWidth: 'auto' }} aria-label={item.label}>
+                {item.label}
+              </Button>
+            ))}
+          </Box>
+          <Button component="button" color="inherit" onClick={() => setFavoriteOpen(true)} sx={{ minWidth: 'auto' }} aria-label="Open favorites">
+            <Badge badgeContent={favoriteCount} max={99} color="secondary">
+              <FavoriteBorderIcon aria-label="Open favorites" />
+            </Badge>
+          </Button>
+          <Button component="button" color="inherit" ref={darkModeButtonRef} onClick={handleToggleDarkMode} sx={{ minWidth: 'auto' }} aria-label="Toggle dark mode">
+            {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
+          </Button>
+          <IconButton color="inherit" aria-label="open menu" onClick={handleMenuOpen} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>
+            <MenuIcon />
+          </IconButton>
+          <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+            {menuItems.map((item, idx) => (
+              <MenuItem color="inherit" key={idx} onClick={item.onClick}>
+                {item.label}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Toolbar>
+      </AppBar>
+      <ImportGradient
+        open={importOpen}
+        onClose={(errMsg) => {
+          setImportOpen(false);
+          if (errMsg) showSnackbar(errMsg);
+        }}
+        onImport={(g) => {
+          setGradient(g);
+          showSnackbar('Gradient imported!');
+        }}
+      />
+      <Favorite
+        open={favoriteOpen}
+        onClose={() => setFavoriteOpen(false)}
+        showSnackbar={showSnackbar}
+        onGradientSelect={(fav) =>
+          setGradient({
+            ...fav,
+            angle: fav.angle ?? 90,
+            colorStops: fav.colorStops.map((stop, i) => ({
+              ...stop,
+              id: String(i + 1),
+            })),
+          })
+        }
+      />
+    </>
   );
 };
 export default Header;

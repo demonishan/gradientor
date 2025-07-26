@@ -9,7 +9,7 @@
  */
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Backdrop, Drawer } from '@mui/material';
+import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Drawer } from '@mui/material';
 import { FAVORITES_KEY } from '../modules';
 import type { GradientFavorite, ColorStop } from '../modules';
 
@@ -78,62 +78,59 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
     return '';
   };
   return (
-    <>
-      <Backdrop open={open} onClick={onClose} />
-      <Drawer anchor="right" open={open} onClose={onClose}>
-        <Box sx={{ bgcolor: 'background.paper', display: 'flex', flexDirection: 'column', width: 320, position: 'relative', height: '100%' }}>
-          <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }} aria-label="close">
-            <CloseIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{ m: '1rem 1rem 0.5rem' }}>
-            Favorites
-          </Typography>
-          <List sx={{ overflowY: 'auto', flexGrow: 1, p: 0 }}>
-            {gradients.map((g, idx) => (
-              <ListItem key={idx} sx={{ p: 0 }}>
-                <Card sx={{ width: '100%', m: '0.5rem 1rem' }}>
-                  <CardMedia style={{ height: '7.5rem', background: generateGradientCSS(g) }} />
-                  <CardContent>
-                    <Typography variant="subtitle2" gutterBottom sx={{ textTransform: 'capitalize' }}>
-                      {g.type} Gradient
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                      {g.colorStops.map((stop, i) => (
-                        <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Box sx={{ width: 16, height: 16, bgcolor: stop.color, borderRadius: '50%', border: '1px solid #ccc' }} />
-                          <Typography sx={{ fontSize: '0.75rem' }}>{stop.position}%</Typography>
-                        </Box>
-                      ))}
-                    </Box>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      onClick={() => {
-                        onGradientSelect(g);
-                        showSnackbar('Gradient loaded from favorites!');
-                        onClose();
-                      }}
-                    >
-                      Load
-                    </Button>
-                    <Button size="small" color="error" onClick={() => handleRemove(idx)}>
-                      Remove
-                    </Button>
-                  </CardActions>
-                </Card>
-              </ListItem>
-            ))}
-          </List>
-          <Typography sx={{ fontSize: '0.7rem', p: 1, textAlign: 'center', fontStyle: 'italic', opacity: 0.5, m: 0 }}>
-            The favorites are stored in the local storage,
-            <br />
-            so they may not persist across sessions.
-          </Typography>
-        </Box>
-      </Drawer>
-    </>
+    <Drawer anchor="right" open={open} onClose={onClose}>
+      <Box sx={{ bgcolor: 'background.paper', display: 'flex', flexDirection: 'column', width: 320, position: 'relative', height: '100%' }}>
+        <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }} aria-label="close">
+          <CloseIcon />
+        </IconButton>
+        <Typography variant="h6" sx={{ m: '1rem 1rem 0.5rem' }}>
+          Favorites
+        </Typography>
+        <List sx={{ overflowY: 'auto', flexGrow: 1, p: 0 }}>
+          {gradients.map((g, idx) => (
+            <ListItem key={idx} sx={{ p: 0 }}>
+              <Card sx={{ width: '100%', m: '0.5rem 1rem' }}>
+                <CardMedia style={{ height: '7.5rem', background: generateGradientCSS(g) }} />
+                <CardContent>
+                  <Typography variant="subtitle2" gutterBottom sx={{ textTransform: 'capitalize' }}>
+                    {g.type} Gradient
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {g.colorStops.map((stop, i) => (
+                      <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <Box sx={{ width: 16, height: 16, bgcolor: stop.color, borderRadius: '50%', border: '1px solid #ccc' }} />
+                        <Typography sx={{ fontSize: '0.75rem' }}>{stop.position}%</Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    onClick={() => {
+                      onGradientSelect(g);
+                      showSnackbar('Gradient loaded from favorites!');
+                      onClose();
+                    }}
+                  >
+                    Load
+                  </Button>
+                  <Button size="small" color="error" onClick={() => handleRemove(idx)}>
+                    Remove
+                  </Button>
+                </CardActions>
+              </Card>
+            </ListItem>
+          ))}
+        </List>
+        <Typography sx={{ fontSize: '0.7rem', p: 1, textAlign: 'center', fontStyle: 'italic', opacity: 0.5, m: 0 }}>
+          The favorites are stored in the local storage,
+          <br />
+          so they may not persist across sessions.
+        </Typography>
+      </Box>
+    </Drawer>
   );
 };
 export default Favorite;

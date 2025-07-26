@@ -13,7 +13,7 @@ import packageJson from '../../package.json';
 function Footer() {
   const theme = useTheme();
   return (
-    <Box component="footer" aria-label="Gradientor app footer" sx={{ pt: 2, pb: 4 }}>
+    <Box component="footer" aria-label="Gradientor app footer" sx={{ p: 2, pb: 4 }}>
       <Typography variant="body2" sx={{ color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
         v{packageJson.version}
         <BlurOnRoundedIcon color="primary" fontSize="small" sx={{ verticalAlign: 'middle' }} aria-label="divider icon" />
