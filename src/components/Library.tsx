@@ -28,18 +28,22 @@ const Library: React.FC = () => {
     (async () => {
       setLoading(true);
       try {
-        if (cachedPresets && cachedPresets.length > 0) {
-          setPresets(cachedPresets);
-          const { total } = await getGradientPresets(1, 0);
-          setTotal(total);
+        let items = cachedPresets;
+        let total = 0;
+        if (items && items.length > 0) {
+          setPresets(items);
+          const apiResult = await getGradientPresets(1, 0);
+          total = apiResult.total;
         } else {
-          const { items, total } = await getGradientPresets(PAGE_SIZE, 0);
+          const apiResult = await getGradientPresets(PAGE_SIZE, 0);
+          items = apiResult.items;
+          total = apiResult.total;
           setPresets(items);
           setCachedPresets(items);
-          setTotal(total);
-          setHasMore(items.length + 0 < total);
-          setOffset(items.length);
         }
+        setTotal(total);
+        setHasMore(items.length < total);
+        setOffset(items.length);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Failed to load presets');
       } finally {
@@ -49,18 +53,33 @@ const Library: React.FC = () => {
   }, [cachedPresets, setCachedPresets]);
   useEffect(() => {
     if (filtersActive) {
+      setCachedPresets([]);
       setOffset(0);
       setHasMore(false);
-    } else setHasMore(presets.length < total);
-  }, [selectedStops, selectedLightness, selectedTags, presets, total]);
+      setLoading(true);
+      (async () => {
+        try {
+          const { items } = await getGradientPresets(PAGE_SIZE, 0);
+          setPresets(items);
+        } catch (err: unknown) {
+          setError(err instanceof Error ? err.message : 'Failed to load filtered presets');
+        } finally {
+          setLoading(false);
+        }
+      })();
+    } else {
+      setHasMore(presets.length < total);
+    }
+  }, [selectedStops, selectedLightness, selectedTags, filtersActive, presets.length, setCachedPresets, total]);
   const handleLoadMore = async () => {
     setLoading(true);
     try {
       const { items: moreItems, total: apiTotal } = await getGradientPresets(PAGE_SIZE, offset);
       setPresets((prev) => {
-        const updated = [...prev, ...moreItems];
-        setCachedPresets(updated);
-        return updated;
+        const all = [...prev, ...moreItems];
+        const unique = Array.from(new Map(all.map((item) => [item.id, item])).values());
+        setCachedPresets(unique);
+        return unique;
       });
       setTotal(apiTotal);
       setOffset((prev) => prev + moreItems.length);
