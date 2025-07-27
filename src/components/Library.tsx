@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, CircularProgress, Card, CardMedia, CardContent, FormControl, InputLabel, Select, MenuItem, Button, Popper, ClickAwayListener, Badge } from '@mui/material';
+import { Box, Typography, CircularProgress, Card, CardMedia, CardContent, FormControl, InputLabel, Select, MenuItem, Button, Badge } from '@mui/material';
 import { getGradientPresets } from '../modules/contentful';
 import useLocalStorage from '../helpers/useLocalStorage';
-import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone';
 
 const Library: React.FC = () => {
-  const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null);
-  const filterPopperOpen = Boolean(filterAnchorEl);
   interface GradientPreset {
     id: string;
     title: string;
@@ -15,6 +12,7 @@ const Library: React.FC = () => {
     colorStops: string[];
     linearGradient: string;
   }
+  const PAGE_SIZE = 20;
   const [presets, setPresets] = useState<GradientPreset[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [cachedPresets, setCachedPresets] = useLocalStorage<GradientPreset[]>('gradient_presets', []);
@@ -22,10 +20,10 @@ const Library: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const PAGE_SIZE = 20;
   const [selectedStops, setSelectedStops] = useState<string>('');
   const [selectedLightness, setSelectedLightness] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const filtersActive = selectedStops || selectedLightness || selectedTags.length > 0;
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -49,7 +47,12 @@ const Library: React.FC = () => {
       }
     })();
   }, [cachedPresets, setCachedPresets]);
-
+  useEffect(() => {
+    if (filtersActive) {
+      setOffset(0);
+      setHasMore(false);
+    } else setHasMore(presets.length < total);
+  }, [selectedStops, selectedLightness, selectedTags, presets, total]);
   const handleLoadMore = async () => {
     setLoading(true);
     try {
@@ -80,7 +83,6 @@ const Library: React.FC = () => {
     });
     return Array.from(tagSet);
   }, [presets]);
-
   return (
     <Box p={2}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -101,7 +103,7 @@ const Library: React.FC = () => {
               ))}
             </Select>
           </FormControl>
-          <FormControl size="small" sx={{ width: 120, mr: 1 }}>
+          <FormControl size="small" sx={{ width: 130, mr: 1 }}>
             <InputLabel>Brightness</InputLabel>
             <Select label="Darkness" value={selectedLightness} onChange={(e) => setSelectedLightness(e.target.value)}>
               <MenuItem value="">All</MenuItem>
@@ -112,7 +114,7 @@ const Library: React.FC = () => {
               ))}
             </Select>
           </FormControl>
-          <FormControl size="small" sx={{ width: 100 }}>
+          <FormControl size="small" sx={{ width: 90 }}>
             <InputLabel>Tags</InputLabel>
             <Select label="Tags" value={selectedTags} onChange={(e) => setSelectedTags(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)} renderValue={(selected) => (selected as string[]).join(', ')} sx={{ textTransform: 'capitalize' }}>
               <MenuItem value="">All</MenuItem>
@@ -156,7 +158,7 @@ const Library: React.FC = () => {
             <Card key={preset.id} sx={{ backgroundColor: 'rgba(125, 125, 125, 0.1)' }} title={preset.title}>
               <CardMedia sx={{ height: 140, background: preset.linearGradient }} />
               <CardContent sx={{ padding: '0.5rem 1rem 0.5rem !important' }}>
-                <Typography gutterBottom sx={{ fontSize: '1rem', m: 0 }}>
+                <Typography variant="h6" sx={{ fontSize: '0.875rem', m: 0 }}>
                   {preset.title}
                 </Typography>
               </CardContent>
@@ -164,12 +166,12 @@ const Library: React.FC = () => {
           ));
         })()}
       </Box>
-      {loading && (
+      {!filtersActive && loading && (
         <Box mt={2} mx="auto" display="flex" justifyContent="center">
           <CircularProgress />
         </Box>
       )}
-      {!loading && hasMore && (
+      {!filtersActive && !loading && hasMore && (
         <Box mt={5} display="flex" justifyContent="center">
           <Button onClick={handleLoadMore} variant="outlined" color="inherit">
             Load More
