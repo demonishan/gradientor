@@ -3,7 +3,7 @@ import { useDebounce, useClipboard } from '../helpers';
 import { generateShareLink, addFavorite, exportCSS, exportPNG, exportSVG, exportJSON } from '../modules';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig, GradientFavorite } from '../modules';
-import { Box, Button, Checkbox, FormControlLabel, Menu, MenuItem } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import TextField from '@mui/material/TextField';
@@ -114,9 +114,11 @@ background: ${gradientCSS};`;
       <TextField value={generateFullCSS()} multiline fullWidth label="CSS Code" rows={3} inputProps={{ readOnly: true, style: { fontSize: `0.875rem` } }} />
       <FormControlLabel control={<Checkbox checked={maxCompatibility} onChange={(e) => setMaxCompatibility(e.target.checked)} color="primary" />} label="Compatibility" />
       <Box display="flex" justifyContent="flex-end" mt={1.5} gap={1}>
-        <Button variant="text" color="inherit" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} sx={{ minWidth: `auto`, px: 0 }} aria-label="Add to favorites">
-          <FavoriteBorderIcon />
-        </Button>
+        <Tooltip title="Add to favorites" placement="top">
+          <IconButton color="inherit" component="button" onClick={handleAddFavorite} ref={addFavoriteButtonRef} aria-label="Add to favorites">
+            <FavoriteBorderIcon />
+          </IconButton>
+        </Tooltip>
         <Button variant="text" color="inherit" onClick={handleShare} component="button" ref={shareButtonRef} aria-label="Copy shareable link">
           Share
         </Button>

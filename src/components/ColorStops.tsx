@@ -6,9 +6,9 @@
  * @param {ColorStopsProps} props - The props for the component.
  * @returns {JSX.Element} Color stops UI.
  */
-import { Box, TextField, IconButton, Radio, RadioGroup } from '@mui/material';
+import { Box, TextField, IconButton, Radio, RadioGroup, Tooltip } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
+import BackspaceTwoToneIcon from '@mui/icons-material/BackspaceTwoTone';
 import React from 'react';
 import type { ColorStop } from '../App';
 
@@ -69,9 +69,11 @@ const ColorStops: React.FC<ColorStopsProps> = ({ colorStops, selectedStopId, onS
             sx={{ flexGrow: 1 }}
           />
           {colorStops.length > 2 && (
-            <IconButton size="small" onClick={() => onDeleteStop(stop.id)} title="Delete color stop">
-              <BackspaceOutlinedIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="Delete color stop" placement="top">
+              <IconButton size="small" onClick={() => onDeleteStop(stop.id)} aria-label="Delete color stop">
+                <BackspaceTwoToneIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           )}
         </Box>
       ))}
