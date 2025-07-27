@@ -154,18 +154,18 @@ const App = () => {
   const updateGradientAngle = (angle: number) => setGradient((prev) => ({ ...prev, angle }));
   const updateConicPosition = (pos: { x: number; y: number }) => setGradient((prev) => ({ ...prev, conicPosition: pos }));
   const updateRadialDirection = (dir: string) => setGradient((prev) => ({ ...prev, radialDirection: dir }));
-  const [darkMode, setDarkMode] = useLocalStorage(`darkMode`, false);
+  const [darkMode, setDarkMode] = useLocalStorage(`darkMode`, true);
   const [snackbarOpen, snackbarMsg, showSnackbar, hideSnackbar] = useSnackbar();
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
           mode: darkMode ? `dark` : `light`,
-          primary: { main: `#fb8c00`, light: `#ffa726`, dark: `#ffb74d` },
-          secondary: { main: `#ff5722`, light: `#e64a19`, dark: `#ff8a65` },
+          primary: { main: `#FB8C00`, light: `#FFA726`, dark: `#FFB74D` },
+          secondary: { main: `#FF5722`, light: `#E64A19`, dark: `#FF8A65` },
           background: {
-            default: darkMode ? `#121212` : `#cccccc`,
-            paper: darkMode ? `#1e1e1e` : `#f7f7f7`,
+            default: darkMode ? `#121212` : `#CCCCCC`,
+            paper: darkMode ? `#1E1E1E` : `#F7F7F7`,
           },
         },
         typography: {

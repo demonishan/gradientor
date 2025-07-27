@@ -1,35 +1,12 @@
-/**
- * Represents a gradient preset fetched from Contentful.
- * @property id Unique identifier for the preset
- * @property title Preset title
- * @property rawInput Raw CSS gradient input
- * @property type Gradient type
- * @property tags Comma-separated tags
- * @property angle Gradient angle
- * @property lightness Lightness value
- * @property colorStops Array of color stops
- */
 export interface GradientPreset {
   id: string;
   title: string;
-  rawInput: string;
-  type: string;
   tags: string;
-  angle: number;
   lightness: string;
   colorStops: string[];
+  linearGradient: string;
 }
-
-/**
- * Fetch gradient presets from Contentful with pagination support.
- * @param limit Number of items to fetch per request
- * @param skip Number of items to skip (for pagination)
- * @returns Object containing array of GradientPreset items and total count
- */
-export const getGradientPresets = async (
-  limit: number = 20,
-  skip: number = 0
-): Promise<{ items: GradientPreset[]; total: number }> => {
+export const getGradientPresets = async (limit: number = 20, skip: number = 0): Promise<{ items: GradientPreset[]; total: number }> => {
   const SPACE_ID = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
   const ACCESS_TOKEN = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
   const ENVIRONMENT = import.meta.env.VITE_CONTENTFUL_ENVIRONMENT || 'master';
@@ -39,32 +16,19 @@ export const getGradientPresets = async (
   if (!res.ok) throw new Error('Failed to fetch gradient presets from Contentful.');
   const data = await res.json();
   const total: number = data.total || 0;
-  let items: GradientPreset[] = [];
-  if (data && Array.isArray(data.items)) {
-    items = data.items.map((item: {
-      sys: { id: string };
-      fields: {
-        title?: string;
-        rawInput: string;
-        type?: string[] | string;
-        tags?: string;
-        angle?: number;
-        lightness?: string;
-        colorStops?: string[];
-      };
-    }) => {
-      const fields = item.fields || {};
-      return {
-        id: item.sys?.id,
-        title: fields.title || 'N/A',
-        rawInput: fields.rawInput.replace(/^background:\s*/, '').replace(/;/, '') || 'N/A',
-        type: Array.isArray(fields.type) ? fields.type[0] : 'N/A',
-        tags: fields.tags || 'N/A',
-        angle: isNaN(fields.angle ?? NaN) ? 0 : fields.angle ?? 0,
-        lightness: fields.lightness || 'N/A',
-        colorStops: Array.isArray(fields.colorStops) ? fields.colorStops : [],
-      };
-    });
-  }
+  const items: GradientPreset[] = Array.isArray(data.items)
+    ? data.items.map((item: { sys: { id: string }; fields: { title?: string; tags?: string; lightness?: string; colorStops?: any } }) => {
+        const fields = item.fields || {};
+        const stops = fields.colorStops && typeof fields.colorStops === 'object' && Object.keys(fields.colorStops).length > 0 ? Object.values(fields.colorStops).map((stop: any) => `${stop.color || '#000'} ${typeof stop.position === 'number' ? stop.position + '%' : '0%'}`) : ['#eee 0%', '#ccc 100%'];
+        return {
+          id: item.sys?.id,
+          title: fields.title || 'N/A',
+          tags: fields.tags || 'N/A',
+          lightness: fields.lightness || 'N/A',
+          colorStops: stops,
+          linearGradient: `linear-gradient(45deg, ${stops.join(', ')})`,
+        };
+      })
+    : [];
   return { items, total };
 };
