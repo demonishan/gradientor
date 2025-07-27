@@ -1,72 +1,60 @@
+
 # Features List
 
-- Gradient Creation and Management
-  - Allows users to design custom gradients by adding, removing, and editing multiple color stops.
-
-- Color Stop Customization
-  - Each color stop offers control over its color, alpha (opacity), and exact position.
-
-- Advanced Gradient Types
-  - Supports various gradient types, including linear, radial, conic, and repeating gradients, offering greater design flexibility.
-
-- Gradient Favorites
-  - Allows user to save their favorite gradients for easy access and reuse.
-
-- Intelligent Random Gradient Generation
-  - Generates diverse random gradients based on user-defined constraints for color and distribution.
-
-- Versatile Gradient Export Options
-  - Enables export of gradients in CSS, SVG, PNG image file formats as well as JSON file format for sharing or programmatic use.
-
-- Instant CSS Clipboard Copy
-  - Provides a one-click function to copy the generated CSS code for any gradient.
-
-- Hue Adjustment Slider
-  - Allows users to fine-tune the hue of all gradient colors with a dedicated slider, enabling quick color harmonization and creative effects.
-
-- Saturation Adjustment Slider
-  - Lets users increase or decrease the saturation of all gradient colors with a dedicated slider, enabling vivid or muted gradient effects instantly.
-
-- Lightness Adjustment Slider
-  - Allows users to adjust the brightness and darkness of all gradient colors through a dedicated slider, granting immediate control over the gradients' luminosity and contrast.
-
-- Shareable Gradient Links
-  - Generates unique, shareable links for each created gradient.
-
-- Import CSS Gradients
-  - Paste existing CSS gradient code to import and edit within the tool.
-
-- Dynamic Dark Mode Toggle
-  - Allows instant switching between a dark and light theme for the user interface.
-
-- Debounced User Interface Actions
-  - Prevents rapid, repeated actions on key buttons, with visual feedback for disabled states.
-
-- Informative Snackbar Notifications
-  - Utilizes consistent, non-intrusive notifications for user actions and system events.
-
-- Minimalist and Responsive User Interface
-  - Features a clean, intuitive, and highly responsive UI, designed with Material-UI (MUI) for optimal usability across all devices.
+- **Gradient Creation and Management**
+  - Design custom gradients by adding, removing, and editing multiple color stops.
+- **Color Stop Customization**
+  - Control color, alpha (opacity), and position for each stop.
+- **Advanced Gradient Types**
+  - Linear, radial, conic, elliptical, and repeating gradients.
+- **Gradient Favorites**
+  - Save and manage favorite gradients for quick access.
+- **Random Gradient Generation**
+  - Generate diverse random gradients with user constraints.
+- **Export Options**
+  - Export gradients as CSS, SVG, PNG, and JSON.
+- **Instant CSS Clipboard Copy**
+  - One-click copy for generated CSS code.
+- **Hue, Saturation, Lightness Sliders**
+  - Fine-tune all gradient colors instantly.
+- **Shareable Gradient Links**
+  - Generate unique links for sharing gradients.
+- **Import CSS Gradients**
+  - Paste CSS gradient code to import and edit.
+- **Dynamic Dark Mode Toggle**
+  - Instantly switch between dark and light themes.
+- **Debounced UI Actions**
+  - Prevent rapid, repeated actions with feedback.
+- **Snackbar Notifications**
+  - Consistent, non-intrusive notifications for actions/events.
+- **Minimalist & Responsive UI**
+  - Clean, intuitive, and highly responsive interface (Material-UI).
+- **Gradient Presets Library**
+  - Browse, filter, and search hundreds of presets from Contentful.
+- **Contentful API Integration**
+  - Cloud-based gradient preset library with metadata.
+- **Dynamic Filters**
+  - Filter presets by type, stops, lightness, and tags.
+- **Popper Info Box**
+  - View detailed metadata for each gradient preset.
+- **Pagination & Load More**
+  - Efficiently browse large libraries with dynamic loading.
+- **Local Storage Caching**
+  - Minimize API calls and speed up browsing.
+- **Strict Lint/Build/Push Protocol**
+  - Automated code quality and deployment checks (see RULEBOOK_GITHUB.md).
 
 # Feature Ideas
 
-- Gradient History/Undo-Redo
-  - Track changes and allow users to undo/redo gradient edits.
-
-- Contrast Ratio Tool
-  - Show contrast ratios for text over the gradient, not just accessibility warnings.
-
-- Gradient Presets Library
-  - Provide a library of popular or trending gradient presets for quick use.
-
-- Color Palette Suggestions
+- **Gradient History/Undo-Redo**
+  - Track changes and allow users to undo/redo edits.
+- **Contrast Ratio Tool**
+  - Show contrast ratios for text over gradients.
+- **Color Palette Suggestions**
   - Suggest harmonious color stops using color theory or APIs.
-
-- Accessibility Checker
+- **Accessibility Checker**
   - Warn if gradients have poor contrast or are not colorblind-friendly.
-
-- Drag-and-Drop Color Stops
+- **Drag-and-Drop Color Stops**
   - Improve UX for adding/removing/reordering color stops visually.
-
-- Gradient Animation
+- **Gradient Animation**
   - Animate gradients (angle, stops, color cycling) and export as CSS keyframes or GIF/video.
