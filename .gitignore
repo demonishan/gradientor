@@ -155,3 +155,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 >>>>>>> f302459e1546ddddeee6da61df603a42c93bac02
+
+# PHP files
+api/
