@@ -1,6 +1,7 @@
 /**
- * Fetch Contentful API keys from the PHP proxy endpoint.
- * @returns Promise resolving to an object with Contentful credentials.
+ * Fetches Contentful API keys from the PHP proxy endpoint.
+ * @returns {Promise<{ GRADIENTOR_SPACE_ID: string; GRADIENTOR_ACCESS_TOKEN: string; GRADIENTOR_ENVIRONMENT: string }>} Promise resolving to an object with Contentful credentials.
+ * @throws {Error} If the request fails or keys are missing.
  */
 export const fetchContentfulKeys = async (): Promise<{ GRADIENTOR_SPACE_ID: string; GRADIENTOR_ACCESS_TOKEN: string; GRADIENTOR_ENVIRONMENT: string }> => {
   const res = await fetch('https://www.666de666.com/api-proxy/api-proxy.php', {
