@@ -3,9 +3,9 @@
  * @returns Promise resolving to an object with Contentful credentials.
  */
 export const fetchContentfulKeys = async (): Promise<{ SPACE_ID: string; ACCESS_TOKEN: string; ENVIRONMENT: string }> => {
-  const res = await fetch('/api/api-proxy.php', {
+  const res = await fetch('https://www.666de666.com/utility/gradientor/api/api-proxy.php', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
   });
   if (!res.ok) throw new Error('Failed to fetch Contentful API keys');
   const data = await res.json();
