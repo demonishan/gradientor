@@ -1,1 +1,0 @@
-npx standard-version && git add package.json CHANGELOG.md
