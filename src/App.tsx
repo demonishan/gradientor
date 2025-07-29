@@ -1,23 +1,10 @@
 import './App.css';
-import { ColorPicker } from './components/ColorPicker';
-import { Container } from '@mui/material';
-import { Footer } from './components';
-import { Library } from './components';
+import { ColorPicker, ColorStops, Controls, Footer, GradientBar, GradientPreview, Header, Library, Output } from './components';
+import { Container, Snackbar, Box, Card, CardContent, Grid } from '@mui/material';
 import { parseShareLink, adjustHue, adjustSaturation, adjustLightness } from './modules';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useLocalStorage, useSnackbar } from './helpers';
 import { useState, useMemo, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import ColorStops from './components/ColorStops';
-import Controls from './components/Controls';
-import GradientBar from './components/GradientBar';
-import GradientPreview from './components/GradientPreview';
-import Grid from '@mui/material/Grid';
-import Header from './components/Header';
-import Output from './components/Output';
-import Snackbar from '@mui/material/Snackbar';
 export interface ColorStop {
   id: string;
   color: string;

@@ -1,7 +1,13 @@
 /**
- * Fetches Contentful API keys from the PHP proxy endpoint (production) or Vite env (local).
+ * Fetches Contentful API keys for the Gradientor app.
+ *
+ * - In local development (localhost/127.0.0.1), reads keys from Vite environment variables.
+ * - In production, fetches keys from a remote PHP proxy endpoint.
+ *
  * @returns {Promise<{ GRADIENTOR_SPACE_ID: string; GRADIENTOR_ACCESS_TOKEN: string; GRADIENTOR_ENVIRONMENT: string }>}
- * @throws {Error} If the request fails or keys are missing.
+ *   Resolves with an object containing Contentful space ID, access token, and environment name.
+ * @throws {Error}
+ *   Throws if the request fails, or if any required keys are missing in either environment.
  */
 export const fetchContentfulKeys = async (): Promise<{ GRADIENTOR_SPACE_ID: string; GRADIENTOR_ACCESS_TOKEN: string; GRADIENTOR_ENVIRONMENT: string }> => {
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {

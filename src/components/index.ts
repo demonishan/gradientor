@@ -1,15 +1,17 @@
 /**
- * Barrel file for component exports.
+ * Barrel file for UI component exports in Gradientor.
  *
  * Exports all main UI components for easy import elsewhere in the app:
- * - ColorPicker
- * - ColorStops
- * - Controls
- * - Favorite
- * - GradientBar
- * - GradientPreview
- * - Header
- * - Output
+ * - ColorPicker: Color selection tool for gradients
+ * - ColorStops: List and editor for gradient color stops
+ * - Controls: Gradient type and adjustment controls
+ * - Favorite: Favorite button for gradients
+ * - Footer: App footer
+ * - GradientBar: Visual bar of the gradient
+ * - GradientPreview: Preview of the gradient
+ * - Header: App header and navigation
+ * - Library: Gradient library component
+ * - Output: CSS and export options for gradients
  */
 export { ColorPicker } from './ColorPicker';
 export { default as ColorStops } from './ColorStops';

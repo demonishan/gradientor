@@ -1,4 +1,4 @@
-import { fetchContentfulKeys } from './apiProxy';
+import { fetchContentfulKeys } from './contentfulApiProxy';
 
 /**
  * Represents a gradient preset fetched from Contentful.
