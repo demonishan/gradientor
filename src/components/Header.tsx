@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, IconButton, Badge, Button, Box } from '@mui/material';
-import { generateRandomGradient } from '../modules/randomGradient';
+import { generateRandomGradient } from '../modules';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import Favorite from './Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';

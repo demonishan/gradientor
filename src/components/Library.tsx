@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, CircularProgress, Card, CardMedia, CardContent, FormControl, InputLabel, Select, MenuItem, Button, Badge } from '@mui/material';
-import { getGradientPresets } from '../modules/contentful';
+import { Badge, Box, Button, Card, CardContent, CardMedia, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { getGradientPresets } from '../modules';
 import useLocalStorage from '../helpers/useLocalStorage';
 
 const Library: React.FC = () => {

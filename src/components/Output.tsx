@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { useDebounce, useClipboard } from '../helpers';
+import { useDebounce } from '../helpers';
+import { useClipboard } from '../modules';
 import { generateShareLink, addFavorite, exportCSS, exportPNG, exportSVG, exportJSON } from '../modules';
 import type { GradientConfig } from '../App';
 import type { GradientShareConfig, GradientFavorite } from '../modules';
