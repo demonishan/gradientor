@@ -1,17 +1,12 @@
-import { AppBar, Toolbar, IconButton, Badge, Button, Box } from '@mui/material';
-import { generateRandomGradient } from '../modules';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import Favorite from './Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ImportGradient from './ImportGradient';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import logo from '../assets/logo.webp';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 import type { GradientConfig } from '../App';
+import logo from '../assets/logo.webp';
+import ImportGradient from './ImportGradient';
+import Favorite from './Favorite';
 import useDebounce from '../helpers/useDebounce';
+import { generateRandomGradient } from '../modules';
+import { AppBar, Badge, Box, Button, IconButton, Menu, MenuItem, Toolbar } from '@mui/material';
+import { DarkModeOutlined as DarkModeOutlinedIcon, FavoriteBorder as FavoriteBorderIcon, LightModeOutlined as LightModeOutlinedIcon, Menu as MenuIcon } from '@mui/icons-material';
 interface HeaderProps {
   darkMode: boolean;
   setDarkMode: (v: boolean) => void;
