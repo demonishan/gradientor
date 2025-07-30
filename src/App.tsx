@@ -1,24 +1,24 @@
 import './App.css';
+import { Box, Card, CardContent, Container, Grid, Snackbar } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ColorPicker, ColorStops, Controls, Footer, GradientBar, GradientPreview, Header, Library, Output } from './components';
-import { Container, Snackbar, Box, Card, CardContent, Grid } from '@mui/material';
-import { parseShareLink, adjustHue, adjustSaturation, adjustLightness } from './modules';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useLocalStorage, useSnackbar } from './helpers';
-import { useState, useMemo, useEffect } from 'react';
+import { adjustHue, adjustLightness, adjustSaturation, parseShareLink } from './modules';
+import { hexToRgba, rgbaToHex, useLocalStorage, useSnackbar } from './helpers';
+import { useEffect, useMemo, useState } from 'react';
 export interface ColorStop {
-  id: string;
   color: string;
-  position: number;
+  id: string;
   opacity: number;
+  position: number;
 }
 export interface GradientConfig {
-  type: `linear` | `radial` | `conic` | `elliptical`;
   angle: number;
   colorStops: ColorStop[];
   conicPosition?: { x: number; y: number };
   radialDirection?: string;
   radialSize?: string;
   repeating?: boolean;
+  type: `linear` | `radial` | `conic` | `elliptical`;
 }
 const App = () => {
   const [hue, setHue] = useState(0);
@@ -57,7 +57,6 @@ const App = () => {
   const updateRadialSize = (size: string) => setGradient((prev) => ({ ...prev, radialSize: size }));
   const [selectedStopId, setSelectedStopId] = useState<string>(`1`);
 
-  // Ensure the first stop is selected after a random gradient is generated
   const handleSetGradient = (g: GradientConfig) => {
     setGradient(g);
     setHue(0);
@@ -67,9 +66,12 @@ const App = () => {
     setSelectedStopId(first ? `1` : g.colorStops[0]?.id || ``);
   };
   const addColorStop = (position: number) => {
+    let defaultColor = '#ffffff';
+    if (colorMode === 'RGBA') defaultColor = 'rgba(255,255,255,1)';
+    if (colorMode === 'HSL') defaultColor = 'hsl(0,0%,100%)';
     const newStop: ColorStop = {
       id: Date.now().toString(),
-      color: `#ffffff`,
+      color: defaultColor,
       position,
       opacity: 1,
     };
@@ -81,6 +83,13 @@ const App = () => {
   };
   const updateColorStop = (id: string, updates: Partial<ColorStop>) => {
     if (updates.color !== undefined) {
+      let colorValue = updates.color;
+      if (colorMode === 'HEX') {
+      } else if (colorMode === 'RGBA') {
+        colorValue = hexToRgba(colorValue);
+      } else if (colorMode === 'HSL') {
+      }
+      updates.color = colorValue;
       const oldStop = gradient.colorStops.find((stop) => stop.id === id);
       if (oldStop && oldStop.color !== updates.color) {
         setHue(0);
@@ -105,7 +114,6 @@ const App = () => {
     if (selectedStopId === id) setSelectedStopId(gradient.colorStops[0].id);
   };
   const updateGradientType = (type: `linear` | `radial` | `conic` | `elliptical`) => setGradient((prev) => ({ ...prev, type }));
-  // Update all colors when hue changes
   const handleHueChange = (newHue: number) => {
     setHue(newHue);
     setGradient((prev) => ({
@@ -116,7 +124,6 @@ const App = () => {
       ).map((color, i) => ({ ...prev.colorStops[i], color })),
     }));
   };
-  // Update all colors when saturation changes
   const handleSaturationChange = (newSaturation: number) => {
     setSaturation(newSaturation);
     setGradient((prev) => ({
@@ -127,7 +134,6 @@ const App = () => {
       ).map((color, i) => ({ ...prev.colorStops[i], color })),
     }));
   };
-  // Update all colors when lightness changes
   const handleLightnessChange = (newLightness: number) => {
     setLightness(newLightness);
     setGradient((prev) => ({
@@ -161,6 +167,18 @@ const App = () => {
       }),
     [darkMode],
   );
+  const [colorMode, setColorMode] = useState<'HEX' | 'RGBA' | 'HSL'>('HEX');
+  useEffect(() => {
+    if (colorMode === 'HEX') {
+      setGradient((prev) => ({
+        ...prev,
+        colorStops: prev.colorStops.map((stop) => ({
+          ...stop,
+          color: /^rgba/.test(stop.color) ? rgbaToHex(stop.color) : stop.color,
+        })),
+      }));
+    }
+  }, [colorMode]);
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ bgcolor: theme.palette.background.default, minHeight: `100vh` }}>
@@ -181,7 +199,7 @@ const App = () => {
               <Grid mb={2} size={{ xs: 12, md: 4 }}>
                 <Card sx={{ height: `100%` }}>
                   <CardContent>
-                    <Output gradient={gradient} showSnackbar={showSnackbar} />
+                    <Output gradient={gradient} showSnackbar={showSnackbar} colorMode={colorMode} />
                   </CardContent>
                 </Card>
               </Grid>
@@ -190,14 +208,14 @@ const App = () => {
               <Grid mb={2} size={{ xs: 12, md: 4 }}>
                 <Card sx={{ height: `100%` }}>
                   <CardContent>
-                    <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} />
+                    <ColorPicker selectedStop={gradient.colorStops.find((stop) => stop.id === selectedStopId)} onColorChange={(color) => updateColorStop(selectedStopId, { color })} onOpacityChange={(opacity) => updateColorStop(selectedStopId, { opacity })} colorMode={colorMode} setColorMode={setColorMode} />
                   </CardContent>
                 </Card>
               </Grid>
               <Grid mb={2} size={{ xs: 12, md: 4 }}>
                 <Card sx={{ height: `100%` }}>
                   <CardContent>
-                    <ColorStops colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} />
+                    <ColorStops colorStops={gradient.colorStops} selectedStopId={selectedStopId} onStopSelect={setSelectedStopId} onUpdateStop={updateColorStop} onDeleteStop={deleteColorStop} colorMode={colorMode} />
                   </CardContent>
                 </Card>
               </Grid>

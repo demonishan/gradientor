@@ -1,29 +1,36 @@
+/**
+ * Output component
+ *
+ * Displays the generated CSS code for the gradient and provides export, copy, and share options.
+ *
+ * @typedef {Object} OutputProps
+ * @property {GradientConfig} gradient - The gradient configuration.
+ * @property {'HEX' | 'RGBA' | 'HSL'} [colorMode] - The color mode for output.
+ * @property {(msg: string) => void} showSnackbar - Function to show snackbar messages.
+ *
+ * @param {OutputProps & { showSnackbar: (msg: string) => void }} props - The props for the component.
+ * @returns {JSX.Element} Output UI.
+ */
 import React, { useState, useCallback, useRef } from 'react';
-import { useDebounce } from '../helpers';
-import { useClipboard } from '../modules';
-import { generateShareLink, addFavorite, exportCSS, exportPNG, exportSVG, exportJSON } from '../modules';
+import { hexToRgba, rgbaToHex, useDebounce } from '../helpers';
+import { addFavorite, exportCSS, exportJSON, exportPNG, exportSVG, generateShareLink, useClipboard } from '../modules';
 import type { GradientConfig } from '../App';
-import type { GradientShareConfig, GradientFavorite } from '../modules';
-import { Box, Button, Checkbox, FormControlLabel, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import TextField from '@mui/material/TextField';
+import type { GradientFavorite, GradientShareConfig } from '../modules';
+import { Box, Button, Checkbox, FormControlLabel, IconButton, Menu, MenuItem, TextField, Tooltip } from '@mui/material';
+import { FavoriteBorder as FavoriteBorderIcon, KeyboardArrowDown as KeyboardArrowDownIcon, Share as ShareIcon } from '@mui/icons-material';
 interface OutputProps {
   gradient: GradientConfig;
+  colorMode?: 'HEX' | 'RGBA' | 'HSL';
 }
-const Output: React.FC<OutputProps & { showSnackbar: (msg: string) => void }> = ({ gradient, showSnackbar }) => {
+const Output: React.FC<OutputProps & { showSnackbar: (msg: string) => void }> = ({ gradient, showSnackbar, colorMode = 'HEX' }) => {
   const [maxCompatibility, setMaxCompatibility] = useState(false);
-  const hexToRgba = (hex: string, opacity: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${opacity.toFixed(1)})`;
-  };
   const generateGradientCSS = useCallback(() => {
     const stops = gradient.colorStops
       .sort((a: GradientConfig[`colorStops`][number], b: GradientConfig[`colorStops`][number]) => a.position - b.position)
       .map((stop: GradientConfig[`colorStops`][number]) => {
-        const colorValue = stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color;
+        let colorValue = stop.color;
+        if (colorMode === 'RGBA' && /^#/.test(stop.color)) colorValue = hexToRgba(stop.color);
+        else if (colorMode === 'HEX' && /^rgba/.test(stop.color)) colorValue = rgbaToHex(stop.color);
         return `${colorValue} ${stop.position.toFixed(1)}%`;
       })
       .join(`, `);
@@ -36,22 +43,17 @@ const Output: React.FC<OutputProps & { showSnackbar: (msg: string) => void }> = 
       const size = gradient.radialSize && gradient.radialSize !== `None` ? gradient.radialSize : ``;
       const prefix = gradient.repeating ? `repeating-radial-gradient` : `radial-gradient`;
       const shape = gradient.type === `elliptical` ? `ellipse` : `circle`;
-      if (size && dir.startsWith(`at `)) {
-        return `${prefix}(${shape} ${size} ${dir}, ${stops})`;
-      } else if (size) {
-        return `${prefix}(${shape} ${size}, ${stops})`;
-      } else if (dir.startsWith(`at `)) {
-        return `${prefix}(${shape} ${dir}, ${stops})`;
-      } else {
-        return `${prefix}(${shape}, ${stops})`;
-      }
+      if (size && dir.startsWith(`at `)) return `${prefix}(${shape} ${size} ${dir}, ${stops})`;
+      else if (size) return `${prefix}(${shape} ${size}, ${stops})`;
+      else if (dir.startsWith(`at `)) return `${prefix}(${shape} ${dir}, ${stops})`;
+      else return `${prefix}(${shape}, ${stops})`;
     } else if (gradient.type === `conic`) {
       const pos = gradient.conicPosition || { x: 50, y: 50 };
       const prefix = gradient.repeating ? `repeating-conic-gradient` : `conic-gradient`;
       return `${prefix}(from ${gradient.angle}deg at ${pos.x}% ${pos.y}%, ${stops})`;
     }
     return ``;
-  }, [gradient]);
+  }, [gradient, colorMode]);
   const addFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleAddFavorite = useDebounce(() => {
     addFavorite(gradient as GradientFavorite);
@@ -66,9 +68,7 @@ background: -webkit-${gradientCSS};
 background: -moz-${gradientCSS};
 background: -o-${gradientCSS};
 background: ${gradientCSS};`;
-    } else {
-      return `background: ${gradientCSS};`;
-    }
+    } else return `background: ${gradientCSS};`;
   }, [generateGradientCSS, maxCompatibility, gradient.colorStops]);
   const copyToClipboard = useClipboard();
   const copyButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -84,12 +84,8 @@ background: ${gradientCSS};`;
   }, shareButtonRef);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
   const handleExportCSS = () => {
     exportCSS(generateFullCSS());
     handleClose();
@@ -101,7 +97,7 @@ background: ${gradientCSS};`;
     showSnackbar(`SVG file exported!`);
   };
   const handleExportPNG = () => {
-    exportPNG(gradient, hexToRgba);
+    exportPNG(gradient, (color) => color);
     handleClose();
     showSnackbar(`PNG file exported!`);
   };
@@ -120,22 +116,15 @@ background: ${gradientCSS};`;
             <FavoriteBorderIcon />
           </IconButton>
         </Tooltip>
-        <Button variant="text" color="inherit" onClick={handleShare} component="button" ref={shareButtonRef} aria-label="Copy shareable link">
-          Share
-        </Button>
+        <Tooltip title="Copy shareable link" placement="top">
+          <IconButton color="inherit" component="button" onClick={handleShare} ref={shareButtonRef} aria-label="Copy shareable link">
+            <ShareIcon />
+          </IconButton>
+        </Tooltip>
         <Button variant="text" color="inherit" id="basic-button" aria-controls={open ? `basic-menu` : undefined} aria-haspopup="true" onClick={handleClick} aria-label="Export options">
           Export <KeyboardArrowDownIcon fontSize="small" />
         </Button>
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          slotProps={{
-            list: {
-              'aria-labelledby': 'basic-button',
-            },
-          }}
-        >
+        <Menu anchorEl={anchorEl} open={open} onClose={handleClose} slotProps={{ list: { 'aria-labelledby': 'basic-button' } }}>
           <MenuItem onClick={handleExportPNG}>PNG</MenuItem>
           <MenuItem onClick={handleExportSVG}>SVG</MenuItem>
           <MenuItem onClick={handleExportCSS}>CSS</MenuItem>

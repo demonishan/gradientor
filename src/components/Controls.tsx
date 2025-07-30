@@ -1,19 +1,8 @@
-import { Divider, Box, Typography, TextField, MenuItem, Checkbox, FormControlLabel, Slider, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { visuallyHidden } from '@mui/utils';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowDownwardLeftIcon from '@mui/icons-material/SouthWest';
-import ArrowDownwardRightIcon from '@mui/icons-material/SouthEast';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowUpwardLeftIcon from '@mui/icons-material/NorthWest';
-import ArrowUpwardRightIcon from '@mui/icons-material/NorthEast';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import React from 'react';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import { Box, Checkbox, Divider, FormControlLabel, MenuItem, Slider, Tab, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { ArrowBack as ArrowBackIcon, ArrowDownward as ArrowDownwardIcon, ArrowForward as ArrowForwardIcon, ArrowUpward as ArrowUpwardIcon, NorthEast as ArrowUpwardRightIcon, NorthWest as ArrowUpwardLeftIcon, RadioButtonUnchecked as RadioButtonUncheckedIcon, SouthEast as ArrowDownwardRightIcon, SouthWest as ArrowDownwardLeftIcon } from '@mui/icons-material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { visuallyHidden } from '@mui/utils';
 interface ControlsProps {
   type: `linear` | `radial` | `conic` | `elliptical`;
   angle: number;
@@ -68,7 +57,7 @@ const Controls: React.FC<
             <Tab label="Hue/Saturation" value="2" />
           </TabList>
         </Box>
-        <TabPanel value="1" sx={{ px: 0 }}>
+        <TabPanel value="1" sx={{ p: 0, pt: 2 }}>
           <ToggleButtonGroup size="small" value={type} fullWidth exclusive onChange={(_, val) => val && onTypeChange(val)} sx={{ mb: 1 }}>
             <ToggleButton value="linear">Linear</ToggleButton>
             <ToggleButton value="radial">Radial</ToggleButton>
@@ -76,7 +65,7 @@ const Controls: React.FC<
             <ToggleButton value="conic">Conic</ToggleButton>
           </ToggleButtonGroup>
           <FormControlLabel control={<Checkbox checked={repeating} onChange={(e) => onRepeatingChange && onRepeatingChange(e.target.checked)} />} label="Repeating" sx={{ mb: 0.5 }} />
-          <Divider sx={{ mb: 2 }}></Divider>
+          <Divider sx={{ mb: 1.5 }}></Divider>
           {(type === `linear` || type === `conic`) && (
             <Box display="flex" alignItems="center" gap={2} mb={2}>
               <Typography>Angle</Typography>
@@ -109,7 +98,7 @@ const Controls: React.FC<
             <>
               <Typography>Direction</Typography>
               {onRadialDirectionChange && (
-                <Box display="flex" flexDirection="column" gap={0} mb={3}>
+                <Box display="flex" flexDirection="column" gap={0} mb={2.5}>
                   {radialDirections.map((row, i) => (
                     <ToggleButtonGroup key={i} value={radialDirection} exclusive onChange={(_, val) => val && onRadialDirectionChange(val)} size="small" fullWidth>
                       {row.map((dir, j) => (

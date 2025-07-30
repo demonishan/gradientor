@@ -17,6 +17,8 @@
   - One-click copy for generated CSS code.
 - **Hue, Saturation, Lightness Sliders**
   - Fine-tune all gradient colors instantly.
+- **Color Mode Switching**
+  - Instantly switch between RGBA and HEX color modes for all gradient stops and outputs.
 - **Shareable Gradient Links**
   - Generate unique links for sharing gradients.
 - **Import CSS Gradients**
