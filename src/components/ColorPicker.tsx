@@ -15,8 +15,7 @@
  */
 import 'react-color-palette/dist/css/rcp.css';
 import { ColorPicker as ReactColorPicker, useColor } from 'react-color-palette';
-import { TextField, Grid, Typography } from '@mui/material';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { TextField, Grid, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, { useEffect } from 'react';
 import type { ColorStop } from '../modules';
 import type { IColor } from 'react-color-palette';

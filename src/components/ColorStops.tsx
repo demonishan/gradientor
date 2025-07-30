@@ -1,26 +1,21 @@
 /**
- * Props for the ColorStops component.
- * @typedef {Object} ColorStopsProps
- * @property {ColorStop[]} colorStops - Array of color stops.
- * @property {string} selectedStopId - ID of the selected color stop.
- * @property {'HEX' | 'RGBA' | 'HSL'} colorMode - Current color mode.
- * @property {(id: string) => void} onStopSelect - Callback to select a color stop.
- * @property {(id: string, updates: Partial<ColorStop>) => void} onUpdateStop - Callback to update a color stop.
- * @property {(id: string) => void} onDeleteStop - Callback to delete a color stop.
+ * ColorStops component displays and manages a list of gradient color stops.
+ * @component
+ * @param {ColorStop[]} colorStops Array of color stops.
+ * @param {string} selectedStopId ID of the selected color stop.
+ * @param {'HEX' | 'RGBA' | 'HSL'} colorMode Current color mode.
+ * @param {(id: string) => void} onStopSelect Callback to select a color stop.
+ * @param {(id: string, updates: Partial<ColorStop>) => void} onUpdateStop Callback to update a color stop.
+ * @param {(id: string) => void} onDeleteStop Callback to delete a color stop.
+ * @returns {JSX.Element}
  */
+import React from 'react';
 import { Box, TextField, IconButton, Radio, RadioGroup, Tooltip } from '@mui/material';
 import { hexToRgba } from '../helpers';
 import { visuallyHidden } from '@mui/utils';
 import BackspaceTwoToneIcon from '@mui/icons-material/BackspaceTwoTone';
-import React from 'react';
-import type { ColorStop } from '../App';
+import type { ColorStop } from '../modules';
 
-/**
- * Renders a list of color stops with controls for selection, editing, and deletion.
- *
- * @param {ColorStopsProps} props - The props for the component.
- * @returns {JSX.Element} The rendered color stops UI.
- */
 interface ColorStopsProps {
   colorStops: ColorStop[];
   selectedStopId: string;

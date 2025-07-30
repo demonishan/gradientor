@@ -1,23 +1,22 @@
 /**
- * GradientBar component
- *
- * Renders a horizontal gradient bar with draggable color stops.
+ * GradientBar component renders a horizontal gradient bar with draggable color stops.
  * Allows adding, selecting, and updating color stops interactively.
- *
- * @param {GradientBarProps} props - The props for the component.
- * @returns {JSX.Element} Gradient bar UI.
+ * @component
+ * @param {GradientBarProps} props Gradient bar props
+ * @returns {JSX.Element} Gradient bar UI
  */
 import React, { useRef, useCallback } from 'react';
-import type { GradientConfig, ColorStop } from '../App';
+import type { GradientConfig } from '../App';
+import type { ColorStop } from '../modules';
 
 /**
  * Props for GradientBar component.
- * @property gradient - Gradient configuration object.
- * @property selectedStopId - ID of the selected color stop.
- * @property onStopSelect - Function to select a color stop.
- * @property onAddStop - Function to add a color stop at a position.
- * @property onUpdateStop - Function to update a color stop's properties.
-*/
+ * @property {GradientConfig} gradient Gradient configuration object
+ * @property {string} selectedStopId ID of the selected color stop
+ * @property {(id: string) => void} onStopSelect Function to select a color stop
+ * @property {(position: number) => void} onAddStop Function to add a color stop at a position
+ * @property {(id: string, updates: Partial<ColorStop>) => void} onUpdateStop Function to update a color stop's properties
+ */
 interface GradientBarProps {
   gradient: GradientConfig;
   selectedStopId: string;
@@ -34,19 +33,19 @@ const GradientBar: React.FC<GradientBarProps> = ({ gradient, selectedStopId, onS
    * @param opacity Opacity value (0-1).
    * @returns RGBA color string.
    */
-  const hexToRgba = (hex: string, opacity: number) =>
-    `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, ${opacity.toFixed(1)})`;
+  const hexToRgba = (hex: string, opacity: number) => `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, ${opacity.toFixed(1)})`;
 
   /**
    * Generates the CSS for the gradient bar background.
    * @returns CSS linear-gradient string.
    */
-  const generateGradientCSS = useCallback(() =>
-    `linear-gradient(90deg, ${gradient.colorStops
-      .sort((a, b) => a.position - b.position)
-      .map(stop => `${stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color} ${stop.position}%`)
-      .join(`, `)})`,
-    [gradient]
+  const generateGradientCSS = useCallback(
+    () =>
+      `linear-gradient(90deg, ${gradient.colorStops
+        .sort((a, b) => a.position - b.position)
+        .map((stop) => `${stop.opacity !== 1 ? hexToRgba(stop.color, stop.opacity) : stop.color} ${stop.position}%`)
+        .join(`, `)})`,
+    [gradient],
   );
 
   /**

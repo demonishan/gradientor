@@ -1,24 +1,23 @@
 /**
- * `Favorite` component
- *
- * Displays a drawer with a list of favorite gradients stored in `localStorage`.
- * Allows loading and removing gradients, and shows a preview for each.
- *
- * @param {`FavoriteProps`} `props` - The props for the component.
- * @returns {`JSX.Element`} Drawer UI for managing favorite gradients.
+ * Favorite component displays a drawer with a list of favorite gradients stored in localStorage.
+ * Allows loading, removing, and previewing gradients.
+ * @component
+ * @param {FavoriteProps} props Props for the component
+ * @returns {JSX.Element} Drawer UI for managing favorite gradients
  */
 import { Box, Typography, Card, CardMedia, CardContent, Button, List, ListItem, CardActions, IconButton, Drawer } from '@mui/material';
 import { FAVORITES_KEY } from '../modules';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
-import type { GradientFavorite, ColorStop } from '../modules';
+import type { GradientFavorite } from '../modules';
+import type { ColorStop } from '../modules';
 
 /**
- * Props for `Favorite` component.
- * @property `open` - Whether the drawer is open.
- * @property `onClose` - Function to close the drawer.
- * @property `showSnackbar` - Function to show a snackbar message.
- * @property `onGradientSelect` - Function to load a selected gradient.
+ * Props for Favorite component.
+ * @property {boolean} open Whether the drawer is open
+ * @property {() => void} onClose Function to close the drawer
+ * @property {(msg: string) => void} showSnackbar Function to show a snackbar message
+ * @property {(gradient: GradientFavorite) => void} onGradientSelect Function to load a selected gradient
  */
 interface FavoriteProps {
   open: boolean;
@@ -42,8 +41,8 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
   }, []);
 
   /**
-   * Removes a gradient from `localStorage` favorites by index.
-   * @param {number} `idx` - Index of the gradient to remove.
+   * Removes a gradient from localStorage favorites by index.
+   * @param {number} idx Index of the gradient to remove
    */
   const handleRemove = (idx: number) => {
     const favs = JSON.parse(window.localStorage.getItem(FAVORITES_KEY) || `[]`);
@@ -54,9 +53,9 @@ const Favorite: React.FC<FavoriteProps> = ({ open, onClose, showSnackbar, onGrad
   };
 
   /**
-   * Generates a CSS gradient string from a `GradientFavorite` object.
-   * @param {`GradientFavorite`} `gradient` - GradientFavorite object.
-   * @returns {string} CSS gradient string.
+   * Generates a CSS gradient string from a GradientFavorite object.
+   * @param {GradientFavorite} gradient GradientFavorite object
+   * @returns {string} CSS gradient string
    */
   const generateGradientCSS = (gradient: GradientFavorite): string => {
     const stops = gradient.colorStops

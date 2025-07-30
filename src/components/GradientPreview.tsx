@@ -1,19 +1,18 @@
 /**
- * GradientPreview component
- *
- * Renders a preview box with the given gradient configuration.
+ * GradientPreview component renders a preview box for the given gradient configuration.
  * Supports linear, radial, elliptical, and conic gradients with color stops and opacity.
- *
- * @param {GradientPreviewProps} props - The props for the component.
- * @returns {JSX.Element} A Box with the gradient background.
+ * @component
+ * @param {GradientPreviewProps} props Gradient configuration props
+ * @returns {JSX.Element} Box with the gradient background
  */
 import { Box } from '@mui/material';
-import type { GradientConfig, ColorStop } from '../App';
+import type { GradientConfig } from '../App';
+import type { ColorStop } from '../modules';
 
 /**
- * Props for GradientPreview.
- * @property gradient - Gradient configuration object.
-*/
+ * Props for GradientPreview component.
+ * @property {GradientConfig} gradient Gradient configuration object
+ */
 interface GradientPreviewProps {
   gradient: GradientConfig;
 }

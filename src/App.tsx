@@ -4,13 +4,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ColorPicker, ColorStops, Controls, Footer, GradientBar, GradientPreview, Header, Library, Output } from './components';
 import { adjustHue, adjustLightness, adjustSaturation, parseShareLink } from './modules';
 import { hexToRgba, rgbaToHex, useLocalStorage, useSnackbar } from './helpers';
+import type { ColorStop } from './modules';
 import { useEffect, useMemo, useState } from 'react';
-export interface ColorStop {
-  color: string;
-  id: string;
-  opacity: number;
-  position: number;
-}
 export interface GradientConfig {
   angle: number;
   colorStops: ColorStop[];
@@ -84,11 +79,7 @@ const App = () => {
   const updateColorStop = (id: string, updates: Partial<ColorStop>) => {
     if (updates.color !== undefined) {
       let colorValue = updates.color;
-      if (colorMode === 'HEX') {
-      } else if (colorMode === 'RGBA') {
-        colorValue = hexToRgba(colorValue);
-      } else if (colorMode === 'HSL') {
-      }
+      if (colorMode === 'RGBA') colorValue = hexToRgba(colorValue);
       updates.color = colorValue;
       const oldStop = gradient.colorStops.find((stop) => stop.id === id);
       if (oldStop && oldStop.color !== updates.color) {

@@ -4,11 +4,7 @@
  * @property position Position (0-100)
  * @property opacity Opacity (0-1)
  */
-export type ColorStop = {
-  color: string;
-  position: number;
-  opacity: number;
-};
+import type { ColorStop } from './index';
 
 /**
  * Represents a favorite gradient configuration.

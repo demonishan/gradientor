@@ -1,26 +1,22 @@
 /**
- * Barrel exports for all gradient-related modules in the project.
- * Provides unified imports for clipboard, adjustment (hue, lightness, saturation), Contentful API, Contentful API proxy, export, favorites, random gradient, and share link modules.
- *
- * Modules exported:
- * - useClipboard: Clipboard utility hook
- * - adjustmentHue: Hue adjustment utilities
- * - adjustmentLightness: Lightness adjustment utilities
- * - adjustmentSaturation: Saturation adjustment utilities
- * - contentfulApi: Contentful API integration
- * - contentfulApiProxy: Contentful API proxy utilities
- * - exportToFiles: Export utilities
- * - favoriteUtils: Favorite gradient utilities
- * - randomGradient: Random gradient generator
- * - shareLink: Share link generator
+ * Shared types and barrel exports for all gradient-related modules.
+ * @module GradientorModules
  */
+export interface ColorStop {
+  color: string;
+  id: string;
+  opacity: number;
+  position: number;
+}
+export { addFavorite } from './favoriteUtils';
+export { adjustHue } from './adjustmentHue';
+export { adjustLightness } from './adjustmentLightness';
+export { adjustSaturation } from './adjustmentSaturation';
 export { default as useClipboard } from './useClipboard';
-export * from './adjustmentHue';
-export * from './adjustmentLightness';
-export * from './adjustmentSaturation';
-export * from './contentfulApi';
-export * from './contentfulApiProxy';
-export * from './exportToFiles';
-export * from './favoriteUtils';
-export * from './randomGradient';
-export * from './shareLink';
+export { exportCSS, exportJSON, exportPNG, exportSVG } from './exportToFiles';
+export { FAVORITES_KEY } from './favoriteUtils';
+export { generateRandomGradient } from './randomGradient';
+export { generateShareLink, parseShareLink } from './shareLink';
+export { getGradientPresets } from './contentfulApi';
+export type { GradientFavorite } from './favoriteUtils';
+export type { GradientShareConfig } from './shareLink';

@@ -1,4 +1,5 @@
-import type { GradientConfig, ColorStop } from '../App';
+import type { GradientConfig } from '../App';
+import type { ColorStop } from './index';
 
 /**
  * Updates the repeating property of a gradient.
